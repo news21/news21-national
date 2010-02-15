@@ -1,0 +1,27 @@
+{% extends "core/base_main.html" %}
+{% load i18n %}
+
+
+
+{% block content %}
+
+{% if request.GET.msg %}
+	<p class="warning">{{ request.GET.msg }}</p>
+{% endif %}
+
+
+{% if user.is_authenticated%}
+<div style="padding-left:15px;"><h3>Welcome {{ user }},</h3></div>
+<div style="padding-left:15px;"><h2><a href="/feeds/user/{{u_id}}" style="text-decoration:none;"><img src='{{ MEDIA_URL }}images/rss.png' width="18" height="18" border="0" style="vertical-align:middle;" /></a> Latest Catch For: {{ username }}</h2></div>
+<div style="padding-left:15px;padding-bottom:10px;">Click on the picture to see a larger size, then vote by clicking on 'Nice Catch!' -or- 'Throw It Back!'.</div>
+{% else %}
+<div style="padding-left:15px;"><h2><a href="/feeds/user/{{u_id}}" style="text-decoration:none;"><img src='{{ MEDIA_URL }}images/rss.png' width="18" height="18" border="0" style="vertical-align:middle;" /></a> Latest Catch For: {{ username }}</h2></div>
+<div style="padding-left:15px;padding-bottom:10px;">Click on the picture to see a larger size, then vote by clicking on 'Nice Catch!' -or- 'Throw It Back!'.<br/><br/> Want to know where it was caught? ... If the user who submitted the catch, geo-tagged it, you will see a link for a map!<!--<br/><br/>Why not <a href="{% url user_signin %}">login</a> and show off your trophy catch! It's quick & easy with OpenID. --></div>
+{% endif %}
+
+
+
+
+
+{% endblock %}
+

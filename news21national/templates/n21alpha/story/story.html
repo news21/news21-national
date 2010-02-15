@@ -1,0 +1,135 @@
+{% extends "story/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+
+
+{% block content %}
+	<div class="grid_10 genericForm">
+		<form action="{{ form_url }}" method="post">
+		<h4>Story Info</h4>
+		{{ form.as_p }}
+		<p>
+			<label for="id_authors">Authors:</label>
+			<select name="authors" id="id_authors" multiple="true" size="8">
+				{% for member in newsrooms_members %}
+					<option {% for author in authors %} {% if member == author %} selected {% endif %} {% endfor %}  value="{{member.id}}">{{ member }} ( {%for newsroom in member.newsroom_members.all%} {{ newsroom }} {% endfor %} ) </option>
+				{% endfor %}
+			</select>
+		</p>
+		<p>
+			<label for="id_available_at">Publish Title & Dates:</label>
+			<span>
+				<input type="text" id="publishdatetitle" size="20"> between <input type="text" id="available_at" class="jcal"> - <input type="text" id="expires_at" class="jcal"> <input type="button" value="Add">
+			</span>
+		</p>
+		<p>
+			<label>Inherited Tags:</label>
+			<span class="inputDiv" id="inherited_tags">{% for tag in inherited_tags %} <span class="tag">{{tag}}</span> {% endfor %}</span>
+		</p>
+		<div class="clear"></div>
+		<p>
+			<label>Tags:</label>
+			<span class="inputDiv">
+			{% for tag in tags %}
+				<input type="checkbox" name="tag_{{tag.id}}" value="{{tag}}" id="tag_{{tag.id}}"  {% for used_tag in used_tags %} {% if tag.id == used_tag.id %} checked {% endif %} {% endfor %}  > {{tag}}
+				{% if forloop.counter|divisibleby:4 %}<br/>{% endif %}
+			{% endfor %}
+			</span>
+		</p>
+		<div class="clear"></div>
+		<div class="inputSubmit">
+			<input type="submit" value="Continue &rarr;">
+		</div>
+	</div>
+	
+	<div class="grid_6">
+		<h4>Story Assets</h4>
+		{% if story_id %}
+			<div>Add: <a href="{% url plaintext_new metastory_id story_id %}">Plain Text</a> | <a href="">Video</a> | <a href="{% url photo_new metastory_id story_id %}">Photo</a> | <a href="">Gallery</a> | <a href="{% url audio_new metastory_id story_id %}">Audio</a> | <a href="{% url swf_new metastory_id story_id %}">SWF</a></div>
+		{% else %}
+			<div>You have not created any media assets yet.</div>
+		{% endif %}
+		{% for asset in media_assets %}
+		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+			{% if asset.get_child_name == "photo" %}
+			<span class="icon-photo"></span><a href="{% url photo_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+			{% if asset.get_child_name == "plaintext" %}
+			<span class="icon-plaintext"></span><a href="{% url plaintext_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+			{% if asset.get_child_name == "audio" %}
+			<span class="icon-audio"></span><a href="{% url audio_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+			{% if asset.get_child_name == "swf" %}
+			<span class="icon-audio"></span><a href="{% url swf_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+			<br/>
+			<span class="icon-{% if asset.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> {{ asset.status }}
+		</div>
+		{% endfor %}
+		{% if media_assets.count == 0 %}
+			<div>You have not created any media assets yet.</div>
+		{% endif %}
+		
+		<div class="clear"></div>
+		<br/>
+		<br/>
+		<h4>Story Primary Image</h4>
+		
+		{% if primary_image %}
+		<div class="sidebar-right-listing image-selector alternating-row-selected">
+			<div class="image-selector-radio"><input type="radio" name="primary_image" id="id_primary_image" checked value="{{ primary_image.id }}"></div>
+			<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ primary_image.title }}" href="{{ primary_image.get_original_url }}"><img src="{{ primary_image.get_thumbnail_url }}" class="outline" /></a></div>
+			<div class="image-selector-info">
+				<span class="bold">Title:</span> {{ primary_image.title }}
+				<br/>
+				<span class="bold">Width & Height:</span> {{ primary_image.get_width }} x {{ primary_image.get_height }}
+				<br/>
+				<span class="bold">Caption:</span> {{ primary_image.summary }}
+			</div>
+			<div class="clear"></div>
+		</div>
+		{% endif %}
+		{% for photo in story_photos %}
+			{% if photo.id != primary_image.id %}
+			<div class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+				<div class="image-selector-radio"><input type="radio" name="primary_image" id="id_primary_image" value="{{ photo.id }}"></div>
+				<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ photo.title }}" href="{{ photo.get_original_url }}"><img src="{{ photo.get_thumbnail_url }}" class="outline" /></a></div>
+				<div class="image-selector-info">
+					<span class="bold">Title:</span> {{ photo.title }}
+					<br/>
+					<span class="bold">Width & Height:</span> {{ photo.get_width }} x {{ photo.get_height }}
+					<br/>
+					<span class="bold">Caption:</span> {{ photo.summary }}
+				</div>
+				<div class="clear"></div>
+			</div>
+			{% endif %}
+		{% endfor %}
+		</form>
+	</div>
+		
+	<div class="clear"></div>
+{% endblock %}
+
+
+{% block inline_scripts %}
+	$(function() {
+		$("#available_at").datepicker();
+		$("#expires_at").datepicker();
+		
+		{% if not story_id %}
+		jQuery('#id_headline').slugify('#id_slug');
+		{% endif %}
+		
+		$("a.zoom").fancybox({
+			'overlayOpacity'	:	0.7,
+			'overlayColor'		:	'#FFF',
+			'zoomSpeedIn'		:	500,
+			'zoomSpeedOut'		:	500,
+			'overlayShow'		:	false
+		});
+	});
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "story/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+
+
+{% block content %}
+
+<div class="grid_16 genericForm">
+	<form action="{{ form_url }}" method="post">
+	<h4>PlainText Info</h4>
+	{% if status.length %}
+	<p>
+		<label>Status :</label><span class="icon-{% if status == "Approved" %}accept{% else %}exclamation{% endif %}"></span>  {{ status }}
+	</p>
+	{% endif %}
+	{{ form.as_p }}
+	<p>
+		<label for="id_authors">Authors:</label>
+		<select name="authors" id="id_authors" multiple="multiple" size="8">
+			{% for member in newsrooms_members %}
+				<option {% for author in authors %} {% if member == author %} selected {% endif %} {% endfor %} value="{{member.id}}">{{ member }} ( {%for newsroom in member.newsroom_members.all%} {{ newsroom }} {% endfor %} ) </option>
+			{% endfor %}
+		</select>
+	</p>
+	<p>
+		<label>Inherited Tags:</label>
+		<span class="inputDiv" id="inherited_tags">{% for tag in inherited_tags %} <span class="tag">{{tag}}</span> {% endfor %}</span>
+	</p>
+	<div class="clear"></div>
+	<p>
+		<label>Tags:</label>
+		<span class="inputDiv">
+		{% for tag in tags %}
+			<input type="checkbox" name="tag_{{tag.id}}" value="{{tag}}" id="tag_{{tag.id}}"  {% for used_tag in used_tags %} {% if tag.id == used_tag.id %} checked {% endif %} {% endfor %} > {{tag}}
+			{% if forloop.counter|divisibleby:4 %}<br/>{% endif %}
+		{% endfor %}
+		</span>
+	</p>
+	<div class="clear"></div>
+	<div class="inputSubmit">
+		<input type="submit" value="Continue &rarr;">
+	</div>
+	</form>
+</div>	
+
+<div class="clear"></div>
+
+{% endblock %}

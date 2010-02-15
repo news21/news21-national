@@ -1,0 +1,79 @@
+{% extends "story/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+{% load charts %}
+
+
+
+{% block extra_scripts %}
+<script src="{{ MEDIA_URL }}templates/n21alpha/jquery-multiSelect/jquery.bgiframe.min.js" type="text/javascript"></script>
+<script src="{{ MEDIA_URL }}templates/n21alpha/jquery-multiSelect/jquery.multiSelect.js" type="text/javascript"></script>
+{% endblock %}
+
+
+{% block extra_styles %}
+<link href="{{ MEDIA_URL }}templates/n21alpha/jquery-multiSelect/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+
+
+{% block content %}
+<div class="grid_16"><h3>Analytics : Last 30 Days All Profiles</h3></div>
+
+<div class="grid_16">
+	<div>
+		<h4>Auto-fill:</h4>
+		<a href="{% url editorsdesk_analytics_report_alllast30days %}" >Last 30 Days All Profiles</a>
+		<br/>
+		<a href="{% url editorsdesk_analytics_report_firstxmonths %}" >First X Months ... Yearly Comparison</a>
+	</div>
+	<br/><br/><br/>
+</div>
+
+<div class="grid_16">
+{% for pdata in profiles_data %}
+	<h4>{{ pdata.account }}</h4>
+	<table border="0" cellspacing="5" cellpadding="5" width="800">
+		<tr>
+			<th>Date</th>
+			<th>Visitors</th>
+			<th>Visits</th>
+			<th>Pageviews</th>
+			<th>Time On Site</th>
+			<th>Bounces</th>
+			<th>New Visits</th>
+		</tr>
+		{% for record in pdata.metrics %}
+			<tr>
+				<td align="center">{{ record.title }}</td>
+				{% for m in record.metrics %}
+				<td align="center">{{ m.value }}</td>
+				{% endfor %}
+			</tr>
+		{% endfor %}
+		<tr>
+			<td align="center">&nbsp;</td>
+			{% for total in pdata.totals %}
+				<td align="center" class="bold">{{ total.data }}</td>
+			{% endfor %}
+		</tr>
+	</table>
+	
+{% endfor %}
+</div>
+
+{% endblock %}
+
+
+{% block inline_scripts %}
+	$(function() {
+		$("#metrics_startdate").datepicker();
+		$("#metrics_enddate").datepicker();
+		
+		$("#metrics_profile").multiSelect({ oneOrMoreSelected: '*' });
+		$("#metrics_metrics").multiSelect({ oneOrMoreSelected: '*' });
+		$("#metrics_dimensions").multiSelect({ oneOrMoreSelected: '*' });
+	});
+{% endblock %}

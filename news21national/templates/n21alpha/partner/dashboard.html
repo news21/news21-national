@@ -1,0 +1,51 @@
+{% extends "story/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+
+
+
+{% block content %}
+	<div class="grid_16">
+		<h3>Partner Dashboard</h3>
+		<h4>API KEY(s)</h4>
+		<ul>
+			{% for partner in partners %}
+				<li>{{ partner }} : {{ partner.api_key }} <a href="{% url partner_generate_api_key partner.id %}">[Generate New Key]</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+
+	<div class="grid_16">
+		<h4>Newsrooms</h4>
+	{% for ntags in newsrooms %}
+		<span class="tag"><a href="{% url partner_filter_stories_by_newsroom ntags.id %}">{{ ntags }}</a></span>
+	{% endfor %}
+	</div>
+	
+	<div class="grid_16">
+		<h4>Reporters</h4>
+	{% for reporter in reporters %}
+		<span class="tag"><a href="{% url partner_filter_stories_by_reporter reporter.id %}">{{ reporter }}</a></span>
+	{% endfor %}
+	</div>
+	
+	
+	
+	<div class="grid_16">
+		<h4>Categories</h4>
+	{% for category in categories %}
+		<span class="tag"><a href="{% url partner_filter_stories_by_tag category %}">{{ category.name }}</a></span>
+	{% endfor %}
+	</div>
+	
+	<div class="grid_16">
+		<h4>Year Published</h4>
+		<span class="tag"><a href="{% url partner_filter_stories_by_year 2006 %}">2006</a></span>
+		<span class="tag"><a href="{% url partner_filter_stories_by_year 2007 %}">2007</a></span>
+		<span class="tag"><a href="{% url partner_filter_stories_by_year 2008 %}">2008</a></span>
+		<span class="tag"><a href="{% url partner_filter_stories_by_year 2009 %}">2009</a></span>
+	</div>
+
+{% endblock %}

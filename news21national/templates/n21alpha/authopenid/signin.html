@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block nav %}
+<div style="padding-left:15px;padding-top:10px;">
+	<a href="{% url home %}">Home</a> | <a href="{% url user_signin %}">Login</a>
+</div>
+{% endblock nav %}
+
+{% block content %}
+{% if msg %}
+<br />
+	<p class="warning">{{ msg }}</p>
+{% endif %}
+{% if form2.errors %}
+<div class="errors"><p>{% trans "Please correct errors below:" %}<br />
+	{% if form2.username.errors %} 
+		<span class="error">{{ form2.username.errors|join:", " }}</span>
+	{% endif %}
+	{% if form2.password.errors %} 
+		<span class="error">{{ form2.password.errors|join:", " }}</span>
+	{% endif %}
+</p></div>
+<br>
+{% endif %}
+
+{% if form1.errors %}
+<div class="errors">
+    <p><span class="error">{{ form1.openid_url.errors|join:", " }}</span></p>
+</div>
+<br>
+{% endif %}
+<div class="login" style="padding-left:15px;padding-top:15px;">
+
+
+<form id="openid_form" name="openid_form" action="{% url user_signin %}" method="post">
+    <input type="hidden" name="action" value="verify" />
+    <input type="hidden" name="next" value="{{ next }}" />
+	<fieldset>
+		<legend>{% trans "Sign In Using Your OpenID URL" %}</legend>
+		<div id="openid_choice">
+    		<p>Please click your account provider:</p>
+    		<div id="openid_btns"></div>
+    	</div>
+    	    <div id="openid_input_area">
+                <label for="id_openid_url">{% trans "OpenId URL :" %}</label>{{ form1.openid_url }}
+                <input name="openid_submit" type="submit" value="{% trans "Sign in with OpenID" %}">
+            </div>
+		
+	</fieldset>
+</form>	
+</div>	
+{% endblock %}
+
+
+
+{% block extra_styles %}
+<link rel="stylesheet" href="{{ MEDIA_URL }}templates/n21alpha/css/openid.css" />
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script type="text/javascript" src="{{ MEDIA_URL }}templates/n21alpha/js/openid-jquery.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    openid.init('id_openid_url');
+});
+</script>
+<!-- /Simple OpenID Selector -->
+    
+{% endblock %}
+

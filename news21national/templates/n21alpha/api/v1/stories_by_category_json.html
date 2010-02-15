@@ -1,0 +1,5 @@
+{% if callback %}{{callback}}({% endif %}{"stories":[
+    {% for story in stories %}
+    { "id":"{{ story }}" }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+]}{% if callback %}){% endif %}

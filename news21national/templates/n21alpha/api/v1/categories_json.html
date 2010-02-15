@@ -1,0 +1,5 @@
+{% if callback %}{{callback}}({% endif %}{"categories":[
+    {% for category in categories %}
+    { "id":"{{ category }}" }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+]}{% if callback %}){% endif %}

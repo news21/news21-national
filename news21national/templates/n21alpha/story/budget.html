@@ -1,0 +1,30 @@
+{% extends "story/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+
+
+{% block content %}
+	<div class="grid_10 genericForm">
+		<h4>Story Assets</h4>
+		{% for asset in media_assets %}
+		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+			{% if asset.get_child_name == "photo" %}
+			<span class="icon-photo"></span><a href="{% url photo_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+			{% if asset.get_child_name == "plaintext" %}
+			<span class="icon-plaintext"></span><a href="{% url plaintext_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+			{% if asset.get_child_name == "audio" %}
+			<span class="icon-audio"></span><a href="{% url audio_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+			{% if asset.get_child_name == "swf" %}
+			<span class="icon-audio"></span><a href="{% url swf_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+		</div>
+		{% endfor %}
+	</div>
+
+	<div class="clear"></div>
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "story/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+{% load charts %}
+
+
+
+{% block content %}
+<div class="grid_16"><h3>Analytics</h3></div>
+<div class="grid_16">
+{% for pdata in profiles_data %}
+	{% for chart in pdata.metrics %}
+		{{ chart.title }}<br/>
+		{% for m in chart.metrics %}
+			{{ m.name }} {{ m.value }} {{ m.type }}<br/>
+		{% endfor %}
+		<br/>
+	{% endfor %}
+	
+	{{ pdata.metrics }}
+	{% chart as c %}
+		{% chart-data pdata.metrics %}
+		{% chart-type &quot;line&quot; %}
+		{% chart-size &quot;300x200&quot; %}
+		{% chart-colors &quot;CC0000&quot; %}
+		{% chart-fill &quot;EEEEEE&quot; %}
+		{% chart-legend &quot;Sweet&quot; %}
+	{% endchart %}
+	&lt;img src=&quot;{{ c.url }}&quot; width=&quot;300&quot; height=&quot;200&quot; /&gt;
+{% endfor %}
+</div>
+{% endblock %}

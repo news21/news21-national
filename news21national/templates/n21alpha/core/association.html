@@ -1,0 +1,41 @@
+{% extends "core/base_main.html" %}
+{% load i18n %}
+
+
+
+
+{% block content %}
+
+<div class="grid_16 genericForm">
+<h3>Create Your Account Association</h3>
+</div>
+
+<div class="grid_16 genericForm">
+<h4>Are you part of one of our newsrooms?</h4>
+If so, click that newsroom's name to create your newsroom account.
+<br/><br/>
+{% for newsroom in newsrooms %}
+<div>
+	<a href="/newsroom/{{newsroom.id}}/member/add/">{{ newsroom }}</a>
+</div>
+{% endfor %}
+<br/><br/>
+</div>
+
+
+
+<div class="grid_16 genericForm">
+<h4>Or ... Are you a partner who would like access to our content?</h4>
+Fill out the following fields and we will create your partner account.
+<br/><br/>
+<form action="/partner/member/add/" method="post">
+{{ form.as_p }}
+
+<div class="clear"></div>
+<div class="inputSubmit">
+	<input type="submit" value="Create &rarr;">
+</div>
+</form>
+</div>
+
+{% endblock %}

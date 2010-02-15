@@ -1,0 +1,12 @@
+*.pyc
+bin/*
+develop-eggs/*
+downloads/*
+eggs/*
+parts/*
+.installed.cfg
+.DS_Store
+apps/*
+news21national/local_settings.py
+news21national/media/uploads/*
+news21national/media/ik_cache/*

@@ -1,0 +1,23 @@
+{% extends "core/base_main.html" %}
+<!--
+	<geo:Point>
+		<geo:lat>42.5021</geo:lat> 
+		<geo:long>-83.1454</geo:long>
+	</geo:Point>
+ -->
+{% load i18n %}
+
+{% block content %}
+
+{% if request.GET.msg %}
+	<p class="warning">{{ request.GET.msg }}</p>
+{% endif %}
+
+{% if user.is_authenticated %}
+<h3>Welcome {{ user }},</h3>
+{% else %}
+<a href="{% url user_signin %}">login</a>
+{% endif %}
+
+
+{% endblock %}

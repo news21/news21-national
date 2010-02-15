@@ -1,0 +1,17 @@
+python bootstrap.py
+
+bin/buildout
+
+cd news21national
+
+touch local_settings.py
+
+	SECRET_KEY = ...
+	DATABASE_USER = ...
+	DATABASE_PASSWORD = ...
+
+CREATE DATABASE TO USE
+
+bin/django syncdb
+
+bin/django migrate

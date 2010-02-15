@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% load smart_if %}
+
+
+{% block breadcrumb %}
+	<div class="grid_16 breadcrumb">
+		<a href="{% url user_dashboard %}">Dashboard</a>
+		{% for crumb in breadcrumb %}
+			 &raquo; <a href="{{ crumb.url }}" {% if forloop.last %}id="current"{% endif %} >{{ crumb.title }}</a>
+		{% endfor %}
+	</div>
+{% endblock %}
+
+
+{% block hightlight_error %}
+	{% if messages %}
+	<div class="grid_16">
+	    {% for message in messages %}
+			<div class="ui-widget">
+				{% if message|slice:"0:1" == "1" %}
+				<div class="ui-state-highlight ui-corner-all" style="padding:2px 5px 2px 5px; margin:10px 0px 10px 0px;">
+					<span class="ui-icon ui-icon-info" style="float: left; margin-right:5px;"></span> <strong>Success</strong> : {{ message|slice:"2:" }}
+				</div>
+				{% else %}
+				<div class="ui-state-error ui-corner-all" style="padding:2px 5px 2px 5px; margin:10px 0px 10px 0px;">
+					<span class="ui-icon ui-icon-alert" style="float: left; margin-right:5px;"></span> <strong>Alert</strong> : {{ message|slice:"2:" }}
+				</div>
+				{% endif %}
+			</div>
+	    {% endfor %}
+	</div>
+	{% endif %}
+{% endblock %}

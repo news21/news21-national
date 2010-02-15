@@ -1,0 +1,99 @@
+{% extends "story/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+{% load charts %}
+
+
+
+{% block extra_scripts %}
+<script src="{{ MEDIA_URL }}templates/n21alpha/jquery-multiSelect/jquery.bgiframe.min.js" type="text/javascript"></script>
+<script src="{{ MEDIA_URL }}templates/n21alpha/jquery-multiSelect/jquery.multiSelect.js" type="text/javascript"></script>
+{% endblock %}
+
+
+{% block extra_styles %}
+<link href="{{ MEDIA_URL }}templates/n21alpha/jquery-multiSelect/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+
+
+{% block content %}
+<div class="grid_16"><h3>Analytics : First X Months ... Yearly Comparison</h3></div>
+
+<div class="grid_16">
+	<div>
+		<h4>Auto-fill:</h4>
+		<a href="{% url editorsdesk_analytics_report_alllast30days %}" >Last 30 Days All Profiles</a>
+		<br/>
+		<a href="{% url editorsdesk_analytics_report_firstxmonths %}" >First X Months ... Yearly Comparison</a>
+	</div>
+	<br/><br/><br/>
+</div>
+
+<div class="grid_16">
+	<h4>Overall</h4>
+	<table border="0" cellspacing="5" cellpadding="5" width="600">
+		<tr>
+			<th>Date</th>
+			<th>Visitors</th>
+			<th>Visits</th>
+			<th>Pageviews</th>
+		</tr>
+		{% for y in years_data %}
+		<tr>
+			<td align="center">{{ y.start_month }}/{{ y.start_year }} - {{ y.end_month }}/{{ y.end_year }}</td>
+			<td align="right">{{ y.visitors }}</td>
+			<td align="right">{{ y.visits }}</td>
+			<td align="right">{{ y.pageviews }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+
+<div class="grid_16">
+{% for pdata in profiles_data %}	
+	<h3>{{ pdata.account }}</h3>
+	
+	{% for pydata in pdata.metrics %}
+		<h4>{{ pydata.range }}</h4>
+		<table border="0" cellspacing="5" cellpadding="5" width="600">
+			<tr>
+				<th>Date</th>
+				<th>Visitors</th>
+				<th>Visits</th>
+				<th>Pageviews</th>
+			</tr>
+			{% for record in pydata.metrics %}
+				<tr>
+					<td align="center">{{ record.title }}</td>
+					{% for m in record.metrics %}
+					<td align="right">{{ m.value }}</td>
+					{% endfor %}
+				</tr>
+			{% endfor %}
+			<tr>
+				<td align="center">&nbsp;</td>
+				<td align="right" class="bold">{{ pydata.totals.visitors }}</td>
+				<td align="right" class="bold">{{ pydata.totals.visits }}</td>
+				<td align="right" class="bold">{{ pydata.totals.pageviews }}</td>
+			</tr>
+		</table>
+	{% endfor %}
+{% endfor %}
+</div>
+
+{% endblock %}
+
+
+{% block inline_scripts %}
+	$(function() {
+		$("#metrics_startdate").datepicker();
+		$("#metrics_enddate").datepicker();
+		
+		$("#metrics_profile").multiSelect({ oneOrMoreSelected: '*' });
+		$("#metrics_metrics").multiSelect({ oneOrMoreSelected: '*' });
+		$("#metrics_dimensions").multiSelect({ oneOrMoreSelected: '*' });
+	});
+{% endblock %}

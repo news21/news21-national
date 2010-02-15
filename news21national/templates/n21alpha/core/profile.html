@@ -1,0 +1,30 @@
+{% extends "core/base_main.html" %}
+{% load i18n %}
+
+
+
+{% block content %}
+
+{% if request.GET.msg %}
+	<p class="warning">{{ request.GET.msg }}</p>
+{% endif %}
+
+
+<h3>Associated OpenIDs for: {{ user }}</h3>
+<ul>
+	{% for oid_url in associated_openids %}
+		<li>
+		{{ oid_url }} 
+			{% if allow_delete %}
+			(<a href="{% url user_dissociate %}?openid_url={{ oid_url }}"> dissociate</a>)
+			{% endif %}
+		</li>
+	{% endfor %}
+</ul>
+
+
+For now:<br/><br/>Only 1 OpenID assocation is needed. We will add support to have multiple assocations as well as the ability to remove associations ... soon.
+
+<div>{{ form }}</div>
+
+{% endblock %}

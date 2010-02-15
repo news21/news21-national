@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <title>News21 -{{ MEDIA_URL }}-</title>
+        
+		{% if request.is_secure %}
+        <meta http-equiv="X-XRDS-Location" content="https://{{ request.get_host }}{% url oid_xrdf %}" />
+        {% else %}
+        <meta http-equiv="X-XRDS-Location" content="http://{{ request.get_host }}{% url oid_xrdf %}" />
+        {% endif %}
+
+		<link rel="shortcut icon" href="{{ MEDIA_URL }}templates/n21alpha/images/favicon.ico"/>
+        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/960.css" />
+        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/text.css" />
+        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/jquery-ui/ui-lightness/jquery-ui-1.7.2.custom.css" />	
+		<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha//fancybox/jquery.fancybox-1.2.5.css" media="screen" />
+		
+		<link rel="stylesheet" href="http://assets.news21.com/news21skin.css" type="text/css" media="all" />
+		
+		{% block extra_styles %}{% endblock %}
+		
+        {% block head %}{% endblock %}
+
+		<style type="text/css" media="screen">
+			{% block inline_styles %}}{% endblock %}
+		</style>
+		
+		{% block feeds %}{% endblock %}
+    </head>
+    <body>
+		<div class="container_16">
+			<div class="grid_16" id="header">
+				<a href="/"><img src="{{ MEDIA_URL }}templates/n21alpha/images/n21_header_logo.png" alt="logo" border="0" /></a>
+		    </div>
+		
+		    <div class="grid_10">&nbsp;</div>
+		    <div class="grid_6">
+				<div class="mininav">
+					{% if user.is_authenticated%}
+						<a href="{% url home %}">Home</a> | 
+						<a href="{% url user_dashboard %}">Dashboard</a> | 
+						<a href="{% url user_profile %}">Profile</a> | 
+						<a href="{% url user_signout %}">Logout</a>
+					{% else %}
+						<a href="{% url home %}">Home</a> | 
+						<a href="{% url user_signin %}">Login</a>
+					{% endif %}
+				</div>
+		    </div>
+			
+			
+			{% block breadcrumb %}{% endblock %}
+			
+			{% block hightlight_error %}{% endblock %}
+		
+			<div class="contentbody">
+				{% block content %}{% endblock %}
+		    </div>
+			
+			<div class="grid_16">
+				<div id="news21-footer"></div>
+		    </div>
+		</div>
+		
+		
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}templates/n21alpha/fancybox/jquery.fancybox-1.2.5.pack.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}templates/n21alpha/js/jsnippets.js"></script>
+		
+		<script type="text/javascript" src="http://assets.news21.com/news21skin.js"></script>
+		
+    	{% block extra_scripts %}{% endblock %}
+		<script type="text/javascript" charset="utf-8">
+			{% block inline_scripts %}{% endblock %}
+		</script>
+    	
+    </body>
+</html>

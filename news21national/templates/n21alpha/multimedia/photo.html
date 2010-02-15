@@ -1,0 +1,112 @@
+{% extends "story/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+
+
+{% block content %}
+
+{% if not image %}
+<div id="upload_dialog" class="upload_dialog" title="Upload Photo">
+	<form action="{{ upload_form_url }}" name="upload_form" id="upload_form" method="post" enctype="multipart/form-data">
+		{{ upload_form.as_p }}
+	</form>
+</div>
+{% endif %}
+
+
+<div class="grid_10 genericForm">
+	<form action="{{ form_url }}" method="post">
+	<h4>Photo Info</h4>
+	{% if status.length %}
+	<p>
+		<label>Status :</label><span class="icon-{% if status == "Approved" %}accept{% else %}exclamation{% endif %}"></span>&nbsp; {{ status }}
+	</p>
+	{% endif %}
+	{{ form.as_p }}
+	<p>
+		<label for="id_authors">Byline:</label>
+		<select name="authors" id="id_authors" multiple size="8">
+			{% for member in newsrooms_members %}
+				<option {% for author in authors %} {% if member == author %} selected {% endif %} {% endfor %}  value="{{member.id}}">{{ member }} ( {%for newsroom in member.newsroom_members.all%} {{ newsroom }} {% endfor %} ) </option>
+			{% endfor %}
+		</select>
+	</p>
+	<p>
+		<label>Inherited Tags:</label>
+		<span class="inputDiv" id="inherited_tags">{% for tag in inherited_tags %} <span class="tag">{{tag}}</span> {% endfor %}</span>
+	</p>
+	<div class="clear"></div>
+	<p>
+		<label>Tags:</label>
+		<span class="inputDiv">
+		{% for tag in tags %}
+			<input type="checkbox" name="tag_{{tag.id}}" value="{{tag}}" id="tag_{{tag.id}}"  {% for used_tag in used_tags %} {% if tag.id == used_tag.id %} checked {% endif %} {% endfor %} > {{tag}}
+			{% if forloop.counter|divisibleby:4 %}<br/>{% endif %}
+		{% endfor %}
+		</span>
+	</p>
+	<div class="clear"></div>
+	<div class="inputSubmit">
+		{% if image %}
+		<input type="submit" value="Continue &rarr;">
+		{% endif %}
+	</div>
+	</form>
+</div>	
+
+<div class="grid_6">
+	{% if image %}
+	<h4>Metadata & URLs</h4>
+	<a class="zoom" title="{{ image.title }}" href="{{ image.get_original_url }}"><img src="{{ image.get_thumbnail_url }}" class="outline" /></a>
+	<div>Original Image:
+		<ul>
+			<li style="list-style-type:none;">Width : {{ image.get_width }}</li>
+			<li style="list-style-type:none;">Height : {{ image.get_height }}</li>
+			<li style="list-style-type:none;">URL : <a href="{{ image.get_original_url }}" target="_blank">{{ image.get_original_url }}</a></li>
+			<li style="list-style-type:none;">::METADATA::</li>
+			{% for key,value in image.get_info.items %}
+			<li style="list-style-type:none;">{{ key }} : {{ value }}</li>
+			{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+</div>
+
+<div class="clear"></div>
+
+{% endblock %}
+
+{% block inline_styles %}
+	.ui-dialog-titlebar-close { display: none; }
+{% endblock %}
+
+
+{% block inline_scripts %}
+	$(function() {
+		$("#id_date_taken").datepicker();
+		
+		{% if not image %}
+			$("#upload_dialog").dialog({
+				bgiframe: true,
+				modal: true,
+				closeOnEscape : false,
+				resizable : false,
+				buttons: { "Upload": function() { $("#upload_form").submit(); } }
+			});
+		
+		{% else %}
+		jQuery('#id_title').slugify('#id_slug');
+		{% endif %}
+	
+		$("a.zoom").fancybox({
+			'overlayOpacity'	:	0.7,
+			'overlayColor'		:	'#FFF',
+			'zoomSpeedIn'		:	500,
+			'zoomSpeedOut'		:	500,
+			'overlayShow'		:	false
+		});
+	});
+	
+{% endblock %}

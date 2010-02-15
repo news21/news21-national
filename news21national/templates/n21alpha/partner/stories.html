@@ -1,0 +1,21 @@
+{% extends "story/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+
+
+
+{% block content %}
+<div class="grid_16"><h3>Stories Filtered : {{ filter }}</h3></div>
+
+	<div class="grid_16">
+		{% for story in stories %}
+			<div>
+				{{story.metastory}}
+				<h4><a href="{% url partner_story_budget story.id %}">{{ story }}</a></h4>
+			</div>
+		{% endfor %}
+	</div>
+
+{% endblock %}
