@@ -25,10 +25,9 @@
 {% chart %}
 	{% chart-data a1 a2 a3 a4 %}
 	{% chart-type "line" %}
-	{% chart-size "700x200" %}
-	{% chart-colors "CC0000" "00CC00" "333333" "301BDF" %}
-    {% chart-legend "6/2006 - 1/2007" "6/2007 - 1/2008" "6/2008 - 1/2009" "6/2009 - 1/2010" %}
-    {% chart-line-style 3 6 3 %}
+	{% chart-size "800x250" %}
+	{% chart-colors "301BDF" "00CC00" "333333" "CC0000" %}
+    {% chart-legend "Liberty vs. Security - 2006" "Faces of Faith in America - 2007" "What's at Stake: Election - 2008" "Changing America - 2009" %}
     {% chart-grid 15 15 1 1 %}
 	{% axis "left" %}
       {% axis-range 0 40000 %}
@@ -37,6 +36,9 @@
       {% axis-labels "Jun" "Jul" "Aug" "Sept" "Oct" "Nov" "Dec" "Jan" %}
     {% endaxis %}
 {% endchart %}
+
+<!-- 
+{% chart-line-style 3 6 3 %}-->
 
 <div class="grid_16">
 	<div>

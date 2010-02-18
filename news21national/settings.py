@@ -68,16 +68,16 @@ INSTALLED_APPS = (
 	#
 	'news21national.core',
 	#
-	#'news21ams.newsroom',
-	#'news21ams.partner',
-	#'news21ams.story',
-	#'news21ams.multimedia',
-	#'news21ams.utils',
-	#'news21ams.plaintext',
-	#'news21ams.photos',
-	#'news21ams.swfs',
-	#'news21ams.api',
-	#'news21ams.audio',
+	'news21ams.newsroom',
+	'news21ams.partner',
+	'news21ams.story',
+	'news21ams.multimedia',
+	'news21ams.utils',
+	'news21ams.plaintext',
+	'news21ams.photos',
+	'news21ams.swfs',
+	'news21ams.api',
+	'news21ams.audio',
 )
 
 TEMPLATE_LOADERS = (

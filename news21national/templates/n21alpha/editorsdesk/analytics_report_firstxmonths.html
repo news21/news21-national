@@ -40,6 +40,7 @@
 			<th>Visitors</th>
 			<th>Visits</th>
 			<th>Pageviews</th>
+			<th>TimeOnSite</th>
 		</tr>
 		{% for y in years_data %}
 		<tr>
@@ -47,6 +48,7 @@
 			<td align="right">{{ y.visitors }}</td>
 			<td align="right">{{ y.visits }}</td>
 			<td align="right">{{ y.pageviews }}</td>
+			<td align="right">{{ y.timeOnSite }}</td>
 		</tr>
 		{% endfor %}
 	</table>
@@ -64,6 +66,7 @@
 				<th>Visitors</th>
 				<th>Visits</th>
 				<th>Pageviews</th>
+				<th>TimeOnSite</th>
 			</tr>
 			{% for record in pydata.metrics %}
 				<tr>
@@ -78,6 +81,7 @@
 				<td align="right" class="bold">{{ pydata.totals.visitors }}</td>
 				<td align="right" class="bold">{{ pydata.totals.visits }}</td>
 				<td align="right" class="bold">{{ pydata.totals.pageviews }}</td>
+				<td align="right" class="bold">{{ pydata.totals.timeOnSite }}</td>
 			</tr>
 		</table>
 	{% endfor %}
