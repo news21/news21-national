@@ -23,8 +23,8 @@ a:hover{color:#6F6F6F;text-decoration:underline}
 /*      */
 
 
-.mininav { text-align:right; padding: 10px 15px 15px 0px; }
-
+.mininav { text-align:right; padding: 7px 15px 15px 0px; }
+.sitetitle {float:left;font-size:14px;font-weight:bold;padding-top:4px;padding-left:10px;}
 
 #header { background:url('../images/n21_header_bg.png') no-repeat; height:39px; }
 
@@ -34,7 +34,7 @@ a:hover{color:#6F6F6F;text-decoration:underline}
     .breadcrumb #current { color:#6F6F6F; text-decoration:none; font-weight:bold; }
 
 
-.contentbody { background-color:#fff; padding-bottom:20px; min-height:400px; }
+.contentbody { background-color:#fff; padding-bottom:20px; min-height:360px; }
 
 
 .sectionTitle { font-weight: bold; font-size: 14px; }

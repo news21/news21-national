@@ -6,10 +6,12 @@ This code is licenced under the New BSD License.
 */
 
 var providers_large = {
+  /*
   news21: {
      name: 'News21',
      url: 'https://www.google.com/accounts/o8/site-xrds?hd=news21.com'
   },
+  */
   google: {
       name: 'Google',
       url: 'https://www.google.com/accounts/o8/id'

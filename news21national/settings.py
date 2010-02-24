@@ -60,6 +60,7 @@ INSTALLED_APPS = (
 	#
 	'tagging',
 	'south',
+    'registration',
 	'django_authopenid',
 	'imagekit',
 	'audioplayer',

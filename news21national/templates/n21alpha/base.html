@@ -32,25 +32,29 @@
     </head>
     <body>
 		<div class="container_16">
-			<div class="grid_16" id="header">
-				<a href="/"><img src="{{ MEDIA_URL }}templates/n21alpha/images/n21_header_logo.png" alt="logo" border="0" /></a>
+			
+			<div class="grid_16">
+				<div id="news21-header"></div>
+				
+				<div id="news21-menu">
+					<div class="sitetitle">
+						ASSET MANAGEMENT & SYNDICATION
+					</div>
+					<div class="mininav">
+						{% if user.is_authenticated%}
+							<a href="{% url home %}">Home</a> | 
+							<a href="{% url user_dashboard %}">Dashboard</a> | 
+							<a href="{% url user_profile %}">Profile</a> | 
+							<a href="{% url user_signout %}">Logout</a>
+						{% else %}
+							<a href="{% url home %}">Home</a> | 
+							<a href="{% url user_signin %}">Login</a>
+						{% endif %}
+					</div>
+				</div> 
 		    </div>
 		
-		    <div class="grid_10">&nbsp;</div>
-		    <div class="grid_6">
-				<div class="mininav">
-					{% if user.is_authenticated%}
-						<a href="{% url home %}">Home</a> | 
-						<a href="{% url user_dashboard %}">Dashboard</a> | 
-						<a href="{% url user_profile %}">Profile</a> | 
-						<a href="{% url user_signout %}">Logout</a>
-					{% else %}
-						<a href="{% url home %}">Home</a> | 
-						<a href="{% url user_signin %}">Login</a>
-					{% endif %}
-				</div>
-		    </div>
-			
+			<div class="clear"></div>
 			
 			{% block breadcrumb %}{% endblock %}
 			

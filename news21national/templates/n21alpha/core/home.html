@@ -7,17 +7,48 @@
  -->
 {% load i18n %}
 
+
+
 {% block content %}
 
-{% if request.GET.msg %}
-	<p class="warning">{{ request.GET.msg }}</p>
-{% endif %}
+	{% if user.is_authenticated %}
+		<h3>Welcome {{ user }},</h3>
+	{% else %}
+		<div class="login" style="padding-left:15px;padding-top:15px;">
+			<form id="openid_form" name="openid_form" action="{% url user_signin %}" method="post">
+			    <input type="hidden" name="action" value="verify" />
+			    <input type="hidden" name="next" value="{{ next }}" />
+				<fieldset>
+					<legend>{% trans "Sign In Using Your OpenID URL" %}</legend>
+					<div id="openid_choice">
+			    		<p>Please click your account provider:</p>
+			    		<div id="openid_btns"></div>
+			    	</div>
+			    	    <div id="openid_input_area">
+			                <label for="id_openid_url">{% trans "OpenId URL :" %}</label>{{ form1.openid_url }}
+			                <input name="openid_submit" type="submit" value="{% trans "Sign in with OpenID" %}">
+			            </div>
+		
+				</fieldset>
+			</form>	
+		</div>	
 
-{% if user.is_authenticated %}
-<h3>Welcome {{ user }},</h3>
-{% else %}
-<a href="{% url user_signin %}">login</a>
-{% endif %}
+		{% block extra_styles %}
+		<link rel="stylesheet" href="{{ MEDIA_URL }}templates/n21alpha/css/openid.css" />
+		{% endblock %}
 
+
+		{% block extra_scripts %}
+		<script type="text/javascript" src="{{ MEDIA_URL }}templates/n21alpha/js/openid-jquery.js"></script>
+		<script type="text/javascript">
+		$(document).ready(function() {
+		    openid.init('id_openid_url');
+		});
+		</script>
+		{% endblock %}
+	
+	{% endif %}
 
 {% endblock %}
+
+
