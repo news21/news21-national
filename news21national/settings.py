@@ -96,6 +96,20 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 SITE_STYLE = 'n21alpha'
 API_VERSION = 'v1'
 
+
+OPENID_SREG = {
+    "required": ['fullname', 'country']
+}
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.request',
+    'django_authopenid.context_processors.authopenid',
+)
+
 try:
 	from local_settings import *
 except ImportError, exp:
