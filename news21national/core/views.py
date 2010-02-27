@@ -11,8 +11,8 @@ from django_authopenid.forms import *
 from django_authopenid.models import UserAssociation
 from django.core.files.base import ContentFile
 
-
-from news21national.core.models import Profile, ProfileForm
+from news21national.core.forms import ProfileForm
+from news21national.core.models import Profile
 from news21ams.newsroom.models import Newsroom
 from news21ams.partner.models import Partner, PartnerForm
 from news21ams.story.models import MetaStory
@@ -63,13 +63,56 @@ def user_profile(request):
 	except Profile.DoesNotExist:
 		profile = Profile()
 
-	form = ProfileForm(instance=profile)
-
 	return render_to_response("core/profile.html", {
 		'associated_openids': associated_openids,
 		'allow_delete' : allow_delete,
-		'form': form,
+		'profile' : profile
 	}, context_instance=RequestContext(request))
+
+#@login_required
+def save_profile(request):
+	if request.method == 'POST':
+		
+		try: 
+			profile = Profile.objects.get(user=request.user)
+		except Profile.DoesNotExist:
+			profile = Profile()
+		
+		profile.user = request.user
+		profile.created_by = request.user
+		profile.updated_by = request.user
+		
+		if (request.POST.get("gender") == '0'):
+			profile.gender = 0;
+		else:
+			profile.gender = 1;
+		
+		form = ProfileForm(request.POST,instance=profile)
+		
+		if form.is_valid():
+			form.save()
+			request.user.message_set.create(message="1|Your profile was saved successfully.")
+
+			return HttpResponseRedirect( reverse('user_profile') )
+		else:
+			request.user.message_set.create(message="0|An error has occured.")
+			
+			associated_openids = UserAssociation.objects.filter(user__id=request.user.id)
+			if associated_openids.count() < 2:
+				allow_delete = False
+			else:
+				allow_delete = True
+			
+			return render_to_response("core/profile.html", {
+				'associated_openids': associated_openids,
+				'allow_delete' : allow_delete,
+				'profile' : profile,
+				'errors' : form.errors
+			}, context_instance=RequestContext(request))
+	else:
+		return HttpResponseRedirect( settings.LOGIN_REDIRECT_URL )
+
+
 
 @login_required
 def user_association(request):

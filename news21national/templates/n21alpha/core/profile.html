@@ -1,6 +1,7 @@
 {% extends "core/base_main.html" %}
 {% load i18n %}
 
+{% load smart_if %}
 
 
 {% block content %}
@@ -9,7 +10,7 @@
 	<p class="warning">{{ request.GET.msg }}</p>
 {% endif %}
 
-
+<div class="grid_16">
 <h3>Associated OpenIDs for: {{ user }}</h3>
 <ul>
 	{% for oid_url in associated_openids %}
@@ -25,6 +26,72 @@
 
 For now:<br/><br/>Only 1 OpenID assocation is needed. We will add support to have multiple assocations as well as the ability to remove associations ... soon.
 
-<div>{{ form }}</div>
+</div>
+
+{{errors}}
+
+<div class="grid_16 genericForm">
+	<br/><br/>
+	<form action="{% url save_profile %}" method="post">
+	<h4>Profile Info</h4>
+	<p>
+		<label for="id_phone">Phone:</label>
+		<span class="inputDiv">
+		<input type="text" maxlength="25" style="width:100px;" value="{{ profile.phone }}" name="phone" id="id_phone">
+		</span>
+	</p>
+	<div class="clear"></div>
+	<p>
+		<label for="id_gender">Gender:</label>
+		<span class="inputDiv">
+		<select name="gender" id="id_gender" size="1">	
+			<option value="0">Female</option>
+			<option {% if profile.gender == 1 %}selected{% endif %} value="1">Male</option>
+		</select>
+		</span>
+	</p>
+	<div class="clear"></div>
+	<p>
+		<label for="id_blog_uri">Personal Blog / Website:</label>
+		<span class="inputDiv">
+		<input type="text" maxlength="300" name="blog_uri" value="{{ profile.blog_uri }}" id="id_blog_uri"/>
+		</span>
+	</p>
+	<div class="clear"></div>
+	<p>
+		<label for="id_twitterid">Twitter ID:</label>
+		<span class="inputDiv">
+		<input type="text" maxlength="200" style="width:100px;" value="{{ profile.twitterid }}" name="twitterid" id="id_twitterid"/>
+		</span>
+	</p>
+	<div class="clear"></div>
+	<p>
+		<label for="id_linkedinid">Linkedin ID:</label>
+		<span class="inputDiv">
+		<input type="text" maxlength="200" style="width:100px;" value="{{ profile.linkedinid }}" name="linkedinid" id="id_linkedinid"/>
+		</span>
+	</p>
+	<div class="clear"></div>
+	<p>
+		<label for="id_facebookid">Facebook ID:</label>
+		<span class="inputDiv">
+		<input type="text" maxlength="200" style="width:100px;" value="{{ profile.facebookid }}" name="facebookid" id="id_facebookid"/>
+		</span>
+	</p>
+	<div class="clear"></div>
+	<p>
+		<label for="id_bio">Bio:</label>
+		<span class="inputDiv">
+		<textarea name="bio" cols="40" rows="10" id="id_bio">{{ profile.bio }}</textarea>
+		</span>
+	</p>
+
+	<div class="clear"></div>
+	<div class="inputSubmit">
+		<input type="submit" value="Continue &rarr;">
+	</div>
+	</form>
+</div>
+
 
 {% endblock %}
