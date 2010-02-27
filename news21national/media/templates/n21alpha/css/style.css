@@ -24,17 +24,19 @@ a:hover{color:#6F6F6F;text-decoration:underline}
 
 
 .mininav { text-align:right; padding: 7px 15px 15px 0px; }
-.sitetitle {float:left;font-size:14px;font-weight:bold;padding-top:4px;padding-left:10px;}
+.sitetitle {float:left;font-size:14px;font-weight:bold;padding-top:4px;padding-left:10px;color:#333;}
+.sitetitle-highlight {color:#F49900;font-size:14px;font-weight:bold;}
 
 #header { background:url('../images/n21_header_bg.png') no-repeat; height:39px; }
 
 
-.breadcrumb { font-size:12px; border-top:1px solid #DFDFDF; border-bottom:1px solid #DFDFDF; padding:4px 0px 4px 4px; background-color:#EFEFEF; margin-bottom:10px; }
+.breadcrumb { font-size:12px; border-top:1px solid #DFDFDF; border-bottom:1px solid #DFDFDF; padding:4px 0px 4px 0px; background-color:#EFEFEF; margin-bottom:10px; }
+	.breadcrumb-trail { padding:0px 10px 0px 10px; }
     .breadcrumb a, a:link { color:#F49900; text-decoration:underline; }
     .breadcrumb #current { color:#6F6F6F; text-decoration:none; font-weight:bold; }
 
 
-.contentbody { background-color:#fff; padding-bottom:20px; min-height:360px; }
+.contentbody { background-color:#fff; padding:10px 0px 20px 0px; min-height:360px; }
 
 
 .sectionTitle { font-weight: bold; font-size: 14px; }
