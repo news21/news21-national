@@ -25,6 +25,18 @@
 			</span>
 		</p>
 		<p>
+			<label for="id_geotag">Geo Tags:</label>
+			<span>
+				Placement: <input type="text" id="geoplacement" style="width:150px;" size="20"> Region: <input type="text" id="georegion" style="width:150px;" size="20">
+			</span>
+		</p>
+		<p>
+			<label for="id_geotag"></label>
+			<span>
+				Lat: <input type="text" id="geolat" style="width:75px;"> Lon: <input type="text" id="geolon" style="width:75px;"> <input type="button" value="Add">
+			</span>
+		</p>
+		<p>
 			<label>Inherited Tags:</label>
 			<span class="inputDiv" id="inherited_tags">{% for tag in inherited_tags %} <span class="tag">{{tag}}</span> {% endfor %}</span>
 		</p>
