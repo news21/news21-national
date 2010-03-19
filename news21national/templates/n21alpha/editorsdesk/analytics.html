@@ -22,33 +22,36 @@
 {% block content %}
 <div class="grid_16"><h3>Analytics</h3></div>
 
-{% chart %}
-	{% chart-data a1 a2 a3 a4 %}
-	{% chart-type "line" %}
-	{% chart-size "800x250" %}
-	{% chart-colors "301BDF" "00CC00" "333333" "CC0000" %}
-    {% chart-legend "Liberty vs. Security - 2006" "Faces of Faith in America - 2007" "What's at Stake: Election - 2008" "Changing America - 2009" %}
-    {% chart-grid 15 15 1 1 %}
-	{% axis "left" %}
-      {% axis-range 0 40000 %}
-    {% endaxis %}
-    {% axis "bottom" %}
-      {% axis-labels "Jun" "Jul" "Aug" "Sept" "Oct" "Nov" "Dec" "Jan" %}
-    {% endaxis %}
-{% endchart %}
-
-<!-- 
-{% chart-line-style 3 6 3 %}-->
 
 <div class="grid_16">
 	<div>
-		<h4>Auto-fill:</h4>
-		<a href="{% url editorsdesk_analytics_report_alllast30days %}" >Last 30 Days All Profiles</a>
+		<h4>Reports:</h4>
+		<div>&middot; <a href="{% url editorsdesk_analytics_report_alllast30days %}" >Last 30 Days All Profiles</a></div>
 		<br/>
-		<a href="{% url editorsdesk_analytics_report_firstxmonths %}" >First X Months ... Yearly Comparison</a>
+		<div>&middot; <a href="{% url editorsdesk_analytics_report_firstxmonths %}" >First X Months ... Yearly Comparison</a></div>
+		<br/>
+		<div>
+			&middot; Visitors ... by profile, between date range ...<br/>
+			<div style="padding-left:30px;">
+				<form action="{% url editorsdesk_analytics_report_daterange %}" name="gaform" id="gaform" method="post">
+					<input type="hidden" id="metrics_generated" name="metrics_generated" value="1"/>
+					<label for="metrics_profile">Profiles: </label>
+					<select id="metrics_profile" name="metrics_profile[]" multiple="multiple" style="width:200px" size="5">
+						<option value=""></option>
+						{% for p in profiles %}
+						<option value="{{ p.profile_id }}">{{ p.profile_name }} : {{ p.profile_id }}</option>
+						{% endfor %}
+					</select>
+					&nbsp;&nbsp;&nbsp;
+					Between: <input type="text" id="metrics_startdate" name="metrics_startdate" class="jcal"> - <input type="text" id="metrics_enddate" name="metrics_enddate" class="jcal">
+					<input type="submit" value="Generate &rarr;">
+				</form>
+			</div>
+		</div>
 	</div>
+	<!--
 	<div>
-		<h4>Builder: </h4>
+		<h4>Builder: (Super-Scaled Down Version of <a href="http://code.google.com/apis/analytics/docs/gdata/gdataExplorer.html" target="blank">gdataExplorer</a>)</h4>
 		<form action="{% url editorsdesk_analytics %}" name="gaform" id="gaform" method="post">
 			<input type="hidden" id="metrics_generated" name="metrics_generated" value="1"/>
 			<label for="metrics_profile">Profiles: </label>
@@ -77,8 +80,10 @@
 			Between: <input type="text" id="metrics_startdate" name="metrics_startdate" class="jcal"> - <input type="text" id="metrics_enddate" name="metrics_enddate" class="jcal">
 			<br/>
 			<label for="metrics_sort">Sort By: </label>
-			<select id="metrics_sort" name="metrics_sort">
+			<select id="metrics_sort" name="metrics_sort[]" multiple="multiple" style="width:200px" size="5">
 				<option value=""></option>
+				<option value="month">month</option>
+				<option value="year">year</option>
 				<option value="visits">visits</option>
 			</select>
 			<br/>
@@ -93,6 +98,7 @@
 			<input type="submit" value="Generate &rarr;">
 		</form>
 	</div>
+	 -->
 	<br/><br/><br/>
 </div>
 
@@ -100,13 +106,17 @@
 {% if showMetrics %}
 <div class="grid_16">
 {% for pdata in profiles_data %}
+	<table border="0" cellspacing="0" cellpadding="0">
+		<tr>
 	{% for chart in pdata.metrics %}
-		{{ chart.title }}<br/>
+		<tr>
+			<td>{{ chart.title }}</td>
 		{% for m in chart.metrics %}
-			{{ m.name }} {{ m.value }} {{ m.type }}<br/>
+			<td>{{ m.name }} {{ m.value }} {{ m.type }}</td>
 		{% endfor %}
-		<br/>
+		</tr>
 	{% endfor %}
+	</table>
 	
 	{{pdata.chart_data}}
 	
@@ -136,5 +146,6 @@
 		$("#metrics_profile").multiSelect({ oneOrMoreSelected: '*' });
 		$("#metrics_metrics").multiSelect({ oneOrMoreSelected: '*' });
 		$("#metrics_dimensions").multiSelect({ oneOrMoreSelected: '*' });
+		$("#metrics_sort").multiSelect({ oneOrMoreSelected: '*' });
 	});
 {% endblock %}

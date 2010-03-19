@@ -1,12 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block nav %}
-<div style="padding-left:15px;padding-top:10px;">
-	<a href="{% url home %}">Home</a> | <a href="{% url user_signin %}">Login</a>
-</div>
-{% endblock nav %}
-
 {% block content %}
 {% if msg %}
 <br />
@@ -30,8 +24,22 @@
 </div>
 <br>
 {% endif %}
-<div class="login" style="padding-left:15px;padding-top:15px;">
+<h2>Make a choice:</h2>
+<p> <a href="{% url registration_register %}">Register</a> | <a href="{% url user_signin %}">Log-In</a></p>
+<div class="login">
 
+    <form id="auth_form" name="auth_form" action="{% url user_signin %}" method="post">
+    <input type="hidden" name="next" value="{{ next }}" />
+	<fieldset>
+	    
+	    
+		<legend>{% trans "Sign In Using Your Account ID" %}</legend>
+		<div class="form-row"><label for="id_username">{% trans "Username:" %}</label><br />{{ form2.username }}</div>
+		<div class="form-row"><label for="id_password">{% trans "Password" %}</label><br />{{ form2.password }}</div>
+		
+        <div class="submit-row"><input type="submit" name="blogin" value="{% trans "Sign in" %}"> </div>
+	</fieldset>	
+</form>
 
 <form id="openid_form" name="openid_form" action="{% url user_signin %}" method="post">
     <input type="hidden" name="action" value="verify" />
@@ -52,15 +60,8 @@
 </div>	
 {% endblock %}
 
-
-
-{% block extra_styles %}
-<link rel="stylesheet" href="{{ MEDIA_URL }}templates/n21alpha/css/openid.css" />
-{% endblock %}
-
-
 {% block extra_scripts %}
-<script type="text/javascript" src="{{ MEDIA_URL }}templates/n21alpha/js/openid-jquery.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}/js/openid-jquery.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     openid.init('id_openid_url');

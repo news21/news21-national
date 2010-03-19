@@ -1,0 +1,105 @@
+{% extends "story/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+{% load ga_titles %}
+{% load charts %}
+
+
+
+{% block extra_scripts %}
+<script src="{{ MEDIA_URL }}templates/n21alpha/jquery-multiSelect/jquery.bgiframe.min.js" type="text/javascript"></script>
+<script src="{{ MEDIA_URL }}templates/n21alpha/jquery-multiSelect/jquery.multiSelect.js" type="text/javascript"></script>
+{% endblock %}
+
+
+{% block extra_styles %}
+<link href="{{ MEDIA_URL }}templates/n21alpha/jquery-multiSelect/jquery.multiSelect.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+
+
+{% block content %}
+<div class="grid_16"><h3>Analytics: Visitors By Date Range</h3></div>
+
+
+<div class="grid_16">
+	<div>
+		By profile, between date range ...<br/>
+		<div style="padding-left:30px;">
+			<form action="{% url editorsdesk_analytics_report_daterange %}" name="gaform" id="gaform" method="post">
+				<input type="hidden" id="metrics_generated" name="metrics_generated" value="1"/>
+				<label for="metrics_profile">Profiles: </label>
+				<select id="metrics_profile" name="metrics_profile[]" multiple="multiple" style="width:200px" size="5">
+					<option value=""></option>
+					{% for p in profiles %}
+					<option value="{{ p.profile_id }}">{{ p.profile_name }} : {{ p.profile_id }}</option>
+					{% endfor %}
+				</select>
+				&nbsp;&nbsp;&nbsp;
+				Between: <input type="text" id="metrics_startdate" name="metrics_startdate" class="jcal"> - <input type="text" id="metrics_enddate" name="metrics_enddate" class="jcal">
+				<input type="submit" value="Generate &rarr;">
+			</form>
+		</div>
+	</div>
+	
+	<br/>
+	
+	<div>
+		{% for pdata in profiles_data %}
+			<h4>{{ pdata.account }}</h4>
+			
+			{% chart as c %}
+				{% chart-data pdata.chart_data %}
+				{% chart-type "line" %}
+				{% chart-size "800x250" %}
+				{% chart-colors "301BDF" %}
+				{% chart-grid 15 15 1 1 %}
+				{% axis "left" %}
+					{% axis-range 0 pdata.datamax %}
+			    {% endaxis %}
+			    {% axis "bottom" %}
+			      {% axis-labels datalabels %}
+			    {% endaxis %}
+			{% endchart %}
+			{% chart-line-style 3 6 3 %}
+	
+			<img src="{{ c.url }}" width="800" height="250" />
+			
+			<table border="0" width="800" cellspacing="0" cellpadding="0">
+				<tr>
+					<td>Month/Year</td>
+					<td>Visitors</td>
+					<td>Visits</td>
+					<td>Pageviews</td>
+					<td>Time on Site</td>
+					<td>Bounces</td>
+					<td>New Visits</td>
+				</tr>
+			{% for chart in pdata.metrics %}
+				<tr>
+					<td>{% ga_title_monthyear chart.title %}</td>
+				{% for m in chart.metrics %}
+					<td>{{ m.value }}</td>
+				{% endfor %}
+				</tr>
+			{% endfor %}
+			</table>
+	
+			<br/><br/>
+		{% endfor %}
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block inline_scripts %}
+	$(function() {
+		$("#metrics_startdate").datepicker();
+		$("#metrics_enddate").datepicker();
+		
+		$("#metrics_profile").multiSelect({ oneOrMoreSelected: '*' });
+	});
+{% endblock %}

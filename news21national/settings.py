@@ -5,18 +5,18 @@ import os
 
 
 ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
+	# ('Your Name', 'your_email@domain.com'),
 )
 
 MANAGERS = ADMINS
 
 
-DATABASE_ENGINE = 'postgresql_psycopg2'    # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_ENGINE = 'postgresql_psycopg2'	   # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
 DATABASE_NAME = ''
-DATABASE_USER = ''             # Not used with sqlite3.
-DATABASE_PASSWORD = ''         # Not used with sqlite3.
-DATABASE_HOST = ''             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+DATABASE_USER = ''			   # Not used with sqlite3.
+DATABASE_PASSWORD = ''		   # Not used with sqlite3.
+DATABASE_HOST = ''			   # Set to empty string for localhost. Not used with sqlite3.
+DATABASE_PORT = ''			   # Set to empty string for default. Not used with sqlite3.
 
 
 TIME_ZONE = 'America/Chicago'
@@ -38,12 +38,11 @@ MEDIA_URL = '/media/'
 ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 
-
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.middleware.doc.XViewMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.middleware.doc.XViewMiddleware',
 	#
 	'django_authopenid.middleware.OpenIDMiddleware',
 )
@@ -52,22 +51,28 @@ ROOT_URLCONF = 'news21national.urls'
 
 
 INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.gis',
-    'django.contrib.admin',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.gis',
+	'django.contrib.admin',
 	'django.contrib.sites',
 	#
 	'tagging',
 	'south',
-    'registration',
+	'registration',
 	'django_authopenid',
 	'imagekit',
 	'audioplayer',
 	'googleanalytics',
 	'googlecharts',
 	'geotagging',
+	'uni_form',
+	'django_messages',
+	'announcements',
+	'mobileadmin',
+	'avatar',
+	'discussion',
 	#
 	'news21national.core',
 	#
@@ -81,15 +86,16 @@ INSTALLED_APPS = (
 	'news21ams.swfs',
 	'news21ams.api',
 	'news21ams.audio',
+	'news21ams.editorsdesk',
 )
 
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
+	'django.template.loaders.filesystem.load_template_source',
+	'django.template.loaders.app_directories.load_template_source',
 )
 
 TEMPLATE_DIRS = (
-    os.path.join(os.path.dirname(__file__), "templates/n21alpha"),
+	os.path.join(os.path.dirname(__file__), "templates/n21alpha"),
 )
 
 SITE_NAME = "N21"
@@ -99,19 +105,24 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 SITE_STYLE = 'n21alpha'
 API_VERSION = 'v1'
 
+AVATAR_STORAGE_DIR = os.path.join(os.path.dirname(__file__), 'media/avatars')
 
 OPENID_SREG = {
-    "required": ['fullname', 'country']
+	"required": ['fullname', 'country']
 }
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.request',
-    'django_authopenid.context_processors.authopenid',
+	'django.core.context_processors.auth',
+	'django.core.context_processors.debug',
+	'django.core.context_processors.i18n',
+	'django.core.context_processors.media',
+	'django.core.context_processors.request',
+	'django_authopenid.context_processors.authopenid',
+	'mobileadmin.context_processors.user_agent',
+	'announcements.context_processors.site_wide_announcements',
+	#'django.contrib.csrf.middleware.CsrfMiddleware',
 )
+
 
 try:
 	from local_settings import *

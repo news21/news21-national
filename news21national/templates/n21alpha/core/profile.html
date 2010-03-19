@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {% load smart_if %}
+{% load avatar_tags %}
 
 
 {% block content %}
@@ -31,6 +32,8 @@ For now:<br/><br/>Only 1 OpenID assocation is needed. We will add support to hav
 {{errors}}
 
 <div class="grid_16 genericForm">
+	<h4>Avatar (We suggest using <a href="http://www.gravatar.com">gravatar.com</a>?)</h4>
+	{% avatar user %}<br/><a href="{% url avatar_change %}">Change your avatar</a>
 	<br/><br/>
 	<form action="{% url save_profile %}" method="post">
 	<h4>Profile Info</h4>
