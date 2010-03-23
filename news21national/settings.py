@@ -100,13 +100,15 @@ TEMPLATE_DIRS = (
 
 SITE_NAME = "N21"
 SITE_ID = 1
-LOGIN_URL = "/account/signin/"
-LOGIN_REDIRECT_URL = '/dashboard/'
+
 SITE_STYLE = 'n21alpha'
+
 API_VERSION = 'v1'
 
 AVATAR_STORAGE_DIR = os.path.join(os.path.dirname(__file__), 'media/avatars')
 
+LOGIN_URL = "/account/signin/"
+LOGIN_REDIRECT_URL = '/dashboard/'
 OPENID_SREG = {
 	"required": ['fullname', 'country']
 }
