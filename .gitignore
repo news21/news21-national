@@ -10,3 +10,5 @@ apps/*
 news21national/local_settings.py
 news21national/media/uploads/*
 news21national/media/ik_cache/*
+logs/*
+news21national/media/admin_media
