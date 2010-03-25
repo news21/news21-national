@@ -11,6 +11,7 @@
 <div class="grid_16 contentheader"><h3>Editor's Desk</h3></div>
 <div class="grid_16 contentheader">
 	<h4><a href="{% url editorsdesk_analytics %}">Analytics</a></h4>
+	{% comment %}
 	<h4>Announcements</h4>
 	{% if site_wide_announcements %}
         <div id="site_wide_announcements">
@@ -30,5 +31,6 @@
 	    <li><a href="{% url messages_compose %} ">{% trans "New Message" %}</a></li>
 	    <li><a href="{% url messages_trash %} ">{% trans "Trash" %}</a></li>
 	</ul>
+	{% endcomment %}
 </div>
 {% endblock %}
