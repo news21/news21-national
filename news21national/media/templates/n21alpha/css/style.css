@@ -37,7 +37,8 @@ a:hover{color:#6F6F6F;text-decoration:underline}
 
 
 .contentbody { background-color:#fff; padding:10px 0px 20px 0px; min-height:360px; }
-
+.contentheader { padding:0px 10px 0px 10px; }
+.contentcontainer { padding:10px; }
 
 .sectionTitle { font-weight: bold; font-size: 14px; }
 

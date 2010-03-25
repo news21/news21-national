@@ -2,6 +2,8 @@
 {% load i18n %}
 
 {% block content %}
+<div class="grid_16 contentheader">
+
 {% if msg %}
 <br />
 	<p class="warning">{{ msg }}</p>
@@ -24,7 +26,7 @@
 </div>
 <br>
 {% endif %}
-<h2>Make a choice:</h2>
+<h2>Log-In:</h2>
 <p> <a href="{% url registration_register %}">Register</a> | <a href="{% url user_signin %}">Log-In</a></p>
 <div class="login">
 
@@ -41,6 +43,7 @@
 	</fieldset>	
 </form>
 
+{% comment %}
 <form id="openid_form" name="openid_form" action="{% url user_signin %}" method="post">
     <input type="hidden" name="action" value="verify" />
     <input type="hidden" name="next" value="{{ next }}" />
@@ -57,6 +60,9 @@
 		
 	</fieldset>
 </form>	
+{% endcomment %}
+
+</div>
 </div>	
 {% endblock %}
 

@@ -10,7 +10,7 @@
 {% if request.GET.msg %}
 	<p class="warning">{{ request.GET.msg }}</p>
 {% endif %}
-
+{% comment %}
 <div class="grid_16">
 <h3>Associated OpenIDs for: {{ user }}</h3>
 <ul>
@@ -24,17 +24,16 @@
 	{% endfor %}
 </ul>
 
-
 For now:<br/><br/>Only 1 OpenID assocation is needed. We will add support to have multiple assocations as well as the ability to remove associations ... soon.
 
 </div>
+{% endcomment %}
 
 {{errors}}
 
-<div class="grid_16 genericForm">
-	<h4>Avatar (We suggest using <a href="http://www.gravatar.com">gravatar.com</a>?)</h4>
-	{% avatar user %}<br/><a href="{% url avatar_change %}">Change your avatar</a>
-	<br/><br/>
+
+<div class="grid_10">
+	<div class="genericForm contentcontainer">
 	<form action="{% url save_profile %}" method="post">
 	<h4>Profile Info</h4>
 	<p>
@@ -94,7 +93,15 @@ For now:<br/><br/>Only 1 OpenID assocation is needed. We will add support to hav
 		<input type="submit" value="Continue &rarr;">
 	</div>
 	</form>
+	</div>
 </div>
 
+
+<div class="grid_6">
+	<div class="contentcontainer">
+	<h4>Your Avatar (<a href="http://www.gravatar.com">gravatar.com</a>)</h4>
+	{% avatar user %}<br/><a href="{% url avatar_change %}">Change your avatar</a>
+	</div>
+</div>
 
 {% endblock %}

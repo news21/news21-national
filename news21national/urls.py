@@ -23,6 +23,7 @@ urlpatterns = patterns(
 	url(r'^accounts/profile/update/', 'news21national.core.views.save_profile',	 name='save_profile'),
 	url(r'^accounts/profile/', 'news21national.core.views.user_profile',  name='user_profile'),
 	url(r'^accounts/association/', 'news21national.core.views.user_association',  name='user_association'),
+	
 	url(r'^dashboard/', 'news21national.core.views.dashboard',	name='user_dashboard'),
 	url(r'^privacy/', 'news21national.core.views.privacy',	name='privacy'),
 	url(r'^terms/', 'news21national.core.views.terms',	name='terms'),

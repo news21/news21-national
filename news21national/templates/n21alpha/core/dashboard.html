@@ -8,10 +8,9 @@
 	{% if request.GET.msg %}
 		<p class="warning">{{ request.GET.msg }}</p>
 	{% endif %}
-
-
-	<div class="grid_16"><h3>Your Dashboard</h3></div>
+	
 	<div class="grid_8">
+		<div class="contentcontainer">
 		<h4>Announcements</h4>
 		{% if site_wide_announcements %}
 	        <div id="site_wide_announcements">
@@ -31,8 +30,10 @@
 		    <li><a href="{% url messages_compose %} ">{% trans "New Message" %}</a></li>
 		    <li><a href="{% url messages_trash %} ">{% trans "Trash" %}</a></li>
 		</ul>
+		</div>
 	</div>
 	<div class="grid_8">
+		<div class="contentcontainer">
 		<h4>Your Stories <a href="{% url metastory_new %}">[+]</a></h4>
 		{% for story in stories %}
 		<div>
@@ -42,7 +43,7 @@
 		{% if stories.count == 0 %}
 			<div>You have not created any stories yet.</div>
 		{% endif %}
-	
+		<br/>
 		<h4>Recent Activity</h4>
 		{% for entry in entries %}
 		<div>
@@ -53,6 +54,6 @@
 		{% if entries.count == 0 %}
 			<div>You have not had any activity over the last 2 weeks.</div>
 		{% endif %}
+		</div>
 	</div>
-
 {% endblock %}

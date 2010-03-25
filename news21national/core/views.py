@@ -13,6 +13,7 @@ from django.core.files.base import ContentFile
 
 from news21national.core.forms import ProfileForm
 from news21national.core.models import Profile
+from news21ams.editorsdesk.models import EditorsDesk
 from news21ams.newsroom.models import Newsroom
 from news21ams.partner.models import Partner, PartnerForm
 from news21ams.story.models import MetaStory
@@ -38,13 +39,18 @@ def dashboard(request):
 	# check to see if user is associated with newsroom or partner ... if neither ... send to association page
 	n_count = Newsroom.objects.filter(members=request.user).distinct().count()
 	p_count = Partner.objects.filter(members=request.user).distinct().count()
-	if n_count == 0 and p_count == 0:
+	e_count = EditorsDesk.objects.filter(editors=request.user).distinct().count()
+	if n_count == 0 and p_count == 0 and e_count == 0:
 		return HttpResponseRedirect(reverse('user_association'))
-	
+
 	# if user is part of a partner ... send to seperate dashboard
 	if p_count > 0:
 		return HttpResponseRedirect(reverse('partner_dashboard'))
-	
+
+	# if user is an editor ... send to seperate dashboard
+	if e_count > 0:
+		return HttpResponseRedirect(reverse('editorsdesk_dashboard'))
+
 	stories = MetaStory.objects.filter(created_by=request.user)
 	entries = Media.children.filter(authors=request.user)
 

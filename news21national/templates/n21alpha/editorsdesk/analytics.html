@@ -20,15 +20,15 @@
 
 
 {% block content %}
-<div class="grid_16"><h3>Analytics</h3></div>
+<div class="grid_16 contentheader"><h3>Analytics</h3></div>
 
 
-<div class="grid_16">
+<div class="grid_16 contentheader">
 	<div>
 		<h4>Reports:</h4>
-		<div>&middot; <a href="{% url editorsdesk_analytics_report_alllast30days %}" >Last 30 Days All Profiles</a></div>
+		<div>&middot; <a href="{% url editorsdesk_analytics_report_alllast30days %}" >Last 30 Days All Profiles (not stable)</a></div>
 		<br/>
-		<div>&middot; <a href="{% url editorsdesk_analytics_report_firstxmonths %}" >First X Months ... Yearly Comparison</a></div>
+		<div>&middot; <a href="{% url editorsdesk_analytics_report_firstxmonths %}" >First X Months ... Yearly Comparison (not stable)</a></div>
 		<br/>
 		<div>
 			&middot; Visitors ... by profile, between date range ...<br/>
@@ -104,7 +104,7 @@
 
 
 {% if showMetrics %}
-<div class="grid_16">
+<div class="grid_16 contentheader">
 {% for pdata in profiles_data %}
 	<table border="0" cellspacing="0" cellpadding="0">
 		<tr>

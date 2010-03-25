@@ -113,6 +113,13 @@ OPENID_SREG = {
 	"required": ['fullname', 'country']
 }
 
+ACCOUNT_ACTIVATION_DAYS=7
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_USE_TLS=1
+EMAIL_PORT=587
+EMAIL_HOST_USER='britton.halle@news21.com'
+#EMAIL_HOST_PASSWORD='' # in local_settings.py
+
 TEMPLATE_CONTEXT_PROCESSORS = (
 	'django.core.context_processors.auth',
 	'django.core.context_processors.debug',

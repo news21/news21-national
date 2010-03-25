@@ -8,6 +8,7 @@
 
 
 {% block content %}
+<div class="grid_16 contentheader">
 {% if form.errors %}
     <div class="errors">
         <p>Error while submitting form</p>
@@ -16,7 +17,7 @@
     <br>
 {% endif %}
 
-<h2>Make a choice:</h2>
+<h2>Register for an account:</h2>
 <p> <a href="{% url registration_register %}">Register</a> | <a href="{% url user_signin %}">Log-In</a></p>
 
 <form action="" method="post">
@@ -28,4 +29,5 @@
 	    <p><input type="submit" name="bsignup'" value="{% trans "Sign up" %}"> </p>
 	 </fieldset>
 </form>
+</div>
 {% endblock %}
