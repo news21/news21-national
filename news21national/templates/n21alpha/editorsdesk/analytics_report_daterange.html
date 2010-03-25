@@ -48,6 +48,27 @@
 	<br/>
 	
 	<div>
+		<h4>TOTALS:</h4>
+		<table border="0" width="800" cellspacing="0" cellpadding="0">
+			<tr>
+				<td>Visitors</td>
+				<td>Visits</td>
+				<td>Pageviews</td>
+				<td>Time on Site</td>
+				<td>Bounces</td>
+				<td>New Visits</td>
+			</tr>
+			<tr>
+			{% for total in datatotals %}
+				<td>{{ total }}</td>
+			{% endfor %}
+			</tr>
+		</table>
+	</div>
+	
+	<br/>
+	
+	<div>
 		{% for pdata in profiles_data %}
 			<h4>{{ pdata.account }}</h4>
 			
