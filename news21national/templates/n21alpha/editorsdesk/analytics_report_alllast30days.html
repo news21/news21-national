@@ -3,6 +3,7 @@
 
 {% load i18n %}
 {% load smart_if %}
+{% load ga_titles %}
 {% load charts %}
 
 
@@ -69,7 +70,7 @@
 		</tr>
 		{% for record in pdata.metrics %}
 			<tr>
-				<td align="center">{{ record.title }}</td>
+				<td align="center">{% ga_title_date record.title %}</td>
 				{% for m in record.metrics %}
 				<td align="center">{{ m.value }}</td>
 				{% endfor %}
