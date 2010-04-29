@@ -4,6 +4,7 @@ develop-eggs/*
 downloads/*
 eggs/*
 parts/*
+.python-eggs/*
 .installed.cfg
 .DS_Store
 apps/*
