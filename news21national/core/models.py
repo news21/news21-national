@@ -16,7 +16,7 @@ class Profile(models.Model):
 	linkedin_public = models.BooleanField(default=False,verbose_name="Show LinkedIn Username in Public Profile?")
 	facebookid = models.CharField(max_length=200,blank=True,verbose_name="Facebook Username")
 	facebook_public = models.BooleanField(default=False,verbose_name="Show Facebook Username in Public Profile?")
-	bio = models.TextField()
+	bio = models.TextField(help_text="Exclude school details, which will be inherited from below fields.")
 	hometown = models.CharField(max_length=100)
 	address = models.CharField(max_length=200,help_text="E.g.: La Messa Drive 1234")
 	address_city = models.CharField(max_length=200,verbose_name="City")
