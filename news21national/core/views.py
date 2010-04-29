@@ -18,6 +18,8 @@ from news21ams.newsroom.models import Newsroom
 from news21ams.partner.models import Partner, PartnerForm
 from news21ams.story.models import MetaStory
 from news21ams.multimedia.models import Media
+from news21national.core.constants import ETHNICITIES, DEGREE_TYPES, DEGREE_AREAS
+from uni_form.helpers import FormHelper, Submit, Reset
 
 def home(request):
 	form1 = OpenidSigninForm()
@@ -32,7 +34,7 @@ def terms(request):
 
 @login_required
 def dashboard(request):
-	# first if the user is an editor if so send them to editor's desk
+	# first if the user is an admin if so send them to editor's desk
 	if request.user.is_staff:
 		return HttpResponseRedirect(reverse('editorsdesk_dashboard'))
 	
@@ -50,7 +52,13 @@ def dashboard(request):
 	# if user is an editor ... send to seperate dashboard
 	if e_count > 0:
 		return HttpResponseRedirect(reverse('editorsdesk_dashboard'))
-
+	
+	# user is already determined to be a journalist ... now check to see if they have their profile completed
+	try: 
+		profile = Profile.objects.get(user=request.user)
+	except Profile.DoesNotExist:
+		return HttpResponseRedirect(reverse('user_profile'))
+	
 	stories = MetaStory.objects.filter(created_by=request.user)
 	entries = Media.children.filter(authors=request.user)
 
@@ -58,27 +66,18 @@ def dashboard(request):
  
 @login_required
 def user_profile(request):
-	associated_openids = UserAssociation.objects.filter(user__id=request.user.id)
-	if associated_openids.count() < 2:
-		allow_delete = False
-	else:
-		allow_delete = True
-
 	try: 
 		profile = Profile.objects.get(user=request.user)
 	except Profile.DoesNotExist:
 		profile = Profile()
 
-	return render_to_response("core/profile.html", {
-		'associated_openids': associated_openids,
-		'allow_delete' : allow_delete,
-		'profile' : profile
-	}, context_instance=RequestContext(request))
+	form = ProfileForm(instance=profile)
 
-#@login_required
+	return render_to_response("core/profile.html", { 'form':form, }, context_instance=RequestContext(request))
+
+@login_required
 def save_profile(request):
 	if request.method == 'POST':
-		
 		try: 
 			profile = Profile.objects.get(user=request.user)
 		except Profile.DoesNotExist:
@@ -87,11 +86,6 @@ def save_profile(request):
 		profile.user = request.user
 		profile.created_by = request.user
 		profile.updated_by = request.user
-		
-		if (request.POST.get("gender") == '0'):
-			profile.gender = 0;
-		else:
-			profile.gender = 1;
 		
 		form = ProfileForm(request.POST,instance=profile)
 		
@@ -103,18 +97,7 @@ def save_profile(request):
 		else:
 			request.user.message_set.create(message="0|An error has occured.")
 			
-			associated_openids = UserAssociation.objects.filter(user__id=request.user.id)
-			if associated_openids.count() < 2:
-				allow_delete = False
-			else:
-				allow_delete = True
-			
-			return render_to_response("core/profile.html", {
-				'associated_openids': associated_openids,
-				'allow_delete' : allow_delete,
-				'profile' : profile,
-				'errors' : form.errors
-			}, context_instance=RequestContext(request))
+			return render_to_response("core/profile.html", { 'form':form, 'errors' : form.errors }, context_instance=RequestContext(request))
 	else:
 		return HttpResponseRedirect( settings.LOGIN_REDIRECT_URL )
 

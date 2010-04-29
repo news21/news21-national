@@ -1,4 +1,4 @@
-{% extends "story/base.html" %}
+{% extends "editorsdesk/base.html" %}
 
 
 {% load i18n %}
@@ -25,10 +25,6 @@
 			{% endfor %}
 			</span>
 		</p>
-		<div class="clear"></div>
-		<div class="inputSubmit">
-			<input type="submit" value="Continue &rarr;">
-		</div>
 		
 		
 		<div class="clear"></div>
@@ -40,7 +36,7 @@
 	</div>
 	<div class="grid_6 genericForm">
 		{% if metastory_id %}
-			<h4>Package Stories <a href="{% url story_new metastory_id %}">[+]</a></h4>
+			<h4>Package Stories</h4>
 			{% for story in stories %}
 			<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
 				{% for photo in story_photos %}
@@ -51,11 +47,11 @@
 				{% if primary_image.id == story.primary_image %}
 				<a class="zoom" rel="group" title="{{ primary_image.title }}" href="{{ primary_image.get_original_url }}"><img src="{{ primary_image.get_tiny_thumbnail_url }}" class="outline" /></a>
 				{% endif %}
-				<a href="{% url story_edit metastory_id story.id %}">{{ story }} </a><!-- <span>[clone]</span> -->
+				<a href="{% url editorsdesk_review_story metastory_id story.id %}">{{ story }} </a><!-- <span>[clone]</span> -->
 			</div>
 			{% endfor %}
 			{% if stories.count == 0 %}
-				<div>You have not created any stories yet. <br/>Why not <a href="{% url story_new metastory_id %}">create one?</a></div>
+				<div>No stories have been created yet.</div>
 			{% endif %}
 		{% else %}
 			<h4>Package Stories</h4>
@@ -69,7 +65,6 @@
 		
 		{% if primary_image %}
 		<div class="sidebar-right-listing image-selector alternating-row-selected">
-			<div class="image-selector-radio"><input type="radio" name="primary_image" id="id_primary_image" checked value="{{ primary_image.id }}"></div>
 			<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ primary_image.title }}" href="{{ primary_image.get_original_url }}"><img src="{{ primary_image.get_thumbnail_url }}" class="outline" /></a></div>
 			<div class="image-selector-info">
 				<span class="bold">Title:</span> {{ primary_image.title }}
@@ -84,7 +79,6 @@
 		{% for photo in story_photos %}
 			{% if photo.id != primary_image.id %}
 			<div class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-				<div class="image-selector-radio"><input type="radio" name="primary_image" id="id_primary_image" value="{{ photo.id }}"></div>
 				<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ photo.title }}" href="{{ photo.get_original_url }}"><img src="{{ photo.get_thumbnail_url }}" class="outline" /></a></div>
 				<div class="image-selector-info">
 					<span class="bold">Title:</span> {{ photo.title }}
@@ -103,9 +97,9 @@
 	<div class="clear"></div>
 	<br/>
 	<br/>
-	<h4>Package Code Repositories</h4>
 	
-	<div class="grid_6 genericForm">
+	<div class="grid_16 genericForm">
+	<h4>Package Code Repositories</h4>
 	{% for repo in repos %}
 		<div>
 			{{repo.title}} <br/> 
@@ -119,6 +113,7 @@
 	</div>
 	
 	<div class="clear"></div>
+	
 {% endblock %}
 
 

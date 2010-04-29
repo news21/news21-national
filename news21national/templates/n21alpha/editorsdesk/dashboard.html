@@ -32,5 +32,37 @@
 	    <li><a href="{% url messages_trash %} ">{% trans "Trash" %}</a></li>
 	</ul>
 	{% endcomment %}
+	
+	<h4>Pending Assets</h4>
+	
+	{% for asset in pending_assets %}
+	<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+		{% if asset.get_child_name == "photo" %}
+		<span class="icon-photo"></span><a href="">{{ asset }} (From: {{ asset.story }})</a>
+		{% endif %}
+		{% if asset.get_child_name == "plaintext" %}
+		<span class="icon-plaintext"></span><a href="">{{ asset }} (From: {{ asset.story }}</a>
+		{% endif %}
+		{% if asset.get_child_name == "audio" %}
+		<span class="icon-audio"></span><a href="">{{ asset }} (From: {{ asset.story }}</a>
+		{% endif %}
+	</div>
+	{% endfor %}
+	{% if pending_assets.count == 0 %}
+		<div>You have not created any pending assets yet.</div>
+	{% endif %}
+	
+	<h4>Story Packages</h4>
+	
+	{% for package in metastories %}
+	<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+		<a href="{% url editorsdesk_review_metastory package.id %}">{{package}}</a>
+	</div>
+	{% endfor %}
+	{% if pending_assets.count == 0 %}
+		<div>You have not created any pending assets yet.</div>
+	{% endif %}
+	
 </div>
+
 {% endblock %}

@@ -5,7 +5,7 @@ import os
 
 
 ADMINS = (
-	# ('Your Name', 'your_email@domain.com'),
+	('News21', 'admin@news21.com'),
 )
 
 MANAGERS = ADMINS
@@ -44,6 +44,7 @@ MIDDLEWARE_CLASSES = (
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.middleware.doc.XViewMiddleware',
 	#
+	#'debug_toolbar.middleware.DebugToolbarMiddleware',
 	'django_authopenid.middleware.OpenIDMiddleware',
 )
 
@@ -68,11 +69,13 @@ INSTALLED_APPS = (
 	'googlecharts',
 	'geotagging',
 	'uni_form',
+	'ajax_validation',
 	'django_messages',
 	'announcements',
 	'mobileadmin',
 	'avatar',
 	'discussion',
+	'debug_toolbar',
 	#
 	'news21national.core',
 	#
@@ -87,6 +90,10 @@ INSTALLED_APPS = (
 	'news21ams.api',
 	'news21ams.audio',
 	'news21ams.editorsdesk',
+	#
+	'news21ams.socialchecklist',
+	'news21ams.coderepo',
+	'news21ams.blog',
 )
 
 TEMPLATE_LOADERS = (
@@ -98,6 +105,22 @@ TEMPLATE_DIRS = (
 	os.path.join(os.path.dirname(__file__), "templates/n21alpha"),
 )
 
+INTERNAL_IPS = ('127.0.0.1',)
+INTERCEPT_REDIRECTS = False
+
+DEBUG_TOOLBAR_PANELS = (
+    'debug_toolbar.panels.version.VersionDebugPanel',
+    'debug_toolbar.panels.timer.TimerDebugPanel',
+    'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+    'debug_toolbar.panels.headers.HeaderDebugPanel',
+    'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+    'debug_toolbar.panels.template.TemplateDebugPanel',
+    'debug_toolbar.panels.sql.SQLDebugPanel',
+    'debug_toolbar.panels.signals.SignalDebugPanel',
+    'debug_toolbar.panels.logger.LoggingPanel',
+)
+
+
 SITE_NAME = "N21"
 SITE_ID = 1
 
@@ -105,7 +128,10 @@ SITE_STYLE = 'n21alpha'
 
 API_VERSION = 'v1'
 
-AVATAR_STORAGE_DIR = os.path.join(os.path.dirname(__file__), 'media/avatars')
+AVATAR_STORAGE_DIR = 'avatars/'
+AUTO_GENERATE_AVATAR_SIZES = (80,250)
+AVATAR_GRAVATAR_BACKUP = False
+AVATAR_DEFAULT_URL = 'templates/n21alpha/images/avatar.png'
 
 LOGIN_URL = "/account/signin/"
 LOGIN_REDIRECT_URL = '/dashboard/'

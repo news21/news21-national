@@ -1,107 +1,56 @@
 {% extends "core/base_main.html" %}
+
 {% load i18n %}
-
 {% load smart_if %}
+{% load jquery_validation %}
+{% load uni_form_tags %}
 {% load avatar_tags %}
-
 
 {% block content %}
 
 {% if request.GET.msg %}
 	<p class="warning">{{ request.GET.msg }}</p>
 {% endif %}
-{% comment %}
-<div class="grid_16">
-<h3>Associated OpenIDs for: {{ user }}</h3>
-<ul>
-	{% for oid_url in associated_openids %}
-		<li>
-		{{ oid_url }} 
-			{% if allow_delete %}
-			(<a href="{% url user_dissociate %}?openid_url={{ oid_url }}"> dissociate</a>)
-			{% endif %}
-		</li>
-	{% endfor %}
-</ul>
-
-For now:<br/><br/>Only 1 OpenID assocation is needed. We will add support to have multiple assocations as well as the ability to remove associations ... soon.
-
-</div>
-{% endcomment %}
-
-{{errors}}
 
 
 <div class="grid_10">
-	<div class="genericForm contentcontainer">
-	<form action="{% url save_profile %}" method="post">
-	<h4>Profile Info</h4>
-	<p>
-		<label for="id_phone">Phone:</label>
-		<span class="inputDiv">
-		<input type="text" maxlength="25" style="width:100px;" value="{{ profile.phone }}" name="phone" id="id_phone">
-		</span>
-	</p>
-	<div class="clear"></div>
-	<p>
-		<label for="id_gender">Gender:</label>
-		<span class="inputDiv">
-		<select name="gender" id="id_gender" size="1">	
-			<option value="0">Female</option>
-			<option {% if profile.gender == 1 %}selected{% endif %} value="1">Male</option>
-		</select>
-		</span>
-	</p>
-	<div class="clear"></div>
-	<p>
-		<label for="id_blog_uri">Personal Blog / Website:</label>
-		<span class="inputDiv">
-		<input type="text" maxlength="300" name="blog_uri" value="{{ profile.blog_uri }}" id="id_blog_uri"/>
-		</span>
-	</p>
-	<div class="clear"></div>
-	<p>
-		<label for="id_twitterid">Twitter ID:</label>
-		<span class="inputDiv">
-		<input type="text" maxlength="200" style="width:100px;" value="{{ profile.twitterid }}" name="twitterid" id="id_twitterid"/>
-		</span>
-	</p>
-	<div class="clear"></div>
-	<p>
-		<label for="id_linkedinid">Linkedin ID:</label>
-		<span class="inputDiv">
-		<input type="text" maxlength="200" style="width:100px;" value="{{ profile.linkedinid }}" name="linkedinid" id="id_linkedinid"/>
-		</span>
-	</p>
-	<div class="clear"></div>
-	<p>
-		<label for="id_facebookid">Facebook ID:</label>
-		<span class="inputDiv">
-		<input type="text" maxlength="200" style="width:100px;" value="{{ profile.facebookid }}" name="facebookid" id="id_facebookid"/>
-		</span>
-	</p>
-	<div class="clear"></div>
-	<p>
-		<label for="id_bio">Bio:</label>
-		<span class="inputDiv">
-		<textarea name="bio" cols="40" rows="10" id="id_bio">{{ profile.bio }}</textarea>
-		</span>
-	</p>
-
-	<div class="clear"></div>
-	<div class="inputSubmit">
-		<input type="submit" value="Continue &rarr;">
+	<div class="contentcontainer">
+		<h4>Profile Information</h4>
+		<form action="{% url save_profile %}" method="post" class="uniForm" id="profileform">
+			{% with form.helper as helper %}
+			    {% uni_form form helper %}
+			{% endwith %}
+		</form>
 	</div>
-	</form>
-	</div>
+	<br/>
 </div>
-
 
 <div class="grid_6">
 	<div class="contentcontainer">
-	<h4>Your Avatar (<a href="http://www.gravatar.com">gravatar.com</a>)</h4>
-	{% avatar user %}<br/><a href="{% url avatar_change %}">Change your avatar</a>
+		<h4>Your Avatar {% comment %} (<a href="http://www.gravatar.com">gravatar.com</a>) {% endcomment %}</h4>
+		{% avatar user 250 %}<br/><a href="{% url avatar_change %}">Change your avatar</a>
 	</div>
 </div>
+{% endblock %}
 
+
+
+{% block extra_styles %}
+<link rel="stylesheet" href="{{ MEDIA_URL }}uni_form/uni-form-generic.css" type="text/css" />
+<link rel="stylesheet" href="{{ MEDIA_URL }}uni_form/uni-form.css" type="text/css" />
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}uni_form/uni-form.jquery.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}ajax_validation/jquery-ajax-validation.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}ajax_validation/jquery-uni-form.js"></script>
+{% endblock %}
+
+
+{% block inline_scripts %}
+    $(document).ready(function (){
+        $('#profileform').validate('{% url validate_user_profile %}', { type: 'p' , fields: ['bio','hometown', 'address', 'address_city', 'address_state', 'address_zip', 'ethnicity','school','non_edu_email'], callback: uniform_callback });
+    });
 {% endblock %}

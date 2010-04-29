@@ -37,7 +37,9 @@
 		<label>Inherited Tags:</label>
 		<span class="inputDiv" id="inherited_tags">{% for tag in inherited_tags %} <span class="tag">{{tag}}</span> {% endfor %}</span>
 	</p>
+	
 	<div class="clear"></div>
+	
 	<p>
 		<label>Tags:</label>
 		<span class="inputDiv">
@@ -47,13 +49,39 @@
 		{% endfor %}
 		</span>
 	</p>
+	
 	<div class="clear"></div>
+	<br/>
+	
+	<p>
+		<label>Flickr Description:</label>
+		<span class="inputDiv">
+			<textarea name="flickr_description" id="flickr_description" rows="8" cols="40">{{ flickr_payload.blurb }}</textarea>
+			<br/>
+			<span id="charlimitflickr"></span>
+		</span>
+	</p>
+	
+	<div class="clear"></div>
+	<br/>
+	
+	<p>
+		<label>GeoTag:</label>
+		{{ geotag.point }}
+		<div id="map" class="smallmap"></div>
+	</p>
+	
+	<div class="clear"></div>
+	<br/>
+	
 	<div class="inputSubmit">
 		{% if image %}
 		<input type="submit" value="Continue &rarr;">
 		{% endif %}
 	</div>
+	
 	</form>
+	
 </div>	
 
 <div class="grid_6">
@@ -77,6 +105,20 @@
 <div class="clear"></div>
 
 {% endblock %}
+
+
+{% block extra_styles %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/google.css" />
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/openlayers.css" />
+{% endblock %}
+
+{% block extra_scripts %}
+<script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ GOOGLE_MAPS_API_KEY }}'></script>
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+{% endblock %}
+
+
+
 
 {% block inline_styles %}
 	.ui-dialog-titlebar-close { display: none; }
@@ -107,6 +149,54 @@
 			'zoomSpeedOut'		:	500,
 			'overlayShow'		:	false
 		});
+		
+		$('#flickr_description').keyup(function(){
+			limitChars('flickr_description', 500, 'charlimitflickr');
+	 	})
+		limitChars('flickr_description', 500, 'charlimitflickr');
 	});
 	
+	function limitChars(textid, limit, infodiv)
+	{
+		var text = $('#'+textid).val();	
+		var textlength = text.length;
+		if(textlength > limit)
+		{
+			$('#' + infodiv).html('You cannot write more then '+limit+' characters!');
+			$('#'+textid).val(text.substr(0,limit));
+			return false;
+		}
+		else
+		{
+			$('#' + infodiv).html('You have '+ (limit - textlength) +' characters left.');
+			return true;
+		}
+	}
+	
+	
+	var map;
+    function init() {
+        map = new OpenLayers.Map('map');
+        map.addControl(new OpenLayers.Control.LayerSwitcher());
+        var gphy = new OpenLayers.Layer.Google(
+            "Google Physical",
+            {type: G_PHYSICAL_MAP}
+        );
+        var gmap = new OpenLayers.Layer.Google(
+            "Google Streets", // the default
+            {numZoomLevels: 20}
+        );
+        var ghyb = new OpenLayers.Layer.Google(
+            "Google Hybrid",
+            {type: G_HYBRID_MAP, numZoomLevels: 20}
+        );
+        var gsat = new OpenLayers.Layer.Google(
+            "Google Satellite",
+            {type: G_SATELLITE_MAP, numZoomLevels: 22}
+        );
+        map.addLayers([gmap, ghyb, gphy, gsat]);
+        map.setCenter(new OpenLayers.LonLat(10.2, 48.9), 5);
+    }
+	
+	init();
 {% endblock %}

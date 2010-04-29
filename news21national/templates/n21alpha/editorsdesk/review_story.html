@@ -1,8 +1,9 @@
-{% extends "story/base.html" %}
+{% extends "editorsdesk/base.html" %}
 
 
 {% load i18n %}
 {% load smart_if %}
+{% load discussion_tags %}
 
 
 {% block content %}
@@ -27,19 +28,6 @@
 				{% endfor %}
 			</span>
 		</p>
-		<div class="clear"></div>
-		<p>
-			<label>&nbsp;</label>
-			<input type="text" id="publishdatetitle" size="20"> between <input type="text" id="available_at" class="jcal"> - <input type="text" id="expires_at" class="jcal"> <input type="button" id="add_publishdate" value="+">
-		</p>
-		<div class="clear"></div>
-		<br/>
-		{% comment %}
-		<p>
-			<label>Inherited Tags:</label>
-			<span class="inputDiv" id="inherited_tags">{% for tag in inherited_tags %} <span class="tag">{{tag}}</span> {% endfor %}</span>
-		</p>
-		{% endcomment %}
 		<div class="clear"></div>
 		<p>
 			<label>Tags:</label>
@@ -79,14 +67,6 @@
 				<span id="charlimitupiu"></span>
 			</span>
 		</p>
-
-		<div class="clear"></div>
-		<br/>
-
-		<div class="clear"></div>
-		<div class="inputSubmit">
-			<input type="submit" value="Continue &rarr;">
-		</div>
 		
 		<div class="clear"></div>
 		<br/>
@@ -99,9 +79,7 @@
 	<div class="grid_6">
 	<div class="contentheader">
 		<h4>Story Assets</h4>
-		{% if story_id %}
-			<div>Add: <a href="{% url plaintext_new metastory_id story_id %}">Plain Text</a> <!--| <a href="">Video</a> -->| <a href="{% url photo_new metastory_id story_id %}">Photo</a> | <a href="{% url audio_new metastory_id story_id %}">Audio</a><!-- | <a href="">Gallery</a>--><!-- | <a href="{% url swf_new metastory_id story_id %}">SWF</a>--></div>
-		{% else %}
+		{% if story_id == '' %}
 			<div>You have not created any media assets yet.</div>
 		{% endif %}
 		{% for asset in media_assets %}
@@ -133,7 +111,6 @@
 		
 		{% if primary_image %}
 		<div class="sidebar-right-listing image-selector alternating-row-selected">
-			<div class="image-selector-radio"><input type="radio" name="primary_image" id="id_primary_image" checked value="{{ primary_image.id }}"></div>
 			<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ primary_image.title }}" href="{{ primary_image.get_original_url }}"><img src="{{ primary_image.get_thumbnail_url }}" class="outline" /></a></div>
 			<div class="image-selector-info">
 				<span class="bold">Title:</span> {{ primary_image.title }}
@@ -148,7 +125,6 @@
 		{% for photo in story_photos %}
 			{% if photo.id != primary_image.id %}
 			<div class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-				<div class="image-selector-radio"><input type="radio" name="primary_image" id="id_primary_image" value="{{ photo.id }}"></div>
 				<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ photo.title }}" href="{{ photo.get_original_url }}"><img src="{{ photo.get_thumbnail_url }}" class="outline" /></a></div>
 				<div class="image-selector-info">
 					<span class="bold">Title:</span> {{ photo.title }}
@@ -166,6 +142,20 @@
 	</div>
 	
 	<div class="clear"></div>
+	<br/>
+	<br/>
+
+	<div class="grid_16">
+		{% comment_counts_for_objects [story] as comment_count_dict %}
+		<h4>Editor's Comments {{comment_count_dict}}</h4>
+		<div>STATUS: {{story.status}}</div>
+		{% comment_tree_for_object story as comments %}
+		<form action="{}" method="post">
+			<textarea name="comment_body" id="comment_body" rows="8" cols="100"></textarea>
+
+			<p><input type="submit" value="Comment &rarr;"></p>
+		</form>
+	</div>
 {% endblock %}
 
 

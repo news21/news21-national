@@ -1,0 +1,17 @@
+
+
+/**
+ * Map Examples Specific
+ */
+.smallmap {
+    width: 512px;
+    height: 256px;
+    border: 1px solid #ccc;
+}
+#tags {
+    display: none;
+}
+
+#docs p {
+    margin-bottom: 0.5em;
+}

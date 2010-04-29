@@ -7,7 +7,8 @@
 
 {% block content %}
 
-<div class="grid_16 genericForm">
+<div class="grid_16">
+<div class="genericForm contentheader">
 	<form action="{{ form_url }}" method="post">
 	<h4>PlainText Info</h4>
 	{% if status.length %}
@@ -39,12 +40,66 @@
 		</span>
 	</p>
 	<div class="clear"></div>
+	<br/>
+	<p>
+		<label>GeoTag:</label>
+		{{ geotag.point }}
+		<span class="inputDiv">
+		<div id="map" class="smallmap"></div>
+		</span>
+	</p>
+	<div class="clear"></div>
 	<div class="inputSubmit">
+	<br/>
 		<input type="submit" value="Continue &rarr;">
 	</div>
 	</form>
 </div>	
+</div>	
 
 <div class="clear"></div>
 
+{% endblock %}
+
+
+
+
+
+{% block extra_styles %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/google.css" />
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/openlayers.css" />
+{% endblock %}
+
+{% block extra_scripts %}
+<script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ GOOGLE_MAPS_API_KEY }}'></script>
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+{% endblock %}
+
+
+{% block inline_scripts %}
+	var map;
+    function init() {
+        map = new OpenLayers.Map('map');
+        map.addControl(new OpenLayers.Control.LayerSwitcher());
+        var gphy = new OpenLayers.Layer.Google(
+            "Google Physical",
+            {type: G_PHYSICAL_MAP}
+        );
+        var gmap = new OpenLayers.Layer.Google(
+            "Google Streets", // the default
+            {numZoomLevels: 20}
+        );
+        var ghyb = new OpenLayers.Layer.Google(
+            "Google Hybrid",
+            {type: G_HYBRID_MAP, numZoomLevels: 20}
+        );
+        var gsat = new OpenLayers.Layer.Google(
+            "Google Satellite",
+            {type: G_SATELLITE_MAP, numZoomLevels: 22}
+        );
+        map.addLayers([gmap, ghyb, gphy, gsat]);
+        map.setCenter(new OpenLayers.LonLat(10.2, 48.9), 5);
+    }
+	
+	init();
 {% endblock %}

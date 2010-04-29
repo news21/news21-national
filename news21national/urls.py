@@ -3,6 +3,9 @@ from django.conf.urls.defaults import patterns, include, handler500, url
 from django.conf import settings as asettings
 from mobileadmin.conf import settings
 from django.contrib import admin
+
+from news21national.core.forms import ProfileForm
+
 admin.autodiscover()
 
 import mobileadmin
@@ -20,8 +23,11 @@ urlpatterns = patterns(
 	
 	(r'^account/', include('django_authopenid.urls')),
 	
-	url(r'^accounts/profile/update/', 'news21national.core.views.save_profile',	 name='save_profile'),
-	url(r'^accounts/profile/', 'news21national.core.views.user_profile',  name='user_profile'),
+	url(r'^accounts/profile/update/$', 'news21national.core.views.save_profile',	 name='save_profile'),
+	url(r'^accounts/profile/$', 'news21national.core.views.user_profile',  name='user_profile'),
+	url(r'^accounts/profile/validate/$', 'ajax_validation.views.validate', {'form_class': ProfileForm}, 'validate_user_profile'),
+	
+	
 	url(r'^accounts/association/', 'news21national.core.views.user_association',  name='user_association'),
 	
 	url(r'^dashboard/', 'news21national.core.views.dashboard',	name='user_dashboard'),

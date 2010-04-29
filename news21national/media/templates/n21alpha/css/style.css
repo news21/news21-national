@@ -60,8 +60,10 @@ a:hover{color:#6F6F6F;text-decoration:underline}
         .genericForm p label { width:150px; float:left; padding:2px 7px 0px 0px; text-align:right; font-weight:bold; }
         .genericForm p input[type=text] { width:275px; }
         .genericForm p textarea { width:375px; }
-        .genericForm p .inputDiv { float:left; }
+        .genericForm p .inputDiv { float:left; padding:2px 0px 2px 0px; }
         .genericForm p .inputDiv input { margin-left:10px; }
+		.genericForm p .inputDiv select { margin-left:10px; }
+		.genericForm p .inputDiv textarea { margin-left:10px; }
         /*      */
         .genericForm p #available_at { width:80px; }
         .genericForm p #expires_at { width:80px; }
@@ -128,4 +130,24 @@ img.outline {
     background:#F2F2F2 none repeat scroll 0 0;
     border:1px solid #CCC8C1;
     padding:3px;
+}
+
+
+
+
+.selectdatewidget{
+	width:auto !important;
+	margin-right:5px;
+}
+
+fieldset.inlineLabels legend{
+	font-size:14px !important;
+}
+
+.ctrlHolder ol, ul {
+	list-style:none outside none !important;
+}
+
+.ctrlHolder ol, ul label {
+	width: auto !important;
 }

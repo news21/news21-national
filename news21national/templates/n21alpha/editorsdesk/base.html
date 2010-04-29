@@ -7,9 +7,11 @@
 {% block breadcrumb %}
 	<div class="grid_16 breadcrumb">
 	<a href="{% url user_dashboard %}">Dashboard</a>
+	{% comment %}
 	{% for crumb in breadcrumb %}
 		 &raquo; <a href="{{ crumb.url }}" {% if forloop.last %}id="current"{% endif %} >{{ crumb.title }}</a>
-	{% endfor %}		
+	{% endfor %}
+	{% endcomment %}
 	</div>
 {% endblock %}
 
