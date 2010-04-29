@@ -246,22 +246,20 @@
 	}
 	
 	$(window).load(function () {
-		{% comment %}
 		$('#add_publishdate').click( function() {
 		  	$.post("{% url storypublishdate_create metastory_id story_id %}", { "title": $('#publishdatetitle').val() , "available_at": $('#available_at').val() , "expires_at": $('#expires_at').val() },
 			   function(data){
 			     alert(data.success);
 			   }, "json");
 		});
-		{% endcomment %}
 		$('#twitter_description').keyup(function(){
-			limitChars('twitter_tweet', 140, 'charlimittwitter');
+			limitChars('twitter_description', 140, 'charlimittwitter');
 	 	})
 		$('#facebook_description').keyup(function(){
-			limitChars('facebook_status', 420, 'charlimitfacebook');
+			limitChars('facebook_description', 420, 'charlimitfacebook');
 	 	})
 		$('#upiu_description').keyup(function(){
-			limitChars('upiu_post', 150, 'charlimitupiu');
+			limitChars('upiu_description', 150, 'charlimitupiu');
 	 	})
 
 		limitChars('twitter_description', 140, 'charlimittwitter');
