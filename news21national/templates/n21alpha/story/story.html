@@ -246,12 +246,14 @@
 	}
 	
 	$(window).load(function () {
+		{% comment %}
 		$('#add_publishdate').click( function() {
 		  	$.post("{% url storypublishdate_create metastory_id story_id %}", { "title": $('#publishdatetitle').val() , "available_at": $('#available_at').val() , "expires_at": $('#expires_at').val() },
 			   function(data){
 			     alert(data.success);
 			   }, "json");
 		});
+		{% endcomment %}
 		$('#twitter_description').keyup(function(){
 			limitChars('twitter_description', 140, 'charlimittwitter');
 	 	})
