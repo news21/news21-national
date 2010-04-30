@@ -10,7 +10,7 @@ from news21national.core.constants import GENDERS
 
 class ProfileForm(forms.ModelForm):
 	birthdate = forms.DateTimeField(label="Birthdate", required=True, widget=SelectDateWidget(years=range(2010, 1920, -1)))
-	expected_grad_date = forms.DateTimeField(label="Birthdate", required=True, widget=SelectDateWidget())
+	expected_grad_date = forms.DateTimeField(label="Expected Date of Graduation", required=True, widget=SelectDateWidget())
 	gender = forms.CharField(label="Gender", required=True, widget=RadioSelect(choices=(GENDERS)))
 	
 	helper = FormHelper()
