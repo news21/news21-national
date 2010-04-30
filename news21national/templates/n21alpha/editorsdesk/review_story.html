@@ -85,7 +85,7 @@
 		{% for asset in media_assets %}
 		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
 			{% if asset.get_child_name == "photo" %}
-			<span class="icon-photo"></span><a href="{% url photo_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			<span class="icon-photo"></span><a href="{% url editorsdesk_review_photo metastory_id story_id asset.id %}">{{ asset }}</a>
 			{% endif %}
 			{% if asset.get_child_name == "plaintext" %}
 			<span class="icon-plaintext"></span><a href="{% url plaintext_edit metastory_id story_id asset.id %}">{{ asset }}</a>
@@ -150,10 +150,21 @@
 		<h4>Editor's Comments {{comment_count_dict}}</h4>
 		<div>STATUS: {{story.status}}</div>
 		{% comment_tree_for_object story as comments %}
-		<form action="{}" method="post">
+		{% for comment in comments %}
+			<div style="padding:15px;" class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+				Commented: {{ comment.pub_date|date:"M d, Y @ f" }} By: {{ comment.user }}<br/>
+				{{ comment }}
+			</div>
+		{% endfor %}
+		<form action="{% url editorsdesk_update_status_story metastory_id story_id %}" method="post">
 			<textarea name="comment_body" id="comment_body" rows="8" cols="100"></textarea>
-
-			<p><input type="submit" value="Comment &rarr;"></p>
+			<br/>
+			<select name="story_status" id="story_status" style="float:left;width:150px;margin-right:20px;">
+				<option value="Pending Approval">Pending Approval</option>
+				<option value="Rejected" {% if story.status == "Rejected" %} selected {% endif %} >Rejected</option>
+				<option value="Approved" {% if story.status == "Approved" %} selected {% endif %} >Approved</option>
+			</select>
+			<input type="submit" value="Comment &rarr;">
 		</form>
 	</div>
 {% endblock %}
@@ -166,7 +177,7 @@
 {% endblock %}
 
 {% block extra_scripts %}
-<script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ GOOGLE_MAPS_API_KEY }}'></script>
+<script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ google_maps_api_key }}'></script>
 <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
 {% endblock %}
 
