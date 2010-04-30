@@ -4,6 +4,7 @@
 {% block content %}
 <div class="grid_16">
 	<div class="contentcontainer">
+    <p>{% trans "Upload an original photo and a cropped mugshot (250 x 250). " %}</p>
     <p>{% trans "Your current photo: " %}</p>
     {% avatar user 250 %}
     {% if not avatars %}
