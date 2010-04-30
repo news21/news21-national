@@ -11,19 +11,17 @@
 	
 	<div class="grid_8">
 		<div class="contentcontainer">
-		<h4>News21 Announcements</h4>
+		<h4 class="module-header">News21 Announcements</h4>
 		{% if site_wide_announcements %}
-	        <div id="site_wide_announcements">
-	            <ul>
-	                {% for announcement in site_wide_announcements %}
-	                <li>
-	                    {{ announcement }} - <a href="{% url announcement_hide announcement.pk %}?next={{ request.path }}">[Hide]</a> <br/> {{ announcement.content }}
-	                </li>
-	                {% endfor %}
-	            </ul>
+	        <div id="site_wide_announcements" class="announcements">
+                {% for announcement in site_wide_announcements %}
+                    <div class="announcement-title">{{ announcement }} - <a href="{% url announcement_hide announcement.pk %}?next={{ request.path }}">[Hide]</a></div>
+ 					<div class="announcement-body">{{ announcement.content }}</div>
+                {% endfor %}
 	        </div>
 	    {% endif %}
-		<h4>Messages</h4>
+		<br/><br/>
+		<h4 class="module-header">Messages</h4>
 		<ul class="subnavilist">
 		    <li><a href="{% url messages_inbox %} ">{% trans "Inbox" %} ({% inbox_count %})</a></li>
 		    <li><a href="{% url messages_outbox %} ">{% trans "Sent Messages" %}</a></li>
@@ -34,19 +32,24 @@
 	</div>
 	<div class="grid_8">
 		<div class="contentcontainer">
-		<h4>Your Stories <a href="{% url metastory_new %}">[+]</a></h4>
-		{% for story in stories %}
-		<div>
-			<a href="{% url metastory_edit story.id %}">{{ story }}</a>
+		<h4 class="module-header">Your Stories <a href="{% url metastory_new %}">[+]</a></h4>
+		{% for package in metastories %}
+		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+			{% for photo in story_photos %}
+				{% if photo.id == package.primary_image %}
+				<a href="{% url metastory_edit package.id %}" style="vertical-align:middle"><img src="{{ photo.get_tiny_thumbnail_url }}" style="vertical-align:middle" class="outline" /></a>
+				{% endif %}
+			{% endfor %}
+			<a href="{% url metastory_edit package.id %}" style="vertical-align:middle">{{ package }}</a>
 		</div>
 		{% endfor %}
-		{% if stories.count == 0 %}
-			<div>You have not created any stories yet.</div>
+		{% if metastories.count == 0 %}
+			<div>You have not created any story packages yet.</div>
 		{% endif %}
-		<br/>
-		<h4>Recent Activity</h4>
+		<br/><br/>
+		<h4 class="module-header">Recent Activity</h4>
 		{% for entry in entries %}
-		<div>
+		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
 			<span class="icon-{% if entry.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> {{ entry.status }} <a href="#">{{ entry }}</a> {{ entry.updated_at|date }} {{ entry.updated_by }}
 		</div>
 		{% endfor %}

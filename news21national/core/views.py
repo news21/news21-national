@@ -16,7 +16,7 @@ from news21national.core.models import Profile
 from news21ams.editorsdesk.models import EditorsDesk
 from news21ams.newsroom.models import Newsroom
 from news21ams.partner.models import Partner, PartnerForm
-from news21ams.story.models import MetaStory
+from news21ams.story.models import MetaStory, Story
 from news21ams.multimedia.models import Media
 from news21national.core.constants import ETHNICITIES, DEGREE_TYPES, DEGREE_AREAS
 from uni_form.helpers import FormHelper, Submit, Reset
@@ -58,11 +58,13 @@ def dashboard(request):
 		profile = Profile.objects.get(user=request.user)
 	except Profile.DoesNotExist:
 		return HttpResponseRedirect(reverse('user_profile'))
-	
-	stories = MetaStory.objects.filter(created_by=request.user)
+		
+	stories = Story.objects.filter(authors=request.user)
+	metastories = MetaStory.objects.filter(id__in=stories.values_list('metastory_id',flat=True))
 	entries = Media.children.filter(authors=request.user)
+	story_photos = Media.children.filter(story__in=stories.values_list('id',flat=True),_child_name="photo",status="Approved")
 
-	return render_to_response("core/dashboard.html", {'stories':stories,'entries':entries}, context_instance=RequestContext(request))
+	return render_to_response("core/dashboard.html", {'metastories':metastories,'entries':entries,'story_photos':story_photos}, context_instance=RequestContext(request))
  
 @login_required
 def user_profile(request):

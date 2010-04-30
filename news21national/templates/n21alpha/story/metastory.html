@@ -1,16 +1,17 @@
 {% extends "story/base.html" %}
 
-
 {% load i18n %}
 {% load smart_if %}
-
+{% load uni_form_tags %}
 
 {% block content %}
+<form action="{{ form_url }}" class="uniForm" method="post">
 	<div class="grid_10">
-	<div class="genericForm contentheader">
-		<form action="{{ form_url }}" method="post">
-		<h4>Package Info</h4>
-		{{ form.as_p }}
+	<div class="genericForm contentheader">	
+		<h4>Package Information</h4>
+		{% with form.helper as helper %}
+		    {% uni_form form helper %}
+		{% endwith %}
 		<p>
 			<label>Inherited Tags:</label>
 			<span class="inputDiv" id="inherited_tags"></span>
@@ -45,13 +46,13 @@
 			<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
 				{% for photo in story_photos %}
 					{% if photo.id == story.primary_image %}
-					<a class="zoom" rel="group" title="{{ photo.title }}" href="{{ photo.get_original_url }}"><img src="{{ photo.get_tiny_thumbnail_url }}" class="outline" /></a>
+					<a class="zoom" rel="group" title="{{ photo.title }}" href="{{ photo.get_original_url }}"><img src="{{ photo.get_tiny_thumbnail_url }}" style="vertical-align:middle" class="outline" /></a>
 					{% endif %}
 				{% endfor %}
 				{% if primary_image.id == story.primary_image %}
-				<a class="zoom" rel="group" title="{{ primary_image.title }}" href="{{ primary_image.get_original_url }}"><img src="{{ primary_image.get_tiny_thumbnail_url }}" class="outline" /></a>
+				<a class="zoom" rel="group" title="{{ primary_image.title }}" href="{{ primary_image.get_original_url }}"><img src="{{ primary_image.get_tiny_thumbnail_url }}" style="vertical-align:middle" class="outline" /></a>
 				{% endif %}
-				<a href="{% url story_edit metastory_id story.id %}">{{ story }} </a><!-- <span>[clone]</span> -->
+				<a href="{% url story_edit metastory_id story.id %}" style="vertical-align:middle">{{ story }} </a><!-- <span>[clone]</span> -->
 			</div>
 			{% endfor %}
 			{% if stories.count == 0 %}
@@ -97,20 +98,21 @@
 			</div>
 			{% endif %}
 		{% endfor %}
-		</form>
+		
 	</div>
+</form>
 	
 	<div class="clear"></div>
 	<br/>
 	<br/>
-	<h4>Package Code Repositories</h4>
 	
-	<div class="grid_6 genericForm">
+	<div class="grid_16 genericForm contentheader">
+	<h4>Package Code Repositories</h4>
 	{% for repo in repos %}
-		<div>
-			{{repo.title}} <br/> 
+		<div style="padding:10px;">
+			<strong>{{repo.title}}</strong> <br/> 
 			&nbsp;&nbsp;&nbsp;{{repo.description}} <br/>
-			&nbsp;&nbsp;&nbsp;url: {{repo.code_url}}
+			&nbsp;&nbsp;&nbsp;URL: {{repo.code_url}}
 		</div>
 	{% endfor %}
 	{% if repos.count == 0 %}
@@ -133,7 +135,11 @@
 {% block extra_scripts %}
 <script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ GOOGLE_MAPS_API_KEY }}'></script>
 <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-<script src="{{ MEDIA_URL }}uni_form/uni-form.jquery.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}uni_form/uni-form.jquery.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}ajax_validation/jquery-ajax-validation.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}ajax_validation/jquery-uni-form.js"></script>
 {% endblock %}
 
 
@@ -172,7 +178,7 @@
 				});
 			});
 		};
-		
+		/*
 		$("a.zoom").fancybox({
 			'overlayOpacity'	:	0.7,
 			'overlayColor'		:	'#FFF',
@@ -180,7 +186,7 @@
 			'zoomSpeedOut'		:	500,
 			'overlayShow'		:	false
 		});
-		
+		*/
 		adjustTags();
 	});
 	

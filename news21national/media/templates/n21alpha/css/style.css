@@ -69,7 +69,7 @@ a:hover{color:#6F6F6F;text-decoration:underline}
         .genericForm p #expires_at { width:80px; }
         .genericForm p #id_date_taken { width:80px; }
         .genericForm p #publishdatetitle { width:125px; }
-        .genericForm p #id_summary { width:375px; height:75px; }
+        .ctrlHolder textarea#id_interest { height:75px; }
         .genericForm p #id_content { width:600px; height:300px; }
         .genericForm p #id_width { width:80px; }
         .genericForm p #id_height { width:80px; }
@@ -89,6 +89,7 @@ a:hover{color:#6F6F6F;text-decoration:underline}
 .icon-plaintext {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/page_white_text.png') no-repeat;display:block;width:16px;height:16px;}
 .icon-photo {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/photo.png') no-repeat;display:block;width:16px;height:16px;}
 .icon-audio {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/music.png') no-repeat;width:16px;height:16px;}
+.icon-add {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/add.png') no-repeat;display:block;width:16px;height:16px;}
 
 
 /*      */
@@ -130,6 +131,27 @@ img.outline {
     background:#F2F2F2 none repeat scroll 0 0;
     border:1px solid #CCC8C1;
     padding:3px;
+}
+.announcements{
+	
+}
+.announcement-body{
+	padding:0px 0px 0px 5px;
+}
+
+.announcement-title{
+	padding:0px 0px 0px 5px;
+	font-weight:bold;
+	border-top:1px solid #df7d7d;
+	border-bottom:1px solid #df7d7d;
+	background-color:#ffdfdf;
+}
+
+.module-header{
+	padding:0px 0px 0px 5px;
+	border-top:1px solid #cFcFcF;
+	border-bottom:1px solid #cFcFcF;
+	background-color:#EFEFEF;
 }
 
 
