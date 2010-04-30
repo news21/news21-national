@@ -23,6 +23,7 @@ class Profile(models.Model):
 	address_state = models.CharField(max_length=40,verbose_name="State")
 	address_zip = models.CharField(max_length=20,verbose_name="Zip")
 	birthdate = models.DateTimeField()
+	expected_grad_date = models.DateTimeField()
 	non_edu_email = models.CharField(max_length=200)
 	ethnicity = models.CharField(max_length=40,choices=ETHNICITIES,default='Other')
 	year_in_school = models.CharField(max_length=40,choices=DEGREE_TYPES,default='Other')
