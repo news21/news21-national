@@ -72,7 +72,6 @@ INSTALLED_APPS = (
 	'ajax_validation',
 	'django_messages',
 	'announcements',
-#	'mobileadmin',
 	'avatar',
 	'discussion',
 	'debug_toolbar',
