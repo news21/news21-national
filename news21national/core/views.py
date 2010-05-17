@@ -22,6 +22,12 @@ from news21national.core.constants import ETHNICITIES, DEGREE_TYPES, DEGREE_AREA
 from uni_form.helpers import FormHelper, Submit, Reset
 
 def home(request):
+	if request.user.is_authenticated():
+		try: 
+			profile = Profile.objects.get(user=request.user)
+		except Profile.DoesNotExist:
+			return HttpResponseRedirect(reverse('user_profile'))
+	
 	form1 = OpenidSigninForm()
 	form2 = AuthenticationForm()
 	return render_to_response("core/home.html", {'form1': form1,'form2': form2}, context_instance=RequestContext(request))
