@@ -9,11 +9,11 @@ ETHNICITIES = (
 
 DEGREE_TYPES = (
 	('Bachelor Degree','Bachelor Degree'),
-	('Bachelor Canidate','Bachelor Canidate'),
+	('Bachelor Candidate','Bachelor Candidate'),
 	('Masters Degree','Masters Degree'),
-	('Masters Canidate','Masters Canidate'),
+	('Masters Candidate','Masters Candidate'),
 	('Doctorate Degree','Doctorate Degree'),
-	('Doctoral Canidate','Doctoral Canidate'),
+	('Doctoral Candidate','Doctoral Candidate'),
 	('Other','Other'),
 )
 
