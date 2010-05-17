@@ -34,12 +34,19 @@ class Profile(models.Model):
 	created_at = models.DateTimeField(editable=False)
 	updated_by = models.ForeignKey(auth.User, related_name="profile_updated_by")
 	updated_at = models.DateTimeField(editable=False)
+	is_active = models.BooleanField(default=False)
 
 	def save(self):
 		if self.created_at == None:
 			self.created_at = datetime.now()
 		self.updated_at = datetime.now()
 		super(Profile, self).save()
+
+	def __unicode__(self):
+		return unicode(self.user.username)
+
+	def __str__(self):
+		return self.user.username
 
 class Skill(models.Model):
 	title = models.CharField(max_length=200)

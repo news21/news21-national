@@ -45,9 +45,11 @@
 							<a href="{% url home %}">Home</a> | 
 							<a href="{% url user_dashboard %}">Dashboard</a> | 
 							<a href="{% url user_profile %}">Profile</a> |
+							<a href="/help">Help</a> |
 							<a href="{% url user_signout %}">Logout</a>
 						{% else %}
 							<a href="{% url home %}">Home</a> | 
+							<a href="/help">Help</a> | 
 							<a href="{% url user_signin %}">Login</a>
 						{% endif %}
 					</div>
@@ -59,10 +61,8 @@
 			{% block breadcrumb %}{% endblock %}
 			
 			{% block hightlight_error %}{% endblock %}
-		
-			<div class="contentbody">
-				{% block content %}{% endblock %}
-		    </div>
+			
+			{% block content %}{% endblock %}
 			
 			<br/>
 			<div class="clear"></div>

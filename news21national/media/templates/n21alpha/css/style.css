@@ -36,7 +36,7 @@ a:hover{color:#6F6F6F;text-decoration:underline}
     .breadcrumb #current { color:#6F6F6F; text-decoration:none; font-weight:bold; }
 
 
-.contentbody { background-color:#fff; padding:10px 0px 20px 0px; min-height:360px; }
+.contentbody { background-color:#fff; padding:10px 10px 20px 10px; min-height:360px; }
 .contentheader { padding:0px 10px 0px 10px; }
 .contentcontainer { padding:10px; }
 

@@ -64,16 +64,15 @@
 	
 	<div class="clear"></div>
 	<br/>
-	{% comment %}
+	
 	<p>
-		<label>GeoTag:</label>
-		{{ geotag.point }}
+		<label>GeoTag: {{ geotag.point }}</label>
 		<div id="map" class="smallmap"></div>
 	</p>
 	
 	<div class="clear"></div>
 	<br/>
-	{% endcomment %}
+	
 	<div class="inputSubmit">
 		{% if image %}
 		<input type="submit" value="Continue &rarr;">
@@ -177,25 +176,26 @@
 	var map;
     function init() {
         map = new OpenLayers.Map('map');
-        map.addControl(new OpenLayers.Control.LayerSwitcher());
-        var gphy = new OpenLayers.Layer.Google(
-            "Google Physical",
-            {type: G_PHYSICAL_MAP}
-        );
-        var gmap = new OpenLayers.Layer.Google(
-            "Google Streets", // the default
-            {numZoomLevels: 20}
-        );
+		var lon = -98.6;
+		var lat = 38.5;
+		var zoom = 3;
         var ghyb = new OpenLayers.Layer.Google(
             "Google Hybrid",
             {type: G_HYBRID_MAP, numZoomLevels: 20}
         );
-        var gsat = new OpenLayers.Layer.Google(
-            "Google Satellite",
-            {type: G_SATELLITE_MAP, numZoomLevels: 22}
-        );
-        map.addLayers([gmap, ghyb, gphy, gsat]);
-        map.setCenter(new OpenLayers.LonLat(10.2, 48.9), 5);
+		map.addLayers([ghyb]);
+        map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
+		
+		map.addControl(new OpenLayers.Control.MousePosition());
+		
+		var markers = new OpenLayers.Layer.Markers( "Markers" );
+		map.addLayer(markers);
+
+		var size = new OpenLayers.Size(32,32);
+		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+		var icon = new OpenLayers.Icon('http://maps.google.com/mapfiles/ms/micons/red-dot.png',size,offset);
+		markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lon, lat),icon));
+
     }
 	
 	init();

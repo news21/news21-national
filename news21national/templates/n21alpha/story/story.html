@@ -19,19 +19,19 @@
 				{% endfor %}
 			</select>
 		</p>
-		{% if story_id != '' %}
+		{% if story_id %}
 		<p>
 			<label>Publish Title & Dates:</label>
-			<span class="inputDiv">
-				{% for pdate in story_pubdates %}
-				{{pdate.title}} : {{pdate.available_at|date:"M d, Y"}}-{{pdate.expires_at|date:"M d, Y"}}<br/>
-				{% endfor %}
-			</span>
+			<input type="text" id="publishdatetitle" size="20"> between <input type="text" id="available_at" class="jcal"> - <input type="text" id="expires_at" class="jcal"> <input type="button" id="add_publishdate" value="+">
 		</p>
 		<div class="clear"></div>
 		<p>
-			<label>&nbsp;</label>
-			<input type="text" id="publishdatetitle" size="20"> between <input type="text" id="available_at" class="jcal"> - <input type="text" id="expires_at" class="jcal"> <input type="button" id="add_publishdate" value="+">
+			<label>Current Suggestions:</label>
+			<span class="inputDiv">
+				{% for pdate in story_pubdates %}
+				<div style="padding:2px;">{{pdate.title}} : {{pdate.available_at|date:"M d, Y"}}-{{pdate.expires_at|date:"M d, Y"}} <a href="##"><img src="{{MEDIA_URL}}templates/n21alpha/images/cross.png" style="vertical-align: middle;" ></a></div>
+				{% endfor %}
+			</span>
 		</p>
 		{% endif %}
 		<div class="clear"></div>
@@ -246,14 +246,15 @@
 	}
 	
 	$(window).load(function () {
-		{% comment %}
+		{% if story_id %}
 		$('#add_publishdate').click( function() {
 		  	$.post("{% url storypublishdate_create metastory_id story_id %}", { "title": $('#publishdatetitle').val() , "available_at": $('#available_at').val() , "expires_at": $('#expires_at').val() },
 			   function(data){
 			     alert(data.success);
 			   }, "json");
 		});
-		{% endcomment %}
+		{% endif %}
+		
 		$('#twitter_description').keyup(function(){
 			limitChars('twitter_description', 140, 'charlimittwitter');
 	 	})

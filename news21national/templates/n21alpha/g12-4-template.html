@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load applicationcontent_tags feincms_tags feincms_page_tags %}
+
+
+{% block content %}
+	<div class="grid_12">
+	
+	{% feincms_render_region feincms_page "main" request %}
+	
+	</div>
+	<div class="grid_4">
+	
+	{% feincms_render_region feincms_page "sidebar" request %}
+	
+	</div>
+{% endblock %}

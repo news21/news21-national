@@ -26,12 +26,6 @@ def home(request):
 	form2 = AuthenticationForm()
 	return render_to_response("core/home.html", {'form1': form1,'form2': form2}, context_instance=RequestContext(request))
 
-def privacy(request):
-   return render_to_response("core/privacy.html", {}, context_instance=RequestContext(request))
-
-def terms(request):
-   return render_to_response("core/terms.html", {}, context_instance=RequestContext(request))
-
 @login_required
 def dashboard(request):
 	# first if the user is an admin if so send them to editor's desk
@@ -58,7 +52,10 @@ def dashboard(request):
 		profile = Profile.objects.get(user=request.user)
 	except Profile.DoesNotExist:
 		return HttpResponseRedirect(reverse('user_profile'))
-		
+
+	if not profile.is_active:
+		return HttpResponseRedirect(reverse('user_accountpending'))
+
 	stories = Story.objects.filter(authors=request.user)
 	metastories = MetaStory.objects.filter(id__in=stories.values_list('metastory_id',flat=True))
 	entries = Media.children.filter(authors=request.user)
@@ -110,3 +107,8 @@ def user_association(request):
 	newsrooms = Newsroom.objects.all()
 	form = PartnerForm()
 	return render_to_response("core/association.html", {'newsrooms':newsrooms,'form':form}, context_instance=RequestContext(request))
+
+
+@login_required
+def user_accountpending(request):
+	return render_to_response("core/accountpending.html", {}, context_instance=RequestContext(request))

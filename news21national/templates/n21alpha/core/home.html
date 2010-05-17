@@ -10,7 +10,7 @@
 
 
 {% block content %}
-
+<div class="grid_16">
 	{% if user.is_authenticated %}
 		<h3>Welcome {{ user }},</h3>
 	{% else %}
@@ -69,7 +69,5 @@
 		{% endcomment %}
 		
 	{% endif %}
-
+</div>
 {% endblock %}
-
-

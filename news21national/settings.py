@@ -72,12 +72,14 @@ INSTALLED_APPS = (
 	'ajax_validation',
 	'django_messages',
 	'announcements',
-	'mobileadmin',
+#	'mobileadmin',
 	'avatar',
 	'discussion',
 	'debug_toolbar',
+	'mptt',
 	#
 	'news21national.core',
+	'news21national.cms',
 	#
 	'news21ams.newsroom',
 	'news21ams.partner',
@@ -90,11 +92,64 @@ INSTALLED_APPS = (
 	'news21ams.api',
 	'news21ams.audio',
 	'news21ams.editorsdesk',
-	#
 	'news21ams.socialchecklist',
 	'news21ams.coderepo',
 	'news21ams.blog',
+	#
+    'feincms',
+	'feincms.module.page',
+    'feincms.module.medialibrary',
 )
+
+
+COVERAGE_MODULES = ['feincms.admin.editor',
+                    'feincms.admin.item_editor',
+                    #'feincms.admin.splitpane_editor', # cannot be tested at the same time as the
+                                                        # tree editor currently
+                    'feincms.admin.tree_editor',
+                    'feincms.content.application.models',
+                    'feincms.content.contactform.models',
+                    'feincms.content.file.models',
+                    'feincms.content.image.models',
+                    'feincms.content.medialibrary.models',
+                    'feincms.content.raw.models',
+                    'feincms.content.richtext.models',
+                    'feincms.content.rss.models',
+                    'feincms.content.video.models',
+                    'feincms.models',
+                    'feincms.module.blog.admin',
+                    'feincms.module.blog.extensions.seo',
+                    #'feincms.module.blog.extensions.tags', # I don't have tagging installed here...
+                    'feincms.module.blog.extensions.translations',
+                    'feincms.module.blog.models',
+                    'feincms.module.medialibrary.admin',
+                    'feincms.module.medialibrary.models',
+                    'feincms.module.page.admin',
+                    'feincms.module.page.extensions.changedate',
+                    'feincms.module.page.extensions.datepublisher',
+                    'feincms.module.page.extensions.navigation',
+                    'feincms.module.page.extensions.seo',
+                    'feincms.module.page.extensions.symlinks',
+                    'feincms.module.page.extensions.titles',
+                    'feincms.module.page.extensions.translations',
+                    'feincms.module.page.models',
+                    'feincms.module.page.templatetags.feincms_page_tags',
+                    'feincms.settings',
+                    'feincms.templatetags.applicationcontent_tags',
+                    'feincms.templatetags.feincms_tags',
+                    'feincms.translations',
+                    'feincms.utils',
+                    'feincms.utils.cleanse',
+                    'feincms.views.applicationcontent',
+                    'feincms.views.base',
+                    'feincms.views.decorators',
+                    ]
+LANGUAGES = (
+    ('en', 'English'),
+    )
+
+FEINCMS_ADMIN_MEDIA = '/media/feincms/'
+
 
 TEMPLATE_LOADERS = (
 	'django.template.loaders.filesystem.load_template_source',
