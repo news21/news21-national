@@ -51,6 +51,6 @@
 
 {% block inline_scripts %}
     $(document).ready(function (){
-        $('#profileform').validate('{% url validate_user_profile %}', { type: 'p' , fields: ['bio','hometown', 'address', 'address_city', 'address_state', 'address_zip', 'ethnicity','school','non_edu_email'], callback: uniform_callback });
+        $('#profileform').validate('{% url validate_user_profile %}', { type: 'p' , fields: ['first_name','last_name','bio','hometown', 'address', 'address_city', 'address_state', 'address_zip', 'ethnicity','school','non_edu_email'], callback: uniform_callback });
     });
 {% endblock %}

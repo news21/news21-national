@@ -17,6 +17,8 @@ class ProfileForm(forms.ModelForm):
 
 	layout = Layout(
 		Fieldset('Biography Info',
+			'first_name',
+			'last_name',
 			'blog_uri',
 			'twitterid',
 			'twitter_public',
