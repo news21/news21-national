@@ -217,4 +217,10 @@
     }
 	
 	init();
+	
+	
+	$("a.helptip").parent(".formHint").click(function() {
+		var hid = $(this).attr('id');
+		window.location.href = '/help#metastory_'+hid.replace('hint_id_','');
+	});
 {% endblock %}

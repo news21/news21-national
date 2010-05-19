@@ -28,7 +28,7 @@
 <div class="grid_6">
 	<div class="contentcontainer">
 		<h4>Your Avatar/Photo {% comment %} (<a href="http://www.gravatar.com">gravatar.com</a>) {% endcomment %}</h4>
-		{% avatar user 250 %}<br/><a href="{% url avatar_change %}">Change your photo</a>
+		{% avatar user 250 %}<br/><a href="{% url avatar_change %}">Change your photo <br/>Warning: You will leave this page. Save if needed!</a>
 	</div>
 </div>
 {% endblock %}
@@ -52,5 +52,11 @@
 {% block inline_scripts %}
     $(document).ready(function (){
         $('#profileform').validate('{% url validate_user_profile %}', { type: 'p' , fields: ['first_name','last_name','bio','hometown', 'address', 'address_city', 'address_state', 'address_zip', 'ethnicity','school','non_edu_email'], callback: uniform_callback });
+
+		$("a.helptip").parent(".formHint").click(function() {
+			var hid = $(this).attr('id');
+			window.location.href = '/help#profile_'+hid.replace('hint_id_','');
+		});
+
     });
 {% endblock %}

@@ -269,4 +269,10 @@
 		limitChars('facebook_description', 420, 'charlimitfacebook');
 		limitChars('upiu_description', 150, 'charlimitupiu');
 	});
+	
+	
+	$("a.helptip").parent(".formHint").click(function() {
+		var hid = $(this).attr('id');
+		window.location.href = '/help#story_'+hid.replace('hint_id_','');
+	});
 {% endblock %}
