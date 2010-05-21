@@ -29,7 +29,7 @@ class ProfileForm(forms.ModelForm):
 			'bio',
 			css_class='inlineLabels',),
 
-		Fieldset('Personal Info', 
+		Fieldset('Personal Info (Internal Use Only)', 
 			'non_edu_email',
 			'phone',
 			'hometown',

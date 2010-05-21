@@ -13,7 +13,7 @@
 		    {% uni_form form helper %}
 		{% endwith %}
 		<p>
-			<label>Inherited Tags:</label>
+			<label style="padding-top:9px;">Inherited Tags:</label>
 			<span class="inputDiv" id="inherited_tags"></span>
 		</p>
 		<div class="clear"></div>
@@ -27,6 +27,11 @@
 			</span>
 		</p>
 		<div class="clear"></div>
+		<br/>
+		{% if metastory_id %}
+		<div><strong>Created by:</strong> {{ audit.created_by }} <strong>at</strong> {{ audit.created_at|date:"M d, Y @ g i a" }}</div>
+		<div><strong>Last Updated by:</strong> {{ audit.updated_by }} <strong>at</strong> {{ audit.updated_at|date:"M d, Y @ g i a" }}</div>
+		{% endif %}
 		<div class="inputSubmit">
 			<input type="submit" value="Continue &rarr;">
 		</div>
@@ -67,7 +72,10 @@
 		<br/>
 		<br/>
 		<h4>Package Primary Image</h4>
-		
+		<div class="formHint" id="hint_id_package_image" style="float:left;"><a class="helptip">Package Image</a></div>
+		<div class="clear"></div>
+		<div class="formHint" id="hint_id_news21_image" style="float:left;"><a class="helptip">News21 Image</a></div>
+		<div class="clear"></div>
 		{% if primary_image %}
 		<div class="sidebar-right-listing image-selector alternating-row-selected">
 			<div class="image-selector-radio"><input type="radio" name="primary_image" id="id_primary_image" checked value="{{ primary_image.id }}"></div>
@@ -158,25 +166,27 @@
 		{% endif %}
 		
 		function adjustTags() {
+			
 			$("#id_newsrooms option").each(function(){  
-				csoption = $(this).val();  
+				csoption = $(this).text().toLowerCase();
 				$(".inputDiv :checkbox").each(function(){  
 					$("#inherited_tags").html('');
-					if( $(this).attr("id") == "tag_"+csoption ){
+					if( $(this).val() == csoption ){
 						$(this).attr('checked', false);
 					}
 				});
 			});
 			
 			$("#id_newsrooms option:selected").each(function(){  
-				csoption = $(this).val();  
+				csoption = $(this).text().toLowerCase();
 				$(".inputDiv :checkbox").each(function(){  
-					if( $(this).attr("id") == "tag_"+csoption ){
+					if( $(this).val() == csoption ){
 						$('#inherited_tags').html($('#inherited_tags').html() + '<span class="tag">' +$(this).val()+ '</span>');
 						$(this).attr('checked', true);
 					}
 				});
 			});
+			
 		};
 		/*
 		$("a.zoom").fancybox({
@@ -195,25 +205,26 @@
 	var map;
     function init() {
         map = new OpenLayers.Map('map');
-        map.addControl(new OpenLayers.Control.LayerSwitcher());
-        var gphy = new OpenLayers.Layer.Google(
-            "Google Physical",
-            {type: G_PHYSICAL_MAP}
-        );
-        var gmap = new OpenLayers.Layer.Google(
-            "Google Streets", // the default
-            {numZoomLevels: 20}
-        );
+		var lon = -98.6;
+		var lat = 38.5;
+		var zoom = 3;
         var ghyb = new OpenLayers.Layer.Google(
             "Google Hybrid",
             {type: G_HYBRID_MAP, numZoomLevels: 20}
         );
-        var gsat = new OpenLayers.Layer.Google(
-            "Google Satellite",
-            {type: G_SATELLITE_MAP, numZoomLevels: 22}
-        );
-        map.addLayers([gmap, ghyb, gphy, gsat]);
-        map.setCenter(new OpenLayers.LonLat(10.2, 48.9), 5);
+		map.addLayers([ghyb]);
+        map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
+		
+		map.addControl(new OpenLayers.Control.MousePosition());
+		
+		var markers = new OpenLayers.Layer.Markers( "Markers" );
+		map.addLayer(markers);
+
+		var size = new OpenLayers.Size(32,32);
+		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+		var icon = new OpenLayers.Icon('http://maps.google.com/mapfiles/ms/micons/red-dot.png',size,offset);
+		markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lon, lat),icon));
+
     }
 	
 	init();
@@ -221,6 +232,6 @@
 	
 	$("a.helptip").parent(".formHint").click(function() {
 		var hid = $(this).attr('id');
-		window.location.href = '/help#metastory_'+hid.replace('hint_id_','');
+		window.open('/help#metastory_'+hid.replace('hint_id_',''), '_blank');
 	});
 {% endblock %}

@@ -36,12 +36,10 @@
 		{% endif %}
 		<div class="clear"></div>
 		<br/>
-		{% comment %}
 		<p>
-			<label>Inherited Tags:</label>
+			<label style="padding-top:7px;">Inherited Tags:</label>
 			<span class="inputDiv" id="inherited_tags">{% for tag in inherited_tags %} <span class="tag">{{tag}}</span> {% endfor %}</span>
 		</p>
-		{% endcomment %}
 		<div class="clear"></div>
 		<p>
 			<label>Tags:</label>
@@ -84,8 +82,10 @@
 
 		<div class="clear"></div>
 		<br/>
-
-		<div class="clear"></div>
+		{% if story_id %}
+		<div><strong>Created by:</strong> {{ audit.created_by }} <strong>at</strong> {{ audit.created_at|date:"M d, Y @ g i a" }}</div>
+		<div><strong>Last Updated by:</strong> {{ audit.updated_by }} <strong>at</strong> {{ audit.updated_at|date:"M d, Y @ g i a" }}</div>
+		{% endif %}
 		<div class="inputSubmit">
 			<input type="submit" value="Continue &rarr;">
 		</div>
@@ -132,7 +132,8 @@
 		<br/>
 		<br/>
 		<h4>Story Primary Image</h4>
-		
+		<div class="formHint" id="hint_id_story_image" style="float:left;"><a class="helptip">What is a Primary Story Image?</a></div>
+		<div class="clear"></div>
 		{% if primary_image %}
 		<div class="sidebar-right-listing image-selector alternating-row-selected">
 			<div class="image-selector-radio"><input type="radio" name="primary_image" id="id_primary_image" checked value="{{ primary_image.id }}"></div>
@@ -205,25 +206,26 @@
 	var map;
     function init() {
         map = new OpenLayers.Map('map');
-        map.addControl(new OpenLayers.Control.LayerSwitcher());
-        var gphy = new OpenLayers.Layer.Google(
-            "Google Physical",
-            {type: G_PHYSICAL_MAP}
-        );
-        var gmap = new OpenLayers.Layer.Google(
-            "Google Streets", // the default
-            {numZoomLevels: 20}
-        );
+		var lon = -98.6;
+		var lat = 38.5;
+		var zoom = 3;
         var ghyb = new OpenLayers.Layer.Google(
             "Google Hybrid",
             {type: G_HYBRID_MAP, numZoomLevels: 20}
         );
-        var gsat = new OpenLayers.Layer.Google(
-            "Google Satellite",
-            {type: G_SATELLITE_MAP, numZoomLevels: 22}
-        );
-        map.addLayers([gmap, ghyb, gphy, gsat]);
-        map.setCenter(new OpenLayers.LonLat(10.2, 48.9), 5);
+		map.addLayers([ghyb]);
+        map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
+		
+		map.addControl(new OpenLayers.Control.MousePosition());
+		
+		var markers = new OpenLayers.Layer.Markers( "Markers" );
+		map.addLayer(markers);
+
+		var size = new OpenLayers.Size(32,32);
+		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+		var icon = new OpenLayers.Icon('http://maps.google.com/mapfiles/ms/micons/red-dot.png',size,offset);
+		markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lon, lat),icon));
+
     }
 	
 	init();
@@ -273,6 +275,6 @@
 	
 	$("a.helptip").parent(".formHint").click(function() {
 		var hid = $(this).attr('id');
-		window.location.href = '/help#story_'+hid.replace('hint_id_','');
+		window.open('/help#metastory_'+hid.replace('hint_id_',''), '_blank');
 	});
 {% endblock %}
