@@ -35,8 +35,8 @@ class Profile(models.Model):
 	updated_by = models.ForeignKey(auth.User, related_name="profile_updated_by")
 	updated_at = models.DateTimeField(editable=False)
 	is_active = models.BooleanField(default=False)
-	first_name = models.CharField(max_length=75,verbose_name="Firstname",default="John/Jane")
-	last_name = models.CharField(max_length=75,verbose_name="Lastname",default="Doe")
+	first_name = models.CharField(max_length=75,verbose_name="Firstname")
+	last_name = models.CharField(max_length=75,verbose_name="Lastname")
 
 	def save(self):
 		if self.created_at == None:

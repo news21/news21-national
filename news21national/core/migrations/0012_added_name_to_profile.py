@@ -8,10 +8,10 @@ class Migration:
     def forwards(self, orm):
         
         # Adding field 'Profile.last_name'
-        db.add_column('core_profile', 'last_name', models.CharField(max_length=75))
+        db.add_column('core_profile', 'last_name', models.CharField(max_length=75,default='John/Jane'))
         
         # Adding field 'Profile.first_name'
-        db.add_column('core_profile', 'first_name', models.CharField(max_length=75))
+        db.add_column('core_profile', 'first_name', models.CharField(max_length=75,default='Doe'))
         
     
     
