@@ -55,7 +55,7 @@
 
 		$("a.helptip").parent(".formHint").click(function() {
 			var hid = $(this).attr('id');
-			window.location.href = '/help#profile_'+hid.replace('hint_id_','');
+			window.open('/help#profile_'+hid.replace('hint_id_',''), '_blank');
 		});
 
     });
