@@ -1,5 +1,5 @@
 Hi,
 
-Thank you for your registration. To activate your account lick on the link below :
+Thank you for your registration. To activate your account copy the link below into your browser :
 
-<a href="http://{{ site.domain }}{% url registration_activate activation_key %}">http://{{ site.domain }}{% url registration_activate activation_key %}</a>.
+http://{{ site.domain }}{% url registration_activate activation_key %}

@@ -3,6 +3,7 @@
 
 {% load i18n %}
 {% load smart_if %}
+{% load discussion_tags %}
 
 
 {% block content %}
@@ -16,14 +17,18 @@
 {% endif %}
 
 
-<div class="grid_10 genericForm">
+<div class="grid_10">
+<div class="genericForm contentheader">
 	<form action="{{ form_url }}" method="post">
 	<h4>Photo Info</h4>
-	{% if status.length %}
-	<p>
-		<label>Status :</label><span class="icon-{% if status == "Approved" %}accept{% else %}exclamation{% endif %}"></span>&nbsp; {{ status }}
-	</p>
+	
+	{% if mediaclass %}
+		<div style="padding:5px;">
+			<span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> STATUS: {{mediaclass.status}} 
+			<a href="#editorscomments">[View Editor's Comments]</a>
+		</div>
 	{% endif %}
+
 	{{ form.as_p }}
 	<p>
 		<label for="id_authors">Byline:</label>
@@ -80,8 +85,8 @@
 	</div>
 	
 	</form>
-	
-</div>	
+</div>
+</div>
 
 <div class="grid_6">
 	{% if image %}
@@ -102,6 +107,41 @@
 </div>
 
 <div class="clear"></div>
+<br/>
+<br/>
+{% if image %}
+<div class="grid_16 contentheader">
+	{% comment_counts_for_objects [mediaclass] as comment_count_dict %}
+	<h4 id="editorscomments">Editor's Comments {{comment_count_dict}}</h4>
+	<div><span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> STATUS: {{mediaclass.status}} </div>
+	{% comment_tree_for_object mediaclass as comments %}
+	{% for comment in comments %}
+		<div style="padding:15px;" class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+			Commented: {{ comment.pub_date|date:"M d, Y @ f" }} By: {{ comment.user }}<br/>
+			{{ comment }}
+		</div>
+	{% endfor %}
+	{% if comments.count == 0 %}
+		<div>Your editors have not made any comments yet.</div>
+	{% endif %}
+	{% if is_editor %}
+		<form action="{% url editorsdesk_update_status_multimedia mediaclass.id %}" method="post">
+			<textarea name="comment_body" id="comment_body" rows="8" cols="100"></textarea>
+			<br/>
+			<select name="story_status" id="story_status" style="float:left;width:150px;margin-right:20px;">
+				<option value="Pending Approval">Pending Approval</option>
+				<option value="Rejected" {% if story.status == "Rejected" %} selected {% endif %} >Rejected</option>
+				<option value="Approved" {% if story.status == "Approved" %} selected {% endif %} >Approved</option>
+			</select>
+			<input type="submit" value="Comment &rarr;">
+		</form>
+	{% endif %}
+</div>
+
+<div class="clear"></div>
+<br/>
+{% endif %}
+
 
 {% endblock %}
 

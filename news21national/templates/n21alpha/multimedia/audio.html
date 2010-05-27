@@ -4,18 +4,23 @@
 {% load i18n %}
 {% load smart_if %}
 {% load audioplayer %}
+{% load discussion_tags %}
 
 
 {% block content %}
 
-<div class="grid_16 genericForm">
+<div class="grid_16">
+<div class="contentheader genericForm">
 	<form action="{{ form_url }}" method="post" enctype="multipart/form-data">
 	<h4>Audio Info</h4>
-	{% if status.length %}
-	<p>
-		<label>Status :</label><span class="icon-{% if status == "Approved" %}accept{% else %}exclamation{% endif %}"></span>  {{ status }}
-	</p>
+	
+	{% if mediaclass %}
+		<div style="padding:5px;">
+			<span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> STATUS: {{mediaclass.status}} 
+			<a href="#editorscomments">[View Editor's Comments]</a>
+		</div>
 	{% endif %}
+	
 	{% if audio_url %}
 	<p><label>Current Audio :</label><span class="inputDiv">{% audioplayer file=audio_url,height=30,width=250,slider=0xF49900,track=0xF49900,border=0x000000,loader=0xefefef %}</span></p>
 	<div class="clear"></div>
@@ -43,13 +48,102 @@
 		{% endfor %}
 		</span>
 	</p>
+	
 	<div class="clear"></div>
+	<br/>
+	
+	<p>
+		<label>GeoTag: {{ geotag.point }}</label>
+		<div id="map" class="smallmap"></div>
+	</p>
+	
+	<div class="clear"></div>
+	<br/>
+	
 	<div class="inputSubmit">
 		<input type="submit" value="Continue &rarr;">
 	</div>
 	</form>
-</div>	
+</div>
+</div>
 
 <div class="clear"></div>
+<br/><br/>
 
+{% if mediaclass %}
+<div class="grid_16 contentheader">
+	{% comment_counts_for_objects [mediaclass] as comment_count_dict %}
+	<h4 id="editorscomments">Editor's Comments {{comment_count_dict}}</h4>
+	<div><span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> STATUS: {{mediaclass.status}} </div>
+	{% comment_tree_for_object mediaclass as comments %}
+	{% for comment in comments %}
+		<div style="padding:15px;" class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+			Commented: {{ comment.pub_date|date:"M d, Y @ f" }} By: {{ comment.user }}<br/>
+			{{ comment }}
+		</div>
+	{% endfor %}
+	{% if comments.count == 0 %}
+		<div>Your editors have not made any comments yet.</div>
+	{% endif %}
+	{% if is_editor %}
+		<form action="{% url editorsdesk_update_status_multimedia mediaclass.id %}" method="post">
+			<textarea name="comment_body" id="comment_body" rows="8" cols="100"></textarea>
+			<br/>
+			<select name="story_status" id="story_status" style="float:left;width:150px;margin-right:20px;">
+				<option value="Pending Approval">Pending Approval</option>
+				<option value="Rejected" {% if story.status == "Rejected" %} selected {% endif %} >Rejected</option>
+				<option value="Approved" {% if story.status == "Approved" %} selected {% endif %} >Approved</option>
+			</select>
+			<input type="submit" value="Comment &rarr;">
+		</form>
+	{% endif %}
+</div>
+
+<div class="clear"></div>
+<br/>
+{% endif %}
+
+
+{% endblock %}
+
+
+{% block extra_styles %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/google.css" />
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/openlayers.css" />
+{% endblock %}
+
+{% block extra_scripts %}
+<script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ google_maps_api_key }}'></script>
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+{% endblock %}
+
+
+
+{% block inline_scripts %}
+	var map;
+    function init() {
+        map = new OpenLayers.Map('map');
+		var lon = -98.6;
+		var lat = 38.5;
+		var zoom = 3;
+        var ghyb = new OpenLayers.Layer.Google(
+            "Google Hybrid",
+            {type: G_HYBRID_MAP, numZoomLevels: 20}
+        );
+		map.addLayers([ghyb]);
+        map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
+		
+		map.addControl(new OpenLayers.Control.MousePosition());
+		
+		var markers = new OpenLayers.Layer.Markers( "Markers" );
+		map.addLayer(markers);
+
+		var size = new OpenLayers.Size(32,32);
+		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+		var icon = new OpenLayers.Icon('http://maps.google.com/mapfiles/ms/micons/red-dot.png',size,offset);
+		markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lon, lat),icon));
+
+    }
+	
+	init();
 {% endblock %}

@@ -1,0 +1,125 @@
+{% extends "story/base.html" %}
+
+{% load i18n %}
+{% load smart_if %}
+{% load uni_form_tags %}
+
+
+{% block content %}
+
+<div class="grid_16 genericForm">
+<form action="{{ form_url }}" class="uniForm" method="post" enctype="multipart/form-data">
+	<div class="grid_10">
+	<div class="genericForm contentheader">
+		<h4>Video Asset Information</h4>
+		{% if status.length %}
+		<p>
+			<label>Status :</label><span class="icon-{% if status == "Approved" %}accept{% else %}exclamation{% endif %}"></span>  {{ status }}
+		</p>
+		{% endif %}
+	
+		{% with form.helper as helper %}
+		    {% uni_form form helper %}
+		{% endwith %}
+		
+		<fieldset class="inlineLabels">
+			<div class="ctrlHolder " id="div_id_authors">
+				<label for="id_authors">Authors:</label>
+				<select name="authors" id="id_authors" class="selectmultiple" multiple="true" size="8">
+					{% for member in newsrooms_members %}
+						<option {% for author in authors %} {% if member == author %} selected {% endif %} {% endfor %}  value="{{member.id}}">{{ member }} ( {%for newsroom in member.newsroom_members.all%} {{ newsroom }} {% endfor %} ) </option>
+					{% endfor %}
+				</select>
+			</div>
+		
+			<div class="ctrlHolder " id="div_id_inherited_tags">
+				<label style="padding-top:9px;">Inherited Tags:</label>
+				<span class="inputDiv" id="inherited_tags"></span>
+			</div>
+			<div class="ctrlHolder " id="div_id_tags">
+				<label>Tags:</label>
+				<div class="inputDiv" style="margin-left:48%;">
+				{% for tag in tags %}
+					<input type="checkbox" name="tag_{{tag.id}}" value="{{tag}}" id="tag_{{tag.id}}" {% for used_tag in used_tags %} {% if tag == used_tag %} checked="true" {% endif %} {% endfor %}  /> {{tag}}
+					{% if forloop.counter|divisibleby:2 %}<br/>{% endif %}
+				{% endfor %}
+				</div>
+			</div>
+		</fieldset>
+		
+		<div class="clear"></div>
+		<br/>
+		
+		<p>
+			<label>GeoTag:</label>
+			{{ geotag.point }}
+			<span class="inputDiv">
+			<div id="map" class="smallmap"></div>
+			</span>
+		</p>
+		<div class="clear"></div>
+		<br/>
+		<div class="inputSubmit">
+			<input type="submit" value="Continue &rarr;">
+		</div>
+
+	</div>
+	</div>
+	
+	<div class="grid_6"></div>
+</form>
+</div>	
+
+<div class="clear"></div>
+
+{% endblock %}
+
+
+
+
+{% block extra_styles %}
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/google.css" />
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/openlayers.css" />
+<link rel="stylesheet" href="{{ MEDIA_URL }}uni_form/uni-form-generic.css" type="text/css" />
+<link rel="stylesheet" href="{{ MEDIA_URL }}uni_form/uni-form.css" type="text/css" />
+{% endblock %}
+
+{% block extra_scripts %}
+<script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ google_maps_api_key }}'></script>
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+
+<script type="text/javascript" src="{{ MEDIA_URL }}uni_form/uni-form.jquery.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}ajax_validation/jquery-ajax-validation.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}ajax_validation/jquery-uni-form.js"></script>
+{% endblock %}
+
+
+{% block inline_scripts %}
+
+	var map;
+    function init() {
+        map = new OpenLayers.Map('map');
+		var lon = -98.6;
+		var lat = 38.5;
+		var zoom = 3;
+        var ghyb = new OpenLayers.Layer.Google(
+            "Google Hybrid",
+            {type: G_HYBRID_MAP, numZoomLevels: 20}
+        );
+		map.addLayers([ghyb]);
+        map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
+		
+		map.addControl(new OpenLayers.Control.MousePosition());
+		
+		var markers = new OpenLayers.Layer.Markers( "Markers" );
+		map.addLayer(markers);
+
+		var size = new OpenLayers.Size(32,32);
+		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+		var icon = new OpenLayers.Icon('http://maps.google.com/mapfiles/ms/micons/red-dot.png',size,offset);
+		markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lon, lat),icon));
+
+    }
+	
+	init();
+{% endblock %}

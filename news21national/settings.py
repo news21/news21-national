@@ -94,6 +94,7 @@ INSTALLED_APPS = (
 	'news21ams.socialchecklist',
 	'news21ams.coderepo',
 	'news21ams.blog',
+	'news21ams.videos',
 	#
     'feincms',
 	'feincms.module.page',

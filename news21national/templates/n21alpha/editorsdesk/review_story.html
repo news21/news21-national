@@ -156,6 +156,7 @@
 				{{ comment }}
 			</div>
 		{% endfor %}
+		
 		<form action="{% url editorsdesk_update_status_story metastory_id story_id %}" method="post">
 			<textarea name="comment_body" id="comment_body" rows="8" cols="100"></textarea>
 			<br/>
