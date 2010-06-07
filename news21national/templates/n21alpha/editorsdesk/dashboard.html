@@ -9,8 +9,8 @@
 
 {% block content %}
 <div class="grid_16 contentheader"><h3>Editor's Desk</h3></div>
-<div class="grid_16 contentheader">
-	
+
+<div class="grid_8">	
 	<div class="contentcontainer">
 		<h4 class="module-header">News21 Announcements</h4>
 		{% if site_wide_announcements %}
@@ -32,16 +32,28 @@
 		    <li><a href="{% url messages_trash %} ">{% trans "Trash" %}</a></li>
 		</ul>
 		
-		<br/><br/>
-		
 		<h4 class="module-header">Analytics</h4>
 		<a href="{% url editorsdesk_analytics %}">View Reports</a>
 		
 		<br/><br/>
 		
+		<h4 class="module-header">Newsroom Bios</h4>
+		{% for newsroom in newsrooms %}
+		<a href="{% url user_newsroom_roster newsroom.id %}">{{ newsroom }}</a>
+		{% endfor %}
+		
+		<br/><br/>
+		
+	</div>
+</div>
+
+<div class="grid_8">
+	<div class="contentcontainer">
+		{% comment %}
 		<h4 class="module-header">Pending Assets</h4>
 		{% for asset in pending_assets %}
 		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+			<span class="icon-{% if asset.status == "Approved" %}accept{% else %}{% if asset.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> 
 			{% if asset.get_child_name == "photo" %}
 			<span class="icon-photo"></span><a href="">{{ asset }} (From: {{ asset.story }})</a>
 			{% endif %}
@@ -58,18 +70,19 @@
 		{% endif %}
 		
 		<br/><br/>
+		{% endcomment %}
 		
-		<h4 class="module-header">Story Packages</h4>
+		
+		<h4 class="module-header">Story Packages <a href="{% url metastory_new %}">[+]</a></h4>
 		{% for package in metastories %}
 		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-			<a href="{% url editorsdesk_review_metastory package.id %}">{{package}}</a>
+			<span class="icon-{% if package.status == "Approved" %}accept{% else %}{% if package.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> <a href="{% url editorsdesk_review_metastory package.id %}">{{package}}</a>
 		</div>
 		{% endfor %}
 		{% if pending_assets.count == 0 %}
 			<div>You have not created any pending assets yet.</div>
 		{% endif %}
 	</div>
-	
 </div>
 
 {% endblock %}

@@ -118,3 +118,17 @@ def user_association(request):
 @login_required
 def user_accountpending(request):
 	return render_to_response("core/accountpending.html", {}, context_instance=RequestContext(request))
+
+
+
+@login_required
+def get_newsroom_roster(request,newsroom_id):
+	try: 
+		n = Newsroom.objects.get(pk=newsroom_id)
+	except Newsroom.DoesNotExist:
+		return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
+
+	roster = Profile.objects.filter(user__in=n.members.values_list('id',flat=True)).distinct()
+	print n.name
+	breadcrumb = [ {'title':n,'url':reverse('user_newsroom_roster', args=[newsroom_id])} ]
+	return render_to_response("core/newsroom.html", {'newsroom_roster':roster,'newsroom':n,'breadcrumb':breadcrumb}, context_instance=RequestContext(request))

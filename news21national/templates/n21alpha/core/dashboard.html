@@ -32,7 +32,7 @@
 	</div>
 	<div class="grid_8">
 		<div class="contentcontainer">
-		<h4 class="module-header">Your Stories <a href="{% url metastory_new %}">[+]</a></h4>
+		<h4 class="module-header">Your Content <a href="{% url metastory_new %}">[+]</a></h4>
 		{% for package in metastories %}
 		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
 			{% for photo in story_photos %}
@@ -40,7 +40,7 @@
 				<a href="{% url metastory_edit package.id %}" style="vertical-align:middle"><img src="{{ photo.get_tiny_thumbnail_url }}" style="vertical-align:middle" class="outline" /></a>
 				{% endif %}
 			{% endfor %}
-			<a href="{% url metastory_edit package.id %}" style="vertical-align:middle">{{ package }}</a>
+			<a href="{% url metastory_edit package.id %}" style="vertical-align:middle">{{ package }}</a><span class="icon-{% if package.status == "Approved" %}accept{% else %}{% if package.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span>
 		</div>
 		{% endfor %}
 		{% if metastories.count == 0 %}
@@ -50,7 +50,7 @@
 		<h4 class="module-header">Recent Activity</h4>
 		{% for entry in entries %}
 		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-			<span class="icon-{% if entry.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> {{ entry.status }} <a href="#">{{ entry }}</a> {{ entry.updated_at|date }} {{ entry.updated_by }}
+			<span class="icon-{% if entry.status == "Approved" %}accept{% else %}{% if entry.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> {{ entry.status }} <a href="#">{{ entry }}</a> {{ entry.updated_at|date }} {{ entry.updated_by }}
 		</div>
 		{% endfor %}
 	

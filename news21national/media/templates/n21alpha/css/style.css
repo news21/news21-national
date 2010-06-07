@@ -83,6 +83,7 @@ a:hover{color:#6F6F6F;text-decoration:underline}
 
 
 .icon-accept {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/accept.png') no-repeat;display:block;width:16px;height:16px;}
+.icon-pending {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/note.png') no-repeat;display:block;width:16px;height:16px;}
 .icon-exclamation {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/exclamation.png') no-repeat;display:block;width:16px;height:16px;}
 .icon-package {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/page_white_stack.png') no-repeat;display:block;width:16px;height:16px;}
 .icon-story {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/page_white.png') no-repeat;display:block;width:16px;height:16px;}
@@ -172,4 +173,16 @@ fieldset.inlineLabels legend{
 
 .ctrlHolder ol, ul label {
 	width: auto !important;
+}
+
+
+.news21_biography img {
+	float:left;
+	margin:0px 10px 10px 5px; 
+	display:inline;
+}
+
+.news21_biography .bio_name {
+	font-weight: bold;
+	font-size: 14px;
 }

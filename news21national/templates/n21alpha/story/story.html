@@ -132,7 +132,7 @@
 	<div class="contentheader">
 		<h4>Story Assets</h4>
 		{% if story_id %}
-			<div>Add: <a href="{% url plaintext_new metastory_id story_id %}">Plain Text</a> | <a href="{% url video_new metastory_id story_id %}">Video</a> | <a href="{% url photo_new metastory_id story_id %}">Photo</a> | <a href="{% url audio_new metastory_id story_id %}">Audio</a><!-- | <a href="">Gallery</a>--><!-- | <a href="{% url swf_new metastory_id story_id %}">SWF</a>--></div>
+			<div>Add: <a href="{% url plaintext_new metastory_id story_id %}">Plain Text</a> | <!--<a href="{% url video_new metastory_id story_id %}">Video</a> | --> <a href="{% url photo_new metastory_id story_id %}">Photo</a> | <a href="{% url audio_new metastory_id story_id %}">Audio</a><!-- | <a href="">Gallery</a>--><!-- | <a href="{% url swf_new metastory_id story_id %}">SWF</a>--></div>
 		{% else %}
 			<div>You have not created any media assets yet.</div>
 		{% endif %}
