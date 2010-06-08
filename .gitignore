@@ -8,6 +8,7 @@ parts/*
 .installed.cfg
 .DS_Store
 apps/*
+news21national/media/medialibrary/*
 news21national/local_settings.py
 news21national/media/uploads/*
 news21national/media/ik_cache/*
