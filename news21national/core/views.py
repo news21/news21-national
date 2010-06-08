@@ -128,7 +128,7 @@ def get_newsroom_roster(request,newsroom_id):
 	except Newsroom.DoesNotExist:
 		return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
 
-	roster = Profile.objects.filter(user__in=n.members.values_list('id',flat=True)).distinct()
+	roster = Profile.objects.filter(user__in=n.members.values_list('id',flat=True)).distinct().order_by('last_name')
 	print n.name
 	breadcrumb = [ {'title':n,'url':reverse('user_newsroom_roster', args=[newsroom_id])} ]
 	return render_to_response("core/newsroom.html", {'newsroom_roster':roster,'newsroom':n,'breadcrumb':breadcrumb}, context_instance=RequestContext(request))
