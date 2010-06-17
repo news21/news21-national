@@ -23,8 +23,10 @@
 		
 		{% if multimedia.id %}
 			<div style="padding:10px;">
-				<a rel="shadowbox[Mixed];" href="{{ multimedia.video.url }}">PREVIEW</a>
-				<br/>
+				{% if multimedia.video %}
+				<a rel="shadowbox[Mixed];" href="{{ multimedia.video.url }}"><span class="icon-mplayer"></span> PREVIEW VIDEO</a>
+				<br/><br/>
+				{% endif %}
 				If video is over 40MB please use the filename <strong>news21v{{ multimedia.id }}.(mov or m4v)</strong> for the HQ File
 			</div>
 		{% endif %}
