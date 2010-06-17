@@ -3,6 +3,7 @@
 
 {% load i18n %}
 {% load smart_if %}
+{% load uni_form_tags %}
 {% load discussion_tags %}
 
 
@@ -16,76 +17,81 @@
 </div>
 {% endif %}
 
+<div class="clear"></div>
 
 <div class="grid_10">
-<div class="genericForm contentheader">
-	<form action="{{ form_url }}" method="post">
-	<h4>Photo Info</h4>
+<form action="{{ form_url }}" class="uniForm" method="post">
+	<div class="genericForm contentheader">
+		<h4>Photo Info</h4>
 	
-	{% if mediaclass %}
-		<div style="padding:5px;">
-			<span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> STATUS: {{mediaclass.status}} 
-			<a href="#editorscomments">[View Editor's Comments]</a>
-		</div>
-	{% endif %}
-
-	{{ form.as_p }}
-	<p>
-		<label for="id_authors">Byline:</label>
-		<select name="authors" id="id_authors" multiple size="8">
-			{% for member in newsrooms_members %}
-				<option {% for author in authors %} {% if member == author %} selected {% endif %} {% endfor %}  value="{{member.id}}">{{ member }} ( {%for newsroom in member.newsroom_members.all%} {{ newsroom }} {% endfor %} ) </option>
-			{% endfor %}
-		</select>
-	</p>
-	<p>
-		<label>Inherited Tags:</label>
-		<span class="inputDiv" id="inherited_tags">{% for tag in inherited_tags %} <span class="tag">{{tag}}</span> {% endfor %}</span>
-	</p>
-	
-	<div class="clear"></div>
-	
-	<p>
-		<label>Tags:</label>
-		<span class="inputDiv">
-		{% for tag in tags %}
-			<input type="checkbox" name="tag_{{tag.id}}" value="{{tag}}" id="tag_{{tag.id}}"  {% for used_tag in used_tags %} {% if tag.id == used_tag.id %} checked {% endif %} {% endfor %} > {{tag}}
-			{% if forloop.counter|divisibleby:4 %}<br/>{% endif %}
-		{% endfor %}
-		</span>
-	</p>
-	
-	<div class="clear"></div>
-	<br/>
-	
-	<p>
-		<label>Flickr Description:</label>
-		<span class="inputDiv">
-			<textarea name="flickr_description" id="flickr_description" rows="8" cols="40">{{ flickr_payload.blurb }}</textarea>
-			<br/>
-			<span id="charlimitflickr"></span>
-		</span>
-	</p>
-	
-	<div class="clear"></div>
-	<br/>
-	
-	<p>
-		<label>GeoTag: {{ geotag.point }}</label>
-		<div id="map" class="smallmap"></div>
-	</p>
-	
-	<div class="clear"></div>
-	<br/>
-	
-	<div class="inputSubmit">
-		{% if image %}
-		<input type="submit" value="Continue &rarr;">
+		{% if mediaclass %}
+			<div style="padding:5px;">
+				<span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}{% if mediaclass.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{mediaclass.status}} 
+				<a href="#editorscomments">[View Editor's Comments]</a>
+			</div>
 		{% endif %}
-	</div>
+
+		{% with form.helper as helper %}
+		    {% uni_form form helper %}
+		{% endwith %}
+
+		<p>
+			<label for="id_authors">Byline:</label>
+			<select name="authors" id="id_authors" multiple size="8">
+				{% for member in newsrooms_members %}
+					<option {% for author in authors %} {% if member == author %} selected {% endif %} {% endfor %}  value="{{member.id}}">{{ member }} ( {%for newsroom in member.newsroom_members.all%} {{ newsroom }} {% endfor %} ) </option>
+				{% endfor %}
+			</select>
+		</p>
+		<p>
+			<label>Inherited Tags:</label>
+			<span class="inputDiv" id="inherited_tags">{% for tag in inherited_tags %} <span class="tag">{{tag}}</span> {% endfor %}</span>
+		</p>
 	
-	</form>
-</div>
+		<div class="clear"></div>
+	
+		<p>
+			<label>Tags:</label>
+			<span class="inputDiv">
+			{% for tag in tags %}
+				<input type="checkbox" name="tag_{{tag.id}}" value="{{tag}}" id="tag_{{tag.id}}"  {% for used_tag in used_tags %} {% if tag.id == used_tag.id %} checked {% endif %} {% endfor %} > {{tag}}
+				{% if forloop.counter|divisibleby:4 %}<br/>{% endif %}
+			{% endfor %}
+			</span>
+		</p>
+	
+		<div class="clear"></div>
+		<br/>
+	
+		<p>
+			<label>Flickr Description:</label>
+			<span class="inputDiv">
+				<textarea name="flickr_description" id="flickr_description" rows="8" cols="40">{{ flickr_payload.blurb }}</textarea>
+				<br/>
+				<span id="charlimitflickr"></span>
+			</span>
+		</p>
+	
+		<div class="clear"></div>
+		<br/>
+	
+		<p>
+			<label>GeoTag: {{ geotag.point }}</label>
+			<div id="map" class="smallmap"></div>
+		</p>
+	
+		<div class="clear"></div>
+		<br/>
+	
+		<div class="inputSubmit">
+			{% if image %}
+			<input type="submit" value="Continue &rarr;">
+			{% endif %}
+		</div>
+	
+		
+	</div>
+</form>
 </div>
 
 <div class="grid_6">
@@ -97,10 +103,16 @@
 			<li style="list-style-type:none;">Width : {{ image.get_width }}</li>
 			<li style="list-style-type:none;">Height : {{ image.get_height }}</li>
 			<li style="list-style-type:none;">URL : <a href="{{ image.get_original_url }}" target="_blank">{{ image.get_original_url }}</a></li>
-			<li style="list-style-type:none;">::METADATA::</li>
+		</ul>
+		Image Metadata
+		<ul>
 			{% for key,value in image.get_info.items %}
 			<li style="list-style-type:none;">{{ key }} : {{ value }}</li>
 			{% endfor %}
+			
+			{% ifequal image.get_info.items|length 0 %}
+			<strong>You should really give your images metadata!</strong>
+			{% endifequal %}
 		</ul>
 	</div>
 	{% endif %}
@@ -109,11 +121,13 @@
 <div class="clear"></div>
 <br/>
 <br/>
-{% if image %}
+
+
+{% if mediaclass %}
 <div class="grid_16 contentheader">
 	{% comment_counts_for_objects [mediaclass] as comment_count_dict %}
 	<h4 id="editorscomments">Editor's Comments {{comment_count_dict}}</h4>
-	<div><span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> STATUS: {{mediaclass.status}} </div>
+	<div><span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}{% if mediaclass.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{mediaclass.status}} </div>
 	{% comment_tree_for_object mediaclass as comments %}
 	{% for comment in comments %}
 		<div style="padding:15px;" class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
@@ -125,19 +139,16 @@
 		<div>Your editors have not made any comments yet.</div>
 	{% endif %}
 	{% if is_editor %}
-		<form action="{% url editorsdesk_update_status_multimedia mediaclass.id %}" method="post">
-			<textarea name="comment_body" id="comment_body" rows="8" cols="100"></textarea>
-			<br/>
-			<select name="story_status" id="story_status" style="float:left;width:150px;margin-right:20px;">
-				<option value="Pending Approval">Pending Approval</option>
-				<option value="Rejected" {% if story.status == "Rejected" %} selected {% endif %} >Rejected</option>
-				<option value="Approved" {% if story.status == "Approved" %} selected {% endif %} >Approved</option>
-			</select>
+		<form action="{% url editorsdesk_update_status_multimedia mediaclass.id %}" class="uniForm" method="post">
+			
+			{% with editorcommentform.helper as helper %}
+			    {% uni_form editorcommentform helper %}
+			{% endwith %}
+			
 			<input type="submit" value="Comment &rarr;">
 		</form>
 	{% endif %}
 </div>
-
 <div class="clear"></div>
 <br/>
 {% endif %}
@@ -149,11 +160,26 @@
 {% block extra_styles %}
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/google.css" />
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/openlayers.css" />
+
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/jquery-ui/ui-lightness/jquery-ui-1.7.2.custom.css" />
+
+<link rel="stylesheet" href="{{ MEDIA_URL }}uni_form/uni-form-generic.css" type="text/css" />
+<link rel="stylesheet" href="{{ MEDIA_URL }}uni_form/uni-form.css" type="text/css" />
 {% endblock %}
 
 {% block extra_scripts %}
 <script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ google_maps_api_key }}'></script>
 <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+
+{% if mediaclass %}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}uni_form/uni-form.jquery.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}ajax_validation/jquery-ajax-validation.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}ajax_validation/jquery-uni-form.js"></script>
+{% endif %}
+
 {% endblock %}
 
 
@@ -166,7 +192,6 @@
 
 {% block inline_scripts %}
 	$(function() {
-		$("#id_date_taken").datepicker();
 		
 		{% if not image %}
 			$("#upload_dialog").dialog({
@@ -178,17 +203,9 @@
 			});
 		
 		{% else %}
-		jQuery('#id_title').slugify('#id_slug');
+		//jQuery('#id_title').slugify('#id_slug');
 		{% endif %}
 	
-		$("a.zoom").fancybox({
-			'overlayOpacity'	:	0.7,
-			'overlayColor'		:	'#FFF',
-			'zoomSpeedIn'		:	500,
-			'zoomSpeedOut'		:	500,
-			'overlayShow'		:	false
-		});
-		
 		$('#flickr_description').keyup(function(){
 			limitChars('flickr_description', 500, 'charlimitflickr');
 	 	})

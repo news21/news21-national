@@ -3,76 +3,79 @@
 
 {% load i18n %}
 {% load smart_if %}
+{% load uni_form_tags %}
 {% load discussion_tags %}
 
 
 {% block content %}
+<div class="clear"></div>
 
 <div class="grid_16">
-<div class="genericForm contentheader">
-	<form action="{{ form_url }}" method="post">
-	<h4>PlainText Info</h4>
-	{% if mediaclass %}
-		<div style="padding:5px;">
-			<span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> STATUS: {{mediaclass.status}} 
-			<a href="#editorscomments">[View Editor's Comments]</a>
-		</div>
-	{% endif %}
+<form action="{{ form_url }}" class="uniForm" method="post">
+	<div class="genericForm contentheader">
+		<h4>PlainText Info</h4>
 	
-	{% if status.length %}
-	<p>
-		<label>Status :</label><span class="icon-{% if status == "Approved" %}accept{% else %}exclamation{% endif %}"></span>  {{ status }}
-	</p>
-	{% endif %}
-	{{ form.as_p }}
-	<p>
-		<label for="id_authors">Authors:</label>
-		<select name="authors" id="id_authors" multiple="multiple" size="8">
-			{% for member in newsrooms_members %}
-				<option {% for author in authors %} {% if member == author %} selected {% endif %} {% endfor %} value="{{member.id}}">{{ member }} ( {%for newsroom in member.newsroom_members.all%} {{ newsroom }} {% endfor %} ) </option>
-			{% endfor %}
-		</select>
-	</p>
-	<p>
-		<label>Inherited Tags:</label>
-		<span class="inputDiv" id="inherited_tags">{% for tag in inherited_tags %} <span class="tag">{{tag}}</span> {% endfor %}</span>
-	</p>
-	<div class="clear"></div>
-	<p>
-		<label>Tags:</label>
-		<span class="inputDiv">
-		{% for tag in tags %}
-			<input type="checkbox" name="tag_{{tag.id}}" value="{{tag}}" id="tag_{{tag.id}}"  {% for used_tag in used_tags %} {% if tag.id == used_tag.id %} checked {% endif %} {% endfor %} > {{tag}}
-			{% if forloop.counter|divisibleby:4 %}<br/>{% endif %}
-		{% endfor %}
-		</span>
-	</p>
-	<div class="clear"></div>
-	<br/>
-	<p>
-		<label>GeoTag:</label>
-		{{ geotag.point }}
-		<span class="inputDiv">
-		<div id="map" class="smallmap"></div>
-		</span>
-	</p>
-	<div class="clear"></div>
-	<div class="inputSubmit">
-	<br/>
-		<input type="submit" value="Continue &rarr;">
-	</div>
-	</form>
-</div>	
+		{% if mediaclass %}
+			<div style="padding:5px;">
+				<span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}{% if mediaclass.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{mediaclass.status}}
+				<a href="#editorscomments">[View Editor's Comments]</a>
+			</div>
+		{% endif %}
+	
+		{% with form.helper as helper %}
+		    {% uni_form form helper %}
+		{% endwith %}
+	
+		<fieldset class="inlineLabels">
+			<div class="ctrlHolder " id="div_id_authors">
+				<label for="id_authors">Authors:</label>
+				<select name="authors" id="id_authors" class="selectmultiple" multiple="true" size="8">
+					{% for member in newsrooms_members %}
+						<option {% for author in authors %} {% if member == author %} selected {% endif %} {% endfor %}  value="{{member.id}}">{{ member }} ( {%for newsroom in member.newsroom_members.all%} {{ newsroom }} {% endfor %} ) </option>
+					{% endfor %}
+				</select>
+			</div>
+	
+			<div class="ctrlHolder " id="div_id_inherited_tags">
+				<label style="padding-top:9px;">Inherited Tags:</label>
+				<span class="inputDiv" id="inherited_tags"></span>
+			</div>
+			<div class="ctrlHolder " id="div_id_tags">
+				<label>Tags:</label>
+				<div class="inputDiv" style="margin-left:48%;">
+				{% for tag in tags %}
+					<input type="checkbox" name="tag_{{tag.id}}" value="{{tag}}" id="tag_{{tag.id}}" {% for used_tag in used_tags %} {% if tag == used_tag %} checked="true" {% endif %} {% endfor %}  /> {{tag}}
+					{% if forloop.counter|divisibleby:2 %}<br/>{% endif %}
+				{% endfor %}
+				</div>
+			</div>
+			
+			<div class="ctrlHolder" id="div_id_geo_tags">
+				<label style="width:300px;">GeoTag: {{ geotag.point }}</label>
+				<div class="inputDiv" style="margin-left:325px;">
+					<div id="map" class="smallmap"></div>
+				</div>
+			</div>
+		</fieldset>
+	
+		<div class="clear"></div>
+		<div class="inputSubmit">
+		<br/>
+			<input type="submit" value="Continue &rarr;">
+		</div>
+	</div>	
+</form>
 </div>	
 
 <div class="clear"></div>
 <br/>
 <br/>
 
+{% if mediaclass %}
 <div class="grid_16 contentheader">
 	{% comment_counts_for_objects [mediaclass] as comment_count_dict %}
 	<h4 id="editorscomments">Editor's Comments {{comment_count_dict}}</h4>
-	<div><span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> STATUS: {{mediaclass.status}} </div>
+	<div><span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}{% if mediaclass.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{mediaclass.status}} : EDITING STAGE: {{mediaclass.stage}} </div>
 	{% comment_tree_for_object mediaclass as comments %}
 	{% for comment in comments %}
 		<div style="padding:15px;" class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
@@ -84,21 +87,20 @@
 		<div>Your editors have not made any comments yet.</div>
 	{% endif %}
 	{% if is_editor %}
-		<form action="{% url editorsdesk_update_status_multimedia mediaclass.id %}" method="post">
-			<textarea name="comment_body" id="comment_body" rows="8" cols="100"></textarea>
-			<br/>
-			<select name="story_status" id="story_status" style="float:left;width:150px;margin-right:20px;">
-				<option value="Pending Approval">Pending Approval</option>
-				<option value="Rejected" {% if story.status == "Rejected" %} selected {% endif %} >Rejected</option>
-				<option value="Approved" {% if story.status == "Approved" %} selected {% endif %} >Approved</option>
-			</select>
-			<input type="submit" value="Comment &rarr;">
+		<div>
+		<form action="{% url editorsdesk_update_status_multimedia mediaclass.id %}" class="uniForm" method="post">
+			
+			{% with editorcommentform.helper as helper %}
+			    {% uni_form editorcommentform helper %}
+			{% endwith %}
+			
 		</form>
+		</div>
 	{% endif %}
 </div>
-
 <div class="clear"></div>
 <br/>
+{% endif %}
 
 {% endblock %}
 
@@ -109,11 +111,19 @@
 {% block extra_styles %}
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/google.css" />
 <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/openlayers.css" />
+
+<link rel="stylesheet" href="{{ MEDIA_URL }}uni_form/uni-form-generic.css" type="text/css" />
+<link rel="stylesheet" href="{{ MEDIA_URL }}uni_form/uni-form.css" type="text/css" />
 {% endblock %}
 
 {% block extra_scripts %}
 <script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ google_maps_api_key }}'></script>
 <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}uni_form/uni-form.jquery.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}ajax_validation/jquery-ajax-validation.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}ajax_validation/jquery-uni-form.js"></script>
 {% endblock %}
 
 

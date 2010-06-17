@@ -6,22 +6,25 @@
 {% load discussion_tags %}
 
 {% block content %}
-	<div class="clear"></div>
-	<form action="{{ form_url }}" class="uniForm" method="post">
-	<div class="grid_10">
+<div class="clear"></div>
+
+<div>
+<form action="{{ form_url }}" class="uniForm" method="post">
+<div class="grid_10">
+	
 	<div class="genericForm contentheader">	
 		<h4>Package Information</h4>
 		{% if metastory_id %}
 			<div style="padding:5px;">
-				<span class="icon-{% if metastory.status == "Approved" %}accept{% else %}{% if metastory.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{metastory.status}} 
+				<span class="icon-{% if metastory.status == "Approved" %}accept{% else %}{% if metastory.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{metastory.status}}
 				<a href="#editorscomments">[View Editor's Comments]</a>
 			</div>
 		{% endif %}
-		
+	
 		{% with form.helper as helper %}
 		    {% uni_form form helper %}
 		{% endwith %}
-		
+	
 		<fieldset class="inlineLabels">
 		<div class="ctrlHolder " id="div_id_inherited_tags">
 			<label style="padding-top:9px;">Inherited Tags:</label>
@@ -37,137 +40,140 @@
 			</div>
 		</div>
 		</fieldset>
-		
-		
+	
+	
 		<div class="clear"></div>
 		<br/>
 		<div class="inputSubmit">
 			<input type="submit" value="Continue &rarr;">
 		</div>
-		
+	
 		{% if metastory_id %}
 		<div class="clear"></div>
 		<br/>
-		
+	
 		<h4>Audit</h4>
 		<div><strong>Created by:</strong> {{ audit.created_by }} <strong>at</strong> {{ audit.created_at|date:"M d, Y @ g i a" }}</div>
 		<div><strong>Last Updated by:</strong> {{ audit.updated_by }} <strong>at</strong> {{ audit.updated_at|date:"M d, Y @ g i a" }}</div>
 		{% endif %}
-		
-		
+	
+	
 		<div class="clear"></div>
 		<br/>
-		
-		<h4>Package Geotags</h4>
+	
+		<h4>Package Geotags (Reverse Inherited)</h4>
 		<div id="map" class="smallmap"></div>
 	</div>
-	</div>
-	<div class="grid_6 genericForm">
-		{% if metastory_id %}
-			<h4>Package Stories <a href="{% url story_new metastory_id %}">[+]</a></h4>
-			{% for story in stories %}
-			<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-				<span class="icon-{% if story.status == "Approved" %}accept{% else %}{% if story.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span>
-				{% for photo in story_photos %}
-					{% if photo.id == story.primary_image %}
-					<a class="zoom" rel="group" title="{{ photo.title }}" href="{{ photo.get_original_url }}"><img src="{{ photo.get_tiny_thumbnail_url }}" style="vertical-align:middle" class="outline" /></a>
-					{% endif %}
-				{% endfor %}
-				{% if primary_image.id == story.primary_image %}
-				<a class="zoom" rel="group" title="{{ primary_image.title }}" href="{{ primary_image.get_original_url }}"><img src="{{ primary_image.get_tiny_thumbnail_url }}" style="vertical-align:middle" class="outline" /></a>
+</div>
+
+
+<div class="grid_6 genericForm">
+	{% if metastory_id %}
+		<h4>Package Stories <a href="{% url story_new metastory_id %}">[+]</a></h4>
+		{% for story in stories %}
+		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+			<span class="icon-{% if story.status == "Approved" %}accept{% else %}{% if story.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span>
+			{% for photo in story_photos %}
+				{% if photo.id == story.primary_image %}
+				<a class="zoom" rel="group" title="{{ photo.title }}" href="{{ photo.get_original_url }}"><img src="{{ photo.get_tiny_thumbnail_url }}" style="vertical-align:middle" class="outline" /></a>
 				{% endif %}
-				<a href="{% url story_edit metastory_id story.id %}" style="vertical-align:middle">{{ story }} </a><!-- <span>[clone]</span> -->
-			</div>
 			{% endfor %}
-			{% if stories.count == 0 %}
-				<div>You have not created any stories yet. <br/>Why not <a href="{% url story_new metastory_id %}">create one?</a></div>
+			{% if primary_image.id == story.primary_image %}
+			<a class="zoom" rel="group" title="{{ primary_image.title }}" href="{{ primary_image.get_original_url }}"><img src="{{ primary_image.get_tiny_thumbnail_url }}" style="vertical-align:middle" class="outline" /></a>
 			{% endif %}
-		{% else %}
-			<h4>Package Stories</h4>
-			<div>You have not created any stories yet.</div>
-		{% endif %}
-		
-		<div class="clear"></div>
-		<br/>
-		<br/>
-		<h4>Package Primary Image</h4>
-		<div class="formHint" id="hint_id_package_image" style="float:left;"><a class="helptip">Package Image</a></div>
-		<div class="clear"></div>
-		
-		{% if primary_image %}
-		<div class="sidebar-right-listing image-selector alternating-row-selected">
-			<div class="image-selector-radio"><input type="radio" name="primary_image" id="id_primary_image" checked value="{{ primary_image.id }}"></div>
-			<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ primary_image.title }}" href="{{ primary_image.get_original_url }}"><img src="{{ primary_image.get_thumbnail_url }}" class="outline" /></a></div>
-			<div class="image-selector-info">
-				<span class="bold">Title:</span> {{ primary_image.title }}
-				<br/>
-				<span class="bold">Width & Height:</span> {{ primary_image.get_width }} x {{ primary_image.get_height }}
-				<br/>
-				<span class="bold">Caption:</span> {{ primary_image.summary }}
-			</div>
-			<div class="clear"></div>
+			<a href="{% url story_edit metastory_id story.id %}" style="vertical-align:middle">{{ story }} </a><!-- <span>[clone]</span> -->
 		</div>
-		{% endif %}
-		{% for photo in story_photos %}
-			{% if photo.id != primary_image.id %}
-			<div class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-				<div class="image-selector-radio"><input type="radio" name="primary_image" id="id_primary_image" value="{{ photo.id }}"></div>
-				<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ photo.title }}" href="{{ photo.get_original_url }}"><img src="{{ photo.get_thumbnail_url }}" class="outline" /></a></div>
-				<div class="image-selector-info">
-					<span class="bold">Title:</span> {{ photo.title }}
-					<br/>
-					<span class="bold">Width & Height:</span> {{ photo.get_width }} x {{ photo.get_height }}
-					<br/>
-					<span class="bold">Caption:</span> {{ photo.summary }}
-				</div>
-				<div class="clear"></div>
-			</div>
-			{% endif %}
 		{% endfor %}
-		
-		
-		<div class="clear"></div>
-		<br/>
-		<br/>
-		<h4>News21 Site Image (440x250)</h4>
-		<div class="formHint" id="hint_id_news21_image" style="float:left;"><a class="helptip">News21 Image</a></div>
-		<div class="clear"></div>
-		
-		{% if secondary_image %}
-		<div class="sidebar-right-listing image-selector alternating-row-selected">
-			<div class="image-selector-radio"><input type="radio" name="secondary_image" id="id_secondary_image" checked value="{{ secondary_image.id }}"></div>
-			<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ secondary_image.title }}" href="{{ secondary_image.get_original_url }}"><img src="{{ secondary_image.get_thumbnail_url }}" class="outline" /></a></div>
-			<div class="image-selector-info">
-				<span class="bold">Title:</span> {{ primary_image.title }}
-				<br/>
-				<span class="bold">Width & Height:</span> {{ primary_image.get_width }} x {{ primary_image.get_height }}
-				<br/>
-				<span class="bold">Caption:</span> {{ primary_image.summary }}
-			</div>
-			<div class="clear"></div>
+		{% if stories.count == 0 %}
+			<div>You have not created any stories yet. <br/>Why not <a href="{% url story_new metastory_id %}">create one?</a></div>
+		{% endif %}
+	{% else %}
+		<h4>Package Stories</h4>
+		<div>You have not created any stories yet.</div>
+	{% endif %}
+	
+	<div class="clear"></div>
+	<br/>
+	<br/>
+	<h4>Package Primary Image</h4>
+	<div class="formHint" id="hint_id_package_image" style="float:left;"><a class="helptip">Package Image</a></div>
+	<div class="clear"></div>
+	
+	{% if primary_image %}
+	<div class="sidebar-right-listing image-selector alternating-row-selected">
+		<div class="image-selector-radio"><input type="radio" name="primary_image" id="id_primary_image" checked value="{{ primary_image.id }}"></div>
+		<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ primary_image.title }}" href="{{ primary_image.get_original_url }}"><img src="{{ primary_image.get_thumbnail_url }}" class="outline" /></a></div>
+		<div class="image-selector-info">
+			<span class="bold">Title:</span> {{ primary_image.title }}
+			<br/>
+			<span class="bold">Width & Height:</span> {{ primary_image.get_width }} x {{ primary_image.get_height }}
+			<br/>
+			<span class="bold">Caption:</span> {{ primary_image.summary }}
 		</div>
-		{% endif %}
-		{% for photo in site_photos %}
-			{% if photo.id != secondary_image.id and photo.get_width == 440 and photo.get_height == 250 %}
-			<div class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-				<div class="image-selector-radio"><input type="radio" name="secondary_image" id="id_secondary_image" value="{{ photo.id }}"></div>
-				<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ photo.title }}" href="{{ photo.get_original_url }}"><img src="{{ photo.get_thumbnail_url }}" class="outline" /></a></div>
-				<div class="image-selector-info">
-					<span class="bold">Title:</span> {{ photo.title }}
-					<br/>
-					<span class="bold">Width & Height:</span> {{ photo.get_width }} x {{ photo.get_height }}
-					<br/>
-					<span class="bold">Caption:</span> {{ photo.summary }}
-				</div>
-				<div class="clear"></div>
-			</div>
-			{% endif %}
-		{% endfor %}
-		
+		<div class="clear"></div>
 	</div>
+	{% endif %}
+	{% for photo in story_photos %}
+		{% if photo.id != primary_image.id %}
+		<div class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+			<div class="image-selector-radio"><input type="radio" name="primary_image" id="id_primary_image" value="{{ photo.id }}"></div>
+			<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ photo.title }}" href="{{ photo.get_original_url }}"><img src="{{ photo.get_thumbnail_url }}" class="outline" /></a></div>
+			<div class="image-selector-info">
+				<span class="bold">Title:</span> {{ photo.title }}
+				<br/>
+				<span class="bold">Width & Height:</span> {{ photo.get_width }} x {{ photo.get_height }}
+				<br/>
+				<span class="bold">Caption:</span> {{ photo.summary }}
+			</div>
+			<div class="clear"></div>
+		</div>
+		{% endif %}
+	{% endfor %}
 	
-	</form>
 	
+	<div class="clear"></div>
+	<br/>
+	<br/>
+	<h4>News21 Site Image (440x250)</h4>
+	<div class="formHint" id="hint_id_news21_image" style="float:left;"><a class="helptip">News21 Image</a></div>
+	<div class="clear"></div>
+	
+	{% if secondary_image %}
+	<div class="sidebar-right-listing image-selector alternating-row-selected">
+		<div class="image-selector-radio"><input type="radio" name="secondary_image" id="id_secondary_image" checked value="{{ secondary_image.id }}"></div>
+		<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ secondary_image.title }}" href="{{ secondary_image.get_original_url }}"><img src="{{ secondary_image.get_thumbnail_url }}" class="outline" /></a></div>
+		<div class="image-selector-info">
+			<span class="bold">Title:</span> {{ primary_image.title }}
+			<br/>
+			<span class="bold">Width & Height:</span> {{ primary_image.get_width }} x {{ primary_image.get_height }}
+			<br/>
+			<span class="bold">Caption:</span> {{ primary_image.summary }}
+		</div>
+		<div class="clear"></div>
+	</div>
+	{% endif %}
+	{% for photo in site_photos %}
+		{% if photo.id != secondary_image.id and photo.get_width == 440 and photo.get_height == 250 %}
+		<div class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
+			<div class="image-selector-radio"><input type="radio" name="secondary_image" id="id_secondary_image" value="{{ photo.id }}"></div>
+			<div class="image-selector-thumb"><a class="zoom" rel="group" title="{{ photo.title }}" href="{{ photo.get_original_url }}"><img src="{{ photo.get_thumbnail_url }}" class="outline" /></a></div>
+			<div class="image-selector-info">
+				<span class="bold">Title:</span> {{ photo.title }}
+				<br/>
+				<span class="bold">Width & Height:</span> {{ photo.get_width }} x {{ photo.get_height }}
+				<br/>
+				<span class="bold">Caption:</span> {{ photo.summary }}
+			</div>
+			<div class="clear"></div>
+		</div>
+		{% endif %}
+	{% endfor %}
+</div>
+
+
+</form>
+</div>
+
 	<div class="clear"></div>
 	<br/>
 	<br/>
@@ -192,7 +198,7 @@
 	<div class="grid_16 contentheader">
 		<br/>
 		<h4 id="editorscomments">Editor's Comments</h4>
-		<div><span class="icon-{% if metastory.status == "Approved" %}accept{% else %}{% if metastory.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{metastory.status}}</div>
+		<div><span class="icon-{% if metastory.status == "Approved" %}accept{% else %}{% if metastory.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{metastory.status}} : EDITING STAGE: {{metastory.stage}} </div>
 		{% comment_tree_for_object metastory as comments %}
 		{% for comment in comments %}
 			<div style="padding:15px;" class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
@@ -204,15 +210,12 @@
 			<div>Your editors have not made any comments yet.</div>
 		{% endif %}
 		{% if is_editor %}
-			<form action="{% url editorsdesk_update_status_metastory metastory_id %}" method="post">
-				<textarea name="comment_body" id="comment_body" rows="8" cols="100"></textarea>
-				<br/>
-				<select name="metastory_status" id="metastory_status" style="float:left;width:150px;margin-right:20px;">
-					<option value="Pending Approval">Pending Approval</option>
-					<option value="Rejected" {% if story.status == "Rejected" %} selected {% endif %} >Rejected</option>
-					<option value="Approved" {% if story.status == "Approved" %} selected {% endif %} >Approved</option>
-				</select>
-				<input type="submit" value="Comment &rarr;">
+			<form action="{% url editorsdesk_update_status_metastory metastory_id %}" class="uniForm" method="post">
+				
+				{% with editorcommentform.helper as helper %}
+				    {% uni_form editorcommentform helper %}
+				{% endwith %}
+				
 			</form>
 		{% endif %}
 	</div>
@@ -244,18 +247,18 @@
 
 
 {% block inline_scripts %}
-	$(function() {
+	$(document).ready(function() {
 		var csoption;
+		
+		{% if not metastory_id %}
+		//$('#id_headline').slugify('#id_slug');
+		{% endif %}
 		
 		$("#id_newsrooms").click(function() {
 			adjustTags();
 			
 			return true;
 		});
-		
-		{% if not metastory_id %}
-		jQuery('#id_headline').slugify('#id_slug');
-		{% endif %}
 		
 		function adjustTags() {
 			
@@ -280,15 +283,7 @@
 			});
 			
 		};
-		/*
-		$("a.zoom").fancybox({
-			'overlayOpacity'	:	0.7,
-			'overlayColor'		:	'#FFF',
-			'zoomSpeedIn'		:	500,
-			'zoomSpeedOut'		:	500,
-			'overlayShow'		:	false
-		});
-		*/
+		
 		adjustTags();
 	});
 	

@@ -1,40 +1,33 @@
 {% extends "story/base.html" %}
 
+
 {% load i18n %}
 {% load smart_if %}
 {% load uni_form_tags %}
 {% load discussion_tags %}
+{% load markup %}
+
 
 
 {% block content %}
 
-<div class="grid_10">
-<form action="{{ form_url }}" class="uniForm" method="post" enctype="multipart/form-data">
-	
+<div class="grid_16">
+	<form action="{{ form_url }}" class="uniForm" method="post">
 	<div class="genericForm contentheader">
-		<h4>Video Asset Information</h4>
-		
+		<h4>Embed Info</h4>
+	
 		{% if mediaclass %}
 			<div style="padding:5px;">
 				<span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}{% if mediaclass.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{mediaclass.status}}
 				<a href="#editorscomments">[View Editor's Comments]</a>
 			</div>
 		{% endif %}
-		
-		{% if multimedia.id %}
-			<div style="padding:10px;">
-				<a rel="shadowbox[Mixed];" href="{{ multimedia.video.url }}">PREVIEW</a>
-				<br/>
-				If video is over 40MB please use the filename <strong>news21v{{ multimedia.id }}.(mov or m4v)</strong> for the HQ File
-			</div>
-		{% endif %}
-		
-		
+	
+	
 		{% with form.helper as helper %}
 		    {% uni_form form helper %}
 		{% endwith %}
-		
-		
+	
 		<fieldset class="inlineLabels">
 			<div class="ctrlHolder " id="div_id_authors">
 				<label for="id_authors">Authors:</label>
@@ -44,7 +37,7 @@
 					{% endfor %}
 				</select>
 			</div>
-		
+	
 			<div class="ctrlHolder " id="div_id_inherited_tags">
 				<label style="padding-top:9px;">Inherited Tags:</label>
 				<span class="inputDiv" id="inherited_tags"></span>
@@ -58,49 +51,37 @@
 				{% endfor %}
 				</div>
 			</div>
+			
 		</fieldset>
-		
-		<fieldset class="inlineLabels">
-			<div class="ctrlHolder" id="div_id_geo_tags">
-				<label style="width:50px;">GeoTag: {{ geotag.point }}</label>
-				<div class="inputDiv" style="margin-left:65px;">
-					<div id="map" class="smallmap"></div>
-				</div>
-			</div>
-		</fieldset>
-		
 		<div class="clear"></div>
-		<br/>
-		
-		<br/>
+	
 		<div class="inputSubmit">
+		<br/>
 			<input type="submit" value="Continue &rarr;">
 		</div>
-		
 	</div>
-	
-</form>
+	</form>
 </div>	
 
-<div class="grid_6">
-	<h4>Instructions/Help</h4>
-	1) Find the size of your video.
-	<br/><br/>
-	2) If over 40MB, you will need to ftp it to external server. If under 40MB, you can upload it directly into the system.
-	<br/><br/>
-	3) When over 40MB, you must first save the video information. Once saved you will be given the filename you will need to use upon ftp.
-	<br/><br/>
-	4) The (over 40MB) filename does NOT include the extension ... but please only use .mov or .m4v
-</div>
+<div class="clear"></div>
+<br/>
+<br/>
+
+{% if mediaclass %}
+<div class="grid_16 contentheader">
+	<h4 id="editorscomments">Embed In-Action</h4>
+	<div>{{ embed.content|markdown }}</div>
+{% endif %}
 
 <div class="clear"></div>
-
+<br/>
+<br/>
 
 {% if mediaclass %}
 <div class="grid_16 contentheader">
 	{% comment_counts_for_objects [mediaclass] as comment_count_dict %}
 	<h4 id="editorscomments">Editor's Comments {{comment_count_dict}}</h4>
-	<div><span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}{% if mediaclass.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{mediaclass.status}} : EDITING STAGE: {{mediaclass.stage}} </div>
+	<div><span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> STATUS: {{mediaclass.status}} </div>
 	{% comment_tree_for_object mediaclass as comments %}
 	{% for comment in comments %}
 		<div style="padding:15px;" class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
@@ -112,74 +93,52 @@
 		<div>Your editors have not made any comments yet.</div>
 	{% endif %}
 	{% if is_editor %}
-		<div>
-		<form action="{% url editorsdesk_update_status_multimedia mediaclass.id %}" class="uniForm" method="post">
-			
-			{% with editorcommentform.helper as helper %}
-			    {% uni_form editorcommentform helper %}
-			{% endwith %}
-			
+		<form action="{% url editorsdesk_update_status_multimedia mediaclass.id %}" method="post">
+			<textarea name="comment_body" id="comment_body" rows="8" cols="100"></textarea>
+			<br/>
+			<select name="story_status" id="story_status" style="float:left;width:150px;margin-right:20px;">
+				<option value="Pending Approval">Pending Approval</option>
+				<option value="Rejected" {% if story.status == "Rejected" %} selected {% endif %} >Rejected</option>
+				<option value="Approved" {% if story.status == "Approved" %} selected {% endif %} >Approved</option>
+			</select>
+			<input type="submit" value="Comment &rarr;">
 		</form>
-		</div>
 	{% endif %}
 </div>
+
 <div class="clear"></div>
 <br/>
 {% endif %}
 
-
 {% endblock %}
 
-
-
-
 {% block extra_styles %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/google.css" />
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/openlayers.css" />
 <link rel="stylesheet" href="{{ MEDIA_URL }}uni_form/uni-form-generic.css" type="text/css" />
 <link rel="stylesheet" href="{{ MEDIA_URL }}uni_form/uni-form.css" type="text/css" />
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}shadowbox/shadowbox.css">
-
 {% endblock %}
 
 {% block extra_scripts %}
-<script src='http://maps.google.com/maps?file=api&amp;v=2&amp;key={{ google_maps_api_key }}'></script>
-<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
-
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}uni_form/uni-form.jquery.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}ajax_validation/jquery-ajax-validation.js"></script>
 <script type="text/javascript" src="{{ MEDIA_URL }}ajax_validation/jquery-uni-form.js"></script>
-<script type="text/javascript" src="{{ MEDIA_URL }}shadowbox/shadowbox.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}templates/n21alpha/js/jsnippets.js"></script>
 {% endblock %}
 
-
 {% block inline_scripts %}
-	Shadowbox.init({overlayOpacity:0.90});
-	
-	var map;
-    function init() {
-        map = new OpenLayers.Map('map');
-		var lon = -98.6;
-		var lat = 38.5;
-		var zoom = 3;
-        var ghyb = new OpenLayers.Layer.Google(
-            "Google Hybrid",
-            {type: G_HYBRID_MAP, numZoomLevels: 20}
-        );
-		map.addLayers([ghyb]);
-        map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
-		
-		map.addControl(new OpenLayers.Control.MousePosition());
-		
-		var markers = new OpenLayers.Layer.Markers( "Markers" );
-		map.addLayer(markers);
+	$(function() {
+		{% if not mediaclass %}
+		$('#id_title').slugify('#id_slug');
+		{% endif %}
+	});
+    $(document).ready(function (){
+        {% comment %}
+		$('#profileform').validate('{% url validate_embed %}', { type: 'p' , fields: ['title','content','summary','slug'], callback: uniform_callback });
+		{% endcomment %}
+		$("a.helptip").parent(".formHint").click(function() {
+			var hid = $(this).attr('id');
+			window.open('/help#embed_'+hid.replace('hint_id_',''), '_blank');
+		});
 
-		var size = new OpenLayers.Size(32,32);
-		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-		var icon = new OpenLayers.Icon('http://maps.google.com/mapfiles/ms/micons/red-dot.png',size,offset);
-		markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lon, lat),icon));
-
-    }
-	
-	init();
+    });
 {% endblock %}

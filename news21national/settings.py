@@ -58,6 +58,7 @@ INSTALLED_APPS = (
 	'django.contrib.gis',
 	'django.contrib.admin',
 	'django.contrib.sites',
+	'django.contrib.markup',
 	#
 	'tagging',
 	'south',
@@ -93,8 +94,8 @@ INSTALLED_APPS = (
 	'news21ams.editorsdesk',
 	'news21ams.socialchecklist',
 	'news21ams.coderepo',
-	'news21ams.blog',
 	'news21ams.videos',
+	'news21ams.embed',
 	#
     'feincms',
 	'feincms.module.page',

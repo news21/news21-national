@@ -90,7 +90,12 @@ a:hover{color:#6F6F6F;text-decoration:underline}
 .icon-plaintext {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/page_white_text.png') no-repeat;display:block;width:16px;height:16px;}
 .icon-photo {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/photo.png') no-repeat;display:block;width:16px;height:16px;}
 .icon-audio {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/music.png') no-repeat;width:16px;height:16px;}
+.icon-embed {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/cog.png') no-repeat;width:16px;height:16px;}
+.icon-video {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/film.png') no-repeat;width:16px;height:16px;}
 .icon-add {float: left;padding-right:5px;margin:0px 0px 0px 5px;background:url('../images/add.png') no-repeat;display:block;width:16px;height:16px;}
+
+.flash-msg-ok {margin:0px 0px 0px 5px;background:url('../images/accept.png') no-repeat;display:block;width:16px;height:16px;}
+.flash-msg-alert {margin:0px 0px 0px 5px;background:url('../images/exclamation.png') no-repeat;display:block;width:16px;height:16px;}
 
 
 /*      */

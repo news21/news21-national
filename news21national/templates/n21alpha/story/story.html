@@ -8,15 +8,17 @@
 
 
 {% block content %}
-	
-	
-	<div class="grid_10">
+<div class="clear"></div>
+
+<div>
 <form action="{{ form_url }}" class="uniForm" method="post">
+<div class="grid_10">
 	<div class="genericForm contentheader">
 		<h4>Story Info</h4>
+		
 		{% if story_id %}
 			<div style="padding:5px;">
-				<span class="icon-{% if story.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> STATUS: {{story.status}} 
+				<span class="icon-{% if story.status == "Approved" %}accept{% else %}{% if story.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{story.status}}
 				<a href="#editorscomments">[View Editor's Comments]</a>
 			</div>
 		{% endif %}
@@ -102,10 +104,13 @@
 		<br/><br/>
 		
 		<h4>Suggested Publish Dates</h4>
-		<p>
-			<label>Publish Title & Dates:</label>
-			<input type="text" id="publishdatetitle" size="20"> between <input type="text" id="available_at" class="jcal"> - <input type="text" id="expires_at" class="jcal"> <input type="button" id="add_publishdate" value="+">
-		</p>
+		{% with pubdateform.helper as helper %}
+		    {% uni_form pubdateform helper %}
+		{% endwith %}
+		
+		<div align="right">
+			<input type="button" id="add_publishdate" value="Add Suggestion">
+		</div>
 		<div class="clear"></div>
 		<p>
 			<label>Current Suggestions:</label>
@@ -123,16 +128,16 @@
 		<div class="clear"></div>
 		<br/><br/>
 		
-		<h4>Story Geotags</h4>
+		<h4>Story Geotags (Reverse Inherited)</h4>
 		<div id="map" class="smallmap"></div>
 	</div>
-	</div>
+</div>
 	
-	<div class="grid_6">
+<div class="grid_6">
 	<div class="contentheader">
 		<h4>Story Assets</h4>
 		{% if story_id %}
-			<div>Add: <a href="{% url plaintext_new metastory_id story_id %}">Plain Text</a> | <!--<a href="{% url video_new metastory_id story_id %}">Video</a> | --> <a href="{% url photo_new metastory_id story_id %}">Photo</a> | <a href="{% url audio_new metastory_id story_id %}">Audio</a><!-- | <a href="">Gallery</a>--><!-- | <a href="{% url swf_new metastory_id story_id %}">SWF</a>--></div>
+			<div>Add: <a href="{% url plaintext_new metastory_id story_id %}">Plain Text</a> | <a href="{% url video_new metastory_id story_id %}">Video</a> | <a href="{% url photo_new metastory_id story_id %}">Photo</a> | <a href="{% url audio_new metastory_id story_id %}">Audio</a><!-- | <a href="">Gallery</a>--> | <a href="{% url embed_new metastory_id story_id %}">Embed</a></div>
 		{% else %}
 			<div>You have not created any media assets yet.</div>
 		{% endif %}
@@ -147,8 +152,14 @@
 			{% if asset.get_child_name == "audio" %}
 			<span class="icon-audio"></span><a href="{% url audio_edit metastory_id story_id asset.id %}">{{ asset }}</a>
 			{% endif %}
+			{% if asset.get_child_name == "video" %}
+			<span class="icon-video"></span><a href="{% url video_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
 			{% if asset.get_child_name == "swf" %}
 			<span class="icon-audio"></span><a href="{% url swf_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+			{% if asset.get_child_name == "embed" %}
+			<span class="icon-embed"></span><a href="{% url embed_edit metastory_id story_id asset.id %}">{{ asset }}</a>
 			{% endif %}
 			<br/>
 			<span class="icon-{% if asset.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> {{ asset.status }}
@@ -196,9 +207,10 @@
 		{% endfor %}
 		
 	</div>
-</form>
-	</div>
 
+</div>
+</form>
+</div>
 
 	<div class="clear"></div>
 	<br/>
@@ -207,7 +219,7 @@
 	<div class="grid_16 contentheader">
 		<br/>
 		<h4 id="editorscomments">Editor's Comments</h4>
-		<div><span class="icon-{% if story.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> STATUS: {{story.status}}</div>
+		<div><span class="icon-{% if story.status == "Approved" %}accept{% else %}{% if story.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{story.status}} : EDITING STAGE: {{story.stage}}</div>
 		{% comment_tree_for_object story as comments %}
 		{% for comment in comments %}
 			<div style="padding:15px;" class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
@@ -216,18 +228,14 @@
 			</div>
 		{% endfor %}
 		{% if comments.count == 0 %}
-			<div>Your editors have not made any comments yet.</div>
+			<div style="padding:10px;">Your editors have not made any comments yet.</div>
 		{% endif %}
 		{% if is_editor %}
-			<form action="{% url editorsdesk_update_status_story metastory_id story_id %}" method="post">
-				<textarea name="comment_body" id="comment_body" rows="8" cols="100"></textarea>
-				<br/>
-				<select name="story_status" id="story_status" style="float:left;width:150px;margin-right:20px;">
-					<option value="Pending Approval">Pending Approval</option>
-					<option value="Rejected" {% if story.status == "Rejected" %} selected {% endif %} >Rejected</option>
-					<option value="Approved" {% if story.status == "Approved" %} selected {% endif %} >Approved</option>
-				</select>
-				<input type="submit" value="Comment &rarr;">
+			<form action="{% url editorsdesk_update_status_story metastory_id story_id %}" class="uniForm" method="post">
+				
+				{% with editorcommentform.helper as helper %}
+				    {% uni_form editorcommentform helper %}
+				{% endwith %}
 			</form>
 		{% endif %}
 	</div>
@@ -259,21 +267,10 @@
 
 
 {% block inline_scripts %}
-	$(function() {
-		$("#available_at").datepicker();
-		$("#expires_at").datepicker();
-		
+	$(document).ready(function() {
 		{% if not story_id %}
-		jQuery('#id_headline').slugify('#id_slug');
+		$('#id_headline').slugify('#id_slug');
 		{% endif %}
-		
-		$("a.zoom").fancybox({
-			'overlayOpacity'	:	0.7,
-			'overlayColor'		:	'#FFF',
-			'zoomSpeedIn'		:	500,
-			'zoomSpeedOut'		:	500,
-			'overlayShow'		:	false
-		});
 	});
 	
 	
@@ -324,13 +321,26 @@
 	$(window).load(function () {
 		{% if story_id %}
 		$('#add_publishdate').click( function() {
-		  	$.post("{% url storypublishdate_create metastory_id story_id %}", { "title": $('#publishdatetitle').val() , "available_at": $('#available_at').val() , "expires_at": $('#expires_at').val() },
-			   function(data){
-				$("#current_suggested_dates").append('<div style="padding:2px;">'+$('#publishdatetitle').val()+' : '+$('#available_at').val()+'-'+$('#expires_at').val()+' </div>');
-				$('#publishdatetitle').val('');
-				$('#available_at').val('');
-				$('#expires_at').val('');
-			   }, "json");
+			if( $('#id_available_at_year').val() != 0 && 
+				$('#id_available_at_month').val() != 0 && 
+				$('#id_available_at_day').val() != 0 &&
+				$('#id_expires_at_year').val() != 0 && 
+				$('#id_expires_at_month').val() != 0 && 
+				$('#id_expires_at_day').val() != 0 ) {
+				// 06/02/2010
+			  	$.post("{% url storypublishdate_create metastory_id story_id %}", { "title": $('#id_title').val() , "available_at": $('#id_available_at_month').val() + '/' + $('#id_available_at_day').val() + '/' + $('#id_available_at_year').val() , "expires_at": $('#id_expires_at_month').val() + '/' + $('#id_expires_at_day').val() + '/' + $('#id_expires_at_year').val() },
+				   function(data){
+					$("#current_suggested_dates").append('<div style="padding:2px;">'+$('#id_title').val()+' : '+$('#id_available_at_month').val() + '/' + $('#id_available_at_day').val() + '/' + $('#id_available_at_year').val()+'-'+$('#id_expires_at_month').val() + '/' + $('#id_expires_at_day').val() + '/' + $('#id_expires_at_year').val()+' </div>');
+					$('#id_title').val('');
+					$('#id_available_at_year').val(0)
+					$('#id_available_at_month').val(0)
+					$('#id_available_at_day').val(0)
+					$('#id_expires_at_year').val(0)
+					$('#id_expires_at_month').val(0)
+					$('#id_expires_at_day').val(0)
+				   }, "json");
+			
+			}
 		});
 		{% endif %}
 		
