@@ -56,7 +56,7 @@
 			</div>
 			
 			<div class="ctrlHolder" id="div_id_geo_tags">
-				<label style="width:300px;">GeoTag: {{ geotag.point }}</label>
+				<label style="width:300px;">GeoTag:  <br/><span id="geotag_point">{{ geotag.point.x|default:"-98.6" }} , {{ geotag.point.y|default:"38.5" }}</span><input type="hidden" id="id_geo_tag_lat" name="geo_tag_lat" value="{{ geotag.point.y|default:"38.5" }}"><input type="hidden" id="id_geo_tag_lon" name="geo_tag_lon" value="{{ geotag.point.x|default:"-98.6" }}"></label>
 				<div class="inputDiv" style="margin-left:325px;">
 					<div id="map" class="smallmap"></div>
 				</div>
@@ -136,8 +136,9 @@
 	var map;
     function init() {
         map = new OpenLayers.Map('map');
-		var lon = -98.6;
-		var lat = 38.5;
+		var lon = {{ geotag.point.x|default:"-98.6" }};
+		var lat = {{ geotag.point.y|default:"38.5" }};
+		
 		var zoom = 3;
         var ghyb = new OpenLayers.Layer.Google(
             "Google Hybrid",
@@ -156,6 +157,14 @@
 		var icon = new OpenLayers.Icon('http://maps.google.com/mapfiles/ms/micons/red-dot.png',size,offset);
 		markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lon, lat),icon));
 
+		map.events.register("click", map, function(e) { 
+			markers.clearMarkers()
+			var lonlat = map.getLonLatFromViewPortPx(e.xy);
+			$("#geotag_point").html(lonlat.lon+' , '+lonlat.lat)
+			$("#id_geo_tag_lat").val(lonlat.lat)
+			$("#id_geo_tag_lon").val(lonlat.lon)
+			markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lonlat.lon,lonlat.lat),icon.clone()));
+		});
     }
 	
 	init();

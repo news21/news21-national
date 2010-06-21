@@ -127,7 +127,6 @@
 		
 		<div class="clear"></div>
 		<br/><br/>
-		
 		<h4>Story Geotags (Reverse Inherited)</h4>
 		<div id="map" class="smallmap"></div>
 	</div>
@@ -295,8 +294,31 @@
 		var size = new OpenLayers.Size(32,32);
 		var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
 		var icon = new OpenLayers.Icon('http://maps.google.com/mapfiles/ms/micons/red-dot.png',size,offset);
-		markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lon, lat),icon));
 
+		{% for tag in geotags %}
+		var marker_{{ tag.asset.id }} = new OpenLayers.Marker(new OpenLayers.LonLat({{ tag.geotag.point.x }},{{ tag.geotag.point.y }}),icon.clone());
+		markers.addMarker(marker_{{ tag.asset.id }});
+		marker_{{ tag.asset.id }}.events.register("mousedown", marker_{{ tag.asset.id }}, mousedown)
+		{% endfor %}
+		
+		function mousedown(evt) {
+			//popup.lonlat = map.getLonLatFromViewPortPx(evt.xy);
+			//popup.updatePosition()
+			//popup.toggle();
+			//OpenLayers.Event.stop(evt);
+		}
+		
+		popup  = new OpenLayers.Popup("asset",
+			new OpenLayers.LonLat(lon,lat),
+			new OpenLayers.Size(30,30),
+			"W"
+		);
+		popup.opacity = 1;
+		popup.panMapIfOutOfView = true;
+		popup.closeOnMove  = true;
+		map.addPopup(popup);
+		popup.hide();
+		
     }
 	
 	init();
