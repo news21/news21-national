@@ -35,51 +35,47 @@
 		    {% uni_form form helper %}
 		{% endwith %}
 
-		<p>
-			<label for="id_authors">Byline:</label>
-			<select name="authors" id="id_authors" multiple size="8">
-				{% for member in newsrooms_members %}
-					<option {% for author in authors %} {% if member == author %} selected {% endif %} {% endfor %}  value="{{member.id}}">{{ member }} ( {%for newsroom in member.newsroom_members.all%} {{ newsroom }} {% endfor %} ) </option>
+		<fieldset class="inlineLabels">
+			<div class="ctrlHolder " id="div_id_authors">
+				<label for="id_authors">Authors:</label>
+				<select name="authors" id="id_authors" class="selectmultiple" multiple="true" size="8">
+					{% for member in newsrooms_members %}
+						<option {% for author in authors %} {% if member == author %} selected {% endif %} {% endfor %}  value="{{member.id}}">{{ member }} ( {%for newsroom in member.newsroom_members.all%} {{ newsroom }} {% endfor %} ) </option>
+					{% endfor %}
+				</select>
+			</div>
+		
+			<div class="ctrlHolder " id="div_id_inherited_tags">
+				<label style="padding-top:9px;">Inherited Tags:</label>
+				<span class="inputDiv" id="inherited_tags"></span>
+			</div>
+			<div class="ctrlHolder " id="div_id_tags">
+				<label>Tags:</label>
+				<div class="inputDiv" style="margin-left:48%;">
+				{% for tag in tags %}
+					<input type="checkbox" name="tag_{{tag.id}}" value="{{tag}}" id="tag_{{tag.id}}" {% for used_tag in used_tags %} {% if tag == used_tag %} checked="true" {% endif %} {% endfor %}  /> {{tag}}
+					{% if forloop.counter|divisibleby:2 %}<br/>{% endif %}
 				{% endfor %}
-			</select>
-		</p>
-		<p>
-			<label>Inherited Tags:</label>
-			<span class="inputDiv" id="inherited_tags">{% for tag in inherited_tags %} <span class="tag">{{tag}}</span> {% endfor %}</span>
-		</p>
-	
-		<div class="clear"></div>
-	
-		<p>
-			<label>Tags:</label>
-			<span class="inputDiv">
-			{% for tag in tags %}
-				<input type="checkbox" name="tag_{{tag.id}}" value="{{tag}}" id="tag_{{tag.id}}"  {% for used_tag in used_tags %} {% if tag.id == used_tag.id %} checked {% endif %} {% endfor %} > {{tag}}
-				{% if forloop.counter|divisibleby:4 %}<br/>{% endif %}
-			{% endfor %}
-			</span>
-		</p>
-	
-		<div class="clear"></div>
-		<br/>
-	
-		<p>
-			<label>Flickr Description:</label>
-			<span class="inputDiv">
-				<textarea name="flickr_description" id="flickr_description" rows="8" cols="40">{{ flickr_payload.blurb }}</textarea>
-				<br/>
-				<span id="charlimitflickr"></span>
-			</span>
-		</p>
-	
-		<div class="clear"></div>
-		<br/>
-	
-		<p>
-			<label>GeoTag:  <br/><span id="geotag_point">{{ geotag.point.x|default:"-98.6" }} , {{ geotag.point.y|default:"38.5" }}</span><input type="hidden" id="id_geo_tag_lat" name="geo_tag_lat" value="{{ geotag.point.y|default:"38.5" }}"><input type="hidden" id="id_geo_tag_lon" name="geo_tag_lon" value="{{ geotag.point.x|default:"-98.6" }}"></label>
-			<div id="map" class="smallmap"></div>
-		</p>
-	
+				</div>
+			</div>
+		</fieldset>
+		
+		<fieldset class="inlineLabels">
+			<div class="ctrlHolder" id="div_id_geo_tags">
+				<label style="width:50px;">GeoTag:  <br/><span id="geotag_point">{{ geotag.point.x|default:"-98.6" }} , {{ geotag.point.y|default:"38.5" }}</span><input type="hidden" id="id_geo_tag_lat" name="geo_tag_lat" value="{{ geotag.point.y|default:"38.5" }}"><input type="hidden" id="id_geo_tag_lon" name="geo_tag_lon" value="{{ geotag.point.x|default:"-98.6" }}"></label>
+				<div class="inputDiv" style="margin-left:65px;">
+					<div id="map" class="smallmap"></div>
+				</div>
+			</div>
+		</fieldset>
+		
+		<fieldset class="inlineLabels">
+			<div class="ctrlHolder" id="div_id_flickr_description">
+				<label for="id_flickr_description">Flickr Description:<br/><span id="charlimitflickr"></span></label>
+				<textarea name="flickr_description" id="id_flickr_description">{{ flickr_payload.blurb }}</textarea>
+			</div>
+		</fieldset>
+		
 		<div class="clear"></div>
 		<br/>
 	
@@ -235,7 +231,6 @@
         map = new OpenLayers.Map('map');
 		var lon = {{ geotag.point.x|default:"-98.6" }};
 		var lat = {{ geotag.point.y|default:"38.5" }};
-		
 		var zoom = 3;
         var ghyb = new OpenLayers.Layer.Google(
             "Google Hybrid",
