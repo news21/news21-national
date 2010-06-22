@@ -79,8 +79,8 @@
 			<span class="icon-{% if package.status == "Approved" %}accept{% else %}{% if package.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> <a href="{% url editorsdesk_review_metastory package.id %}">{{package}}</a>
 		</div>
 		{% endfor %}
-		{% if pending_assets.count == 0 %}
-			<div>You have not created any pending assets yet.</div>
+		{% if metastories.count == 0 %}
+			<div>You have not created any packages yet.</div>
 		{% endif %}
 	</div>
 </div>
