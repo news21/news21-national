@@ -100,9 +100,10 @@
 			<li style="list-style-type:none;">Height : {{ image.get_height }}</li>
 			<li style="list-style-type:none;">URL : <a href="{{ image.get_original_url }}" target="_blank">{{ image.get_original_url }}</a></li>
 		</ul>
+		{% comment %}
 		Image Metadata
 		<ul>
-			{% try %}
+			
 			{% for key,value in image.get_info.items %}
 			<li style="list-style-type:none;">{{ key }} : {{ value }}</li>
 			{% endfor %}
@@ -112,10 +113,9 @@
 			<strong>You should really give your images metadata!</strong>
 			{% endifequal %}
 			
-			{% except %}
-			<strong>There was an error reading metadata!</strong>
-			{% endtry %}
+			
 		</ul>
+		{% endcomment %}
 	</div>
 	{% endif %}
 </div>
