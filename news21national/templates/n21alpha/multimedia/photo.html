@@ -102,13 +102,19 @@
 		</ul>
 		Image Metadata
 		<ul>
+			{% try %}
 			{% for key,value in image.get_info.items %}
 			<li style="list-style-type:none;">{{ key }} : {{ value }}</li>
 			{% endfor %}
 			
+			
 			{% ifequal image.get_info.items|length 0 %}
 			<strong>You should really give your images metadata!</strong>
 			{% endifequal %}
+			
+			{% except %}
+			<strong>There was an error reading metadata!</strong>
+			{% endtry %}
 		</ul>
 	</div>
 	{% endif %}
