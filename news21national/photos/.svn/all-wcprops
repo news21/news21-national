@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/802/branches/pinax/newsroom_project/apps/photos
+END
+admin.py
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/475/branches/pinax/newsroom_project/apps/photos/admin.py
+END
+views.py
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/777/branches/pinax/newsroom_project/apps/photos/views.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/395/branches/pinax/newsroom_project/apps/photos/__init__.py
+END
+ik_specs.py
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/732/branches/pinax/newsroom_project/apps/photos/ik_specs.py
+END
+models.py
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/802/branches/pinax/newsroom_project/apps/photos/models.py
+END
+urls.py
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/732/branches/pinax/newsroom_project/apps/photos/urls.py
+END
+forms.py
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/!svn/ver/408/branches/pinax/newsroom_project/apps/photos/forms.py
+END

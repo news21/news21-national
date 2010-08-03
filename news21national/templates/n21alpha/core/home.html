@@ -54,12 +54,12 @@
 		{% endcomment %}
 		
 		{% block extra_styles %}
-		<link rel="stylesheet" href="{{ MEDIA_URL }}templates/n21alpha/css/openid.css" />
+		<link rel="stylesheet" href="{{ MEDIA_URL }}templates/{{ SITE_STYLE }}/css/openid.css" />
 		{% endblock %}
 
 		{% comment %}
 		{% block extra_scripts %}
-		<script type="text/javascript" src="{{ MEDIA_URL }}templates/n21alpha/js/openid-jquery.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}templates/{{ SITE_STYLE }}/js/openid-jquery.js"></script>
 		<script type="text/javascript">
 		$(document).ready(function() {
 		    openid.init('id_openid_url');

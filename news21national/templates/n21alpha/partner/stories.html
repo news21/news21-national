@@ -1,4 +1,4 @@
-{% extends "story/base.html" %}
+{% extends "partner/base.html" %}
 
 
 {% load i18n %}
@@ -7,13 +7,18 @@
 
 
 {% block content %}
-<div class="grid_16"><h3>Stories Filtered : {{ filter }}</h3></div>
-
+<div class="grid_16">
+	<h3>Stories Filtered : {{ filter }}</h3>
+	<div class="api-doc">
+		API FORMATS : <strong>JSON , XML</strong>
+		<span style="padding-left:30px;">API DOCS : <strong><a href="/api-docs/list-stories-by-{{ filtertype }}">List Stories By {{ filtertype|capfirst }}</a></strong></span>
+	</div>
+</div>
 	<div class="grid_16">
 		{% for story in stories %}
 			<div>
 				{{story.metastory}}
-				<h4><a href="{% url partner_story_budget story.id %}">{{ story }}</a></h4>
+				<h5><a href="{% url partner_story_budget story.id %}">{{ story }}</a></h5>
 			</div>
 		{% endfor %}
 	</div>

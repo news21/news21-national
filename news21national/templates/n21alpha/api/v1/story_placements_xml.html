@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<placements version="1.0">
+	{% for placement in placements %}
+	<placement>
+		<date_ran>{{ placement.story_ran }}</date_ran>
+		<partner>{{ placement.partner }}</partner>
+		<url>{{ placement.placement_url }}</date_ran>
+		<url_active>{{ placement.url_active }}</date_ran>
+	</placement>
+	{% endfor %}
+</placements>

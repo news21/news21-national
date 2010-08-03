@@ -119,7 +119,7 @@
 				<div style="padding:2px;">{{pdate.title}} : {{pdate.available_at|date:"M d, Y"}}-{{pdate.expires_at|date:"M d, Y"}} </div>
 				{% endfor %}
 				{% comment %}
-				<a href="##"><img src="{{MEDIA_URL}}templates/n21alpha/images/cross.png" style="vertical-align: middle;" ></a>
+				<a href="##"><img src="{{MEDIA_URL}}templates/{{ SITE_STYLE }}/images/cross.png" style="vertical-align: middle;" ></a>
 				{% endcomment %}
 			</span>
 		</p>
@@ -247,8 +247,8 @@
 
 
 {% block extra_styles %}
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/google.css" />
-<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/openlayers.css" />
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/{{ SITE_STYLE }}/css/google.css" />
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/{{ SITE_STYLE }}/css/openlayers.css" />
 
 <link rel="stylesheet" href="{{ MEDIA_URL }}uni_form/uni-form-generic.css" type="text/css" />
 <link rel="stylesheet" href="{{ MEDIA_URL }}uni_form/uni-form.css" type="text/css" />

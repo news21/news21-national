@@ -1,0 +1,124 @@
+8
+
+dir
+1022
+http://django-newsroom.googlecode.com/svn/branches/pinax/newsroom_project/apps/photos
+http://django-newsroom.googlecode.com/svn
+
+
+
+2009-07-10T18:11:49.658327Z
+802
+mandric
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+8e7a9df6-a9d9-11dd-9f94-e5dfbee8a4f1
+
+admin.py
+file
+
+
+
+
+2009-09-30T16:39:13.000000Z
+03ad987be2707ad20d03a7675ce70e22
+2009-05-16T13:31:50.889298Z
+475
+yann.malet
+
+tests
+dir
+
+views.py
+file
+
+
+
+
+2009-09-30T16:39:13.000000Z
+b2c8c2bf44cfb65c435aa06035da550a
+2009-07-05T18:46:55.096563Z
+777
+mandric
+
+__init__.py
+file
+
+
+
+
+2009-09-30T16:39:13.000000Z
+494adc953a538cb16cdb0e39c6e43e1c
+2009-05-07T20:21:11.339718Z
+395
+mandric
+
+ik_specs.py
+file
+
+
+
+
+2009-09-30T16:39:13.000000Z
+1b44f06337a3a0013f9a297f0a325c27
+2009-06-18T04:03:39.042069Z
+732
+mandric
+
+fixtures
+dir
+
+templatetags
+dir
+
+models.py
+file
+
+
+
+
+2009-09-30T16:39:13.000000Z
+855683d1dfd97078a8ee6047ac68cbbd
+2009-07-10T18:11:49.658327Z
+802
+mandric
+
+urls.py
+file
+
+
+
+
+2009-09-30T16:39:13.000000Z
+0d02b956216fc12db7c615de6965de72
+2009-06-18T04:03:39.042069Z
+732
+mandric
+
+forms.py
+file
+
+
+
+
+2009-09-30T16:39:13.000000Z
+3d8944548efb73ce48494d601ccb33b9
+2009-05-10T21:12:16.310443Z
+408
+mandric
+
+templates
+dir
+

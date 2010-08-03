@@ -91,7 +91,7 @@ var openid = {
   cookie_name: 'openid_provider',
   cookie_path: '/',
 
-  img_path: '/media/templates/n21alpha/images/',
+  img_path: '/media/templates/{{ SITE_STYLE }}/images/',
 
   input_id: null,
   provider_url: null,

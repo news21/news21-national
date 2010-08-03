@@ -13,11 +13,12 @@ from django.core.files.base import ContentFile
 
 from news21national.core.forms import ProfileForm
 from news21national.core.models import Profile
-from news21ams.editorsdesk.models import EditorsDesk
-from news21ams.newsroom.models import Newsroom
-from news21ams.partner.models import Partner, PartnerForm
-from news21ams.story.models import MetaStory, Story
-from news21ams.multimedia.models import Media
+from news21national.editorsdesk.models import EditorsDesk
+from news21national.partner.models import Partner
+from news21national.partner.forms import PartnerForm
+from news21national.newsroom.models import Newsroom
+from news21national.story.models import MetaStory, Story
+from news21national.multimedia.models import Media
 from news21national.core.constants import ETHNICITIES, DEGREE_TYPES, DEGREE_AREAS
 from uni_form.helpers import FormHelper, Submit, Reset
 
@@ -122,13 +123,18 @@ def user_accountpending(request):
 
 
 @login_required
-def get_newsroom_roster(request,newsroom_id):
+def get_newsroom_roster(request,newsroom_id,template="core/newsroom.html"):
 	try: 
 		n = Newsroom.objects.get(pk=newsroom_id)
 	except Newsroom.DoesNotExist:
 		return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
 
 	roster = Profile.objects.filter(user__in=n.members.values_list('id',flat=True)).distinct().order_by('last_name')
-	print n.name
 	breadcrumb = [ {'title':n,'url':reverse('user_newsroom_roster', args=[newsroom_id])} ]
-	return render_to_response("core/newsroom.html", {'newsroom_roster':roster,'newsroom':n,'breadcrumb':breadcrumb}, context_instance=RequestContext(request))
+	return render_to_response(template, {'bios':roster,'newsroom':n,'breadcrumb':breadcrumb}, context_instance=RequestContext(request))
+
+@login_required
+def get_reporter_bio(request,reporter_id,template="core/newsroom.html"):
+	roster = Profile.objects.filter(user=reporter_id)
+	breadcrumb = [ {'title':'Bio','url':''} ]
+	return render_to_response(template, {'bios':roster,'breadcrumb':breadcrumb}, context_instance=RequestContext(request))

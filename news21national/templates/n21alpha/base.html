@@ -10,11 +10,11 @@
         <meta http-equiv="X-XRDS-Location" content="http://{{ request.get_host }}{% url oid_xrdf %}" />
         {% endif %}
 
-		<link rel="shortcut icon" href="{{ MEDIA_URL }}templates/n21alpha/images/favicon.ico"/>
-        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/960.css" />
-        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/reset.css" />
-        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/text.css" />
-        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/n21alpha/css/style.css" />
+		<link rel="shortcut icon" href="{{ MEDIA_URL }}templates/{{ SITE_STYLE }}/images/favicon.ico"/>
+        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/{{ SITE_STYLE }}/css/960.css" />
+        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/{{ SITE_STYLE }}/css/reset.css" />
+        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/{{ SITE_STYLE }}/css/text.css" />
+        <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}templates/{{ SITE_STYLE }}/css/style.css" />
 		
 		<link rel="stylesheet" href="http://assets.news21.com/2010/news21skin.css" type="text/css" media="all" />
 		
@@ -72,7 +72,7 @@
 		
 		
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
-		<script type="text/javascript" src="{{ MEDIA_URL }}templates/n21alpha/js/jsnippets.js"></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}templates/{{ SITE_STYLE }}/js/jsnippets.js"></script>
 		<script type="text/javascript" src="http://assets.news21.com/2010/news21tooltip.js"></script>
 		
 		<script type="text/javascript" src="http://assets.news21.com/2010/news21skin.js"></script>

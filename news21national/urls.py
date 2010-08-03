@@ -25,11 +25,14 @@ urlpatterns = patterns(
 	
 	url(r'^dashboard/', 'news21national.core.views.dashboard',	name='user_dashboard'),
 	
-	(r'^editorsdesk/',include('news21ams.editorsdesk.urls')),
-	(r'^newsroom/',include('news21ams.newsroom.urls')),
-	(r'^partner/',include('news21ams.partner.urls')),
-	(r'^builder/',include('news21ams.story.urls')),
-	(r'^api/',include('news21ams.api.urls')),
+	(r'^editorsdesk/',include('news21national.editorsdesk.urls')),
+	(r'^partner/',include('news21national.partner.urls')),
+	
+	(r'^bundle/',include('news21national.bundle.urls')),
+	(r'^newsroom/',include('news21national.newsroom.urls')),
+	(r'^builder/',include('news21national.story.urls')),
+	(r'^api/',include('news21national.api.urls')),
+	
 	(r'^messages/', include('django_messages.urls')),
 	(r"^announcements/", include("announcements.urls")),
 	(r'^avatar/', include('avatar.urls')),

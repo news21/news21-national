@@ -30,11 +30,14 @@ a:hover{color:#6F6F6F;text-decoration:underline}
 #header { background:url('../images/n21_header_bg.png') no-repeat; height:39px; }
 
 
-.breadcrumb { font-size:12px; border-top:1px solid #DFDFDF; border-bottom:1px solid #DFDFDF; padding:4px 0px 4px 0px; background-color:#EFEFEF; margin-bottom:10px; }
+.breadcrumb { font-size:12px; border-top:1px solid #DFDFDF; border-bottom:1px solid #DFDFDF; padding:4px 10px 4px 10px; background-color:#EFEFEF; margin-bottom:10px; }
 	.breadcrumb-trail { padding:0px 10px 0px 10px; }
     .breadcrumb a, a:link { color:#F49900; text-decoration:underline; }
     .breadcrumb #current { color:#6F6F6F; text-decoration:none; font-weight:bold; }
 
+.api-doc { font-size:12px; border-top:1px solid #DFDFDF; border-bottom:1px solid #DFDFDF; padding:4px 10px 4px 10px; background-color:#EFEFEF; margin-bottom:10px; }
+	.api-doc a, a:link { color:#F49900; text-decoration:underline; }
+	.api-doc a, a:link { color:#F49900; text-decoration:underline; }
 
 .contentbody { background-color:#fff; padding:10px 10px 20px 10px; min-height:360px; }
 .contentheader { padding:0px 10px 0px 10px; }

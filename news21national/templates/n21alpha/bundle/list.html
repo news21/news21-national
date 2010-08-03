@@ -1,0 +1,22 @@
+{% extends "bundle/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+
+{% block content %}
+
+	<div class="grid_16">
+		<h3>Budget Bundle: {{bundle}}</h3>
+		{% for story in stories %}
+			<div>{{story.primary_image}}</div>
+			<div>
+				{{story.metastory}}
+				<h5>{{ story }}</h5>
+				{{story.summary}}
+			</div>
+			<br/><br/>
+		{% endfor %}
+	</div>
+
+{% endblock %}

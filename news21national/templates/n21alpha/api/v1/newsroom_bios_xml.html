@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bios version="1.0">
+	{% for bio in bios %}
+	<bio>
+		<id>{{ bio.id }}</id>
+		<name>{{ bio.first_name }} {{ bio.last_name }}</id>
+		<bio>{{ bio.bio }}</bio>
+		<twitter>{% if profile.twitter_public %}{{ bio.twitterid }}{% endif %}</twitter>
+		<linkedin>{% if profile.linkedin_public %}{{ bio.linkedinid }}{% endif %}</linkedin>
+		<facebook>{% if profile.facebook_public %}{{ bio.facebookid }}{% endif %}</facebook>
+	</bio>
+	{% endfor %}
+</placements>

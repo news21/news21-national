@@ -1,0 +1,29 @@
+{% extends "partner/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+
+
+{% block content %}
+	<div class="grid_16">
+		<h3>Package Budget</h3>
+		<div class="api-doc">
+			API FORMATS : <strong>JSON , XML</strong>
+			<span style="padding-left:30px;">API DOCS : <strong><a href="/api-docs/package-budget">Package Budget</a></strong></span>
+		</div>
+		
+		<br/><br/>
+		
+		<h4>Package Stories</h4>
+		<div class="api-doc">
+			API FORMATS : <strong>JSON , XML</strong>
+			<span style="padding-left:30px;">API DOCS : <strong><a href="/api-docs/package-stories">Package Stories</a></strong></span>
+		</div>
+		{% for story in stories %}
+		<div>
+			<h5><a href="{% url partner_story_budget story.id %}">{{story}}</a></h5>
+		</div>
+		{% endfor %}
+	</div>
+{% endblock %}
