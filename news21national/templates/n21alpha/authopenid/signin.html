@@ -39,7 +39,6 @@
 		<div class="form-row"><label for="id_username">{% trans "Username:" %}</label><br />{{ form2.username }}</div>
 		<div class="form-row"><label for="id_password">{% trans "Password" %}</label><br />{{ form2.password }}</div>
 		<div style="margin:6px;"><a href="{% url auth_password_reset %}">{% trans "Forgot your password?" %}</a></div>
-		
         <div class="submit-row"><input type="submit" name="blogin" value="{% trans "Sign in" %}"> </div>
 	</fieldset>	
 </form>
