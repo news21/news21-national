@@ -38,5 +38,3 @@ class Newsroom(models.Model):
 
     def get_tags(self):
         return Tag.objects.get_for_object(self)
-        
-    

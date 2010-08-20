@@ -120,7 +120,14 @@ class Story(models.Model):
 			if gtag is not None:
 				gtags.append({'asset':asset.get_child_name,'geotag':gtag})
 		return gtags
-
+	
+	def get_newsrooms(self):
+		ns = MetaStory.objects.get(pk=self.metastory.id).newsrooms.values_list('short_name',flat=True).order_by('short_name')
+		s = []
+		for n in ns:
+			s.append(n)
+		return ''.join(s)
+	newsrooms = property(get_newsrooms)
 
 class StoryPublishDate(models.Model):
 	story = models.ForeignKey(Story)
