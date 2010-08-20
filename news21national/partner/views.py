@@ -75,22 +75,25 @@ def generate_api_key(request,partner_id):
 def filter_stories_by_newsroom(request,newsroom_id):
 	flabel = Newsroom.objects.get(pk=newsroom_id)
 	stories = Story.objects.filter(metastory__newsrooms=newsroom_id).order_by('metastory').order_by('headline')
+	images = Media.children.filter(id__in=stories.values_list('primary_image',flat=True),_child_name="photo",status="Approved")
 	breadcrumb = [ {'title':'Filter by Newsroom','url':''} ]
-	return render_to_response( "partner/stories.html", {'breadcrumb':breadcrumb,'filter':flabel,'filtertype':'newsroom','stories':stories}, context_instance=RequestContext(request))
+	return render_to_response( "partner/stories.html", {'breadcrumb':breadcrumb,'filter':flabel,'filtertype':'newsroom','stories':stories,'images':images}, context_instance=RequestContext(request))
 
 @login_required
 def filter_stories_by_reporter(request,reporter_id):
 	flabel = auth.User.objects.get(pk=reporter_id)
 	stories = Story.objects.filter(authors=reporter_id).order_by('metastory').order_by('headline')
+	images = Media.children.filter(id__in=stories.values_list('primary_image',flat=True),_child_name="photo",status="Approved")
 	breadcrumb = [ {'title':'Filter by Author','url':''} ]
-	return render_to_response( "partner/stories.html", {'breadcrumb':breadcrumb,'filter':flabel,'filtertype':'author','stories':stories}, context_instance=RequestContext(request))
+	return render_to_response( "partner/stories.html", {'breadcrumb':breadcrumb,'filter':flabel,'filtertype':'author','stories':stories,'images':images}, context_instance=RequestContext(request))
 
 @login_required
 def filter_stories_by_tag(request,tag_name):
 	flabel = tag_name
 	stories = TaggedItem.objects.get_by_model(Story,tag_name)
+	images = Media.children.filter(id__in=stories.values_list('primary_image',flat=True),_child_name="photo",status="Approved")
 	breadcrumb = [ {'title':'Filter by Category','url':''} ]
-	return render_to_response( "partner/stories.html", {'breadcrumb':breadcrumb,'filter':flabel,'filtertype':'category','stories':stories}, context_instance=RequestContext(request))
+	return render_to_response( "partner/stories.html", {'breadcrumb':breadcrumb,'filter':flabel,'filtertype':'category','stories':stories,'images':images}, context_instance=RequestContext(request))
 
 @login_required
 def filter_stories_by_year(request,year):

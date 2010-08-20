@@ -204,7 +204,8 @@ class Photo(Media):
 	
 	def get_thumbnail_url(self):
 		return self.image.thumbnail.url
-
+	thumb_url = property(get_thumbnail_url)
+	
 	def get_tiny_thumbnail_url(self):
 		return self.image.tiny_thumbnail.url
 
@@ -216,6 +217,7 @@ class Photo(Media):
 
 	def get_original_url(self):
 		return self.image.image.url
+	img_url = property(get_original_url)
 
 	def get_render_url(self):
 		return reverse('multimedia_preview', args=[self.id])

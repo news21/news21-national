@@ -20,7 +20,7 @@
 			<div>
 				{% for image in images %}
 					{% if story.primary_image == image.id %}
-						<img src="{{ image }}">
+						<img src="{{ image.get_thumbnail_url }}">
 					{% endif %}
 				{% endfor %}
 				{{story.metastory}}
