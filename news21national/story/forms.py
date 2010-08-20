@@ -12,7 +12,7 @@ class MetaStoryForm(forms.ModelForm):
 
 	layout = Layout(
 		Fieldset('',
-			'newsrooms','headline','slug','original_url','summary','interest',
+			'newsrooms','headline','slug','original_url','summary','process','interest',
 			css_class='inlineLabels',),
 	)
 
@@ -28,7 +28,7 @@ class StoryForm(forms.ModelForm):
 
 	layout = Layout(
 		Fieldset('',
-			'headline','slug','original_url','summary',
+			'headline','slug','original_url','summary','process',
 			css_class='inlineLabels',),
 	)
 
