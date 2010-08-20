@@ -333,3 +333,14 @@ def remove_publishdate(request,metastory_id,story_id,publish_id):
 		response_dict.update({'success': False})
 	
 	return HttpResponse(simplejson.dumps(response_dict), mimetype='application/json')
+
+@login_required
+def get_metastory_status(request,metastory_id,template_name="story/story_status.html"):
+	response_dict = {}
+
+	metastory = get_object_or_404(MetaStory, pk=metastory_id)
+	stories = Story.objects.filter(metastory__id=metastory_id).order_by('headline')
+	assets = Media.children.filter(story__in=stories.values_list('id',flat=True))
+	
+	breadcrumb = [ {'title':metastory,'url':reverse('metastory_edit', args=[metastory_id])} , {'title':'Bulk Status','url':''} ]
+	return render_to_response(template_name, {'breadcrumb':breadcrumb,'metastory':metastory,'stories':stories,'assets':assets}, context_instance=RequestContext(request))

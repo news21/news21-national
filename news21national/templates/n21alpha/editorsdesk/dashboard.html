@@ -76,7 +76,7 @@
 		<h4 class="module-header">Story Packages <a href="{% url metastory_new %}">[+]</a></h4>
 		{% for package in metastories %}
 		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-			<span class="icon-{% if package.status == "Approved" %}accept{% else %}{% if package.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> <a href="{% url editorsdesk_review_metastory package.id %}">{{package}}</a>
+			<span class="icon-{% if package.status == "Approved" %}accept{% else %}{% if package.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> <a href="{% url editorsdesk_review_metastory package.id %}">{{package}}</a> <a href="{% url metastory_status package.id %}">[status update]</a>
 		</div>
 		{% endfor %}
 		{% if metastories.count == 0 %}

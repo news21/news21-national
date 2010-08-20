@@ -7,6 +7,7 @@ urlpatterns = patterns ('news21national.story.views',
     url(r'^package/create/$','save_metastory',name='metastory_create'),
     url(r'^package/(?P<metastory_id>\d+)/$','get_metastory',name='metastory_edit'),
     url(r'^package/(?P<metastory_id>\d+)/update/$','save_metastory',name='metastory_update'),
+    url(r'^package/(?P<metastory_id>\d+)/status/$','get_metastory_status',name='metastory_status'),
     
     url(r'^package/(?P<metastory_id>\d+)/story/$','get_story',name='story_new'),
     url(r'^package/(?P<metastory_id>\d+)/story/create/$','save_story',name='story_create'),

@@ -96,8 +96,9 @@ def filter_stories_by_tag(request,tag_name):
 def filter_stories_by_year(request,year):
 	flabel = str(year)
 	stories = Story.objects.filter(created_at__year=year).order_by('metastory').order_by('headline')
+	images = Media.children.filter(id__in=stories.values_list('primary_image',flat=True),_child_name="photo",status="Approved")
 	breadcrumb = [ {'title':'Filter by Year','url':''} ]
-	return render_to_response( "partner/stories.html", {'breadcrumb':breadcrumb,'filter':flabel,'filtertype':'year','stories':stories}, context_instance=RequestContext(request))
+	return render_to_response( "partner/stories.html", {'breadcrumb':breadcrumb,'filter':flabel,'filtertype':'year','stories':stories,'images':images}, context_instance=RequestContext(request))
 
 
 

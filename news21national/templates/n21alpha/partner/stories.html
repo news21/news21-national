@@ -16,7 +16,13 @@
 </div>
 	<div class="grid_16">
 		{% for story in stories %}
+			
 			<div>
+				{% for image in images %}
+					{% if story.primary_image == image.id %}
+						<img src="{{ image }}">
+					{% endif %}
+				{% endfor %}
 				{{story.metastory}}
 				<h5><a href="{% url partner_story_budget story.id %}">{{ story }}</a></h5>
 			</div>
