@@ -71,7 +71,7 @@
 	<div>
 		{% for pdata in profiles_data %}
 			<h4>{{ pdata.account }}</h4>
-			
+			{% comment %}
 			{% chart as c %}
 				{% chart-data pdata.chart_data %}
 				{% chart-type "line" %}
@@ -86,8 +86,9 @@
 			    {% endaxis %}
 			{% endchart %}
 			{% chart-line-style 3 6 3 %}
-	
+			
 			<img src="{{ c.url }}" width="800" height="250" />
+			{% endcomment %}
 			
 			<table border="0" width="800" cellspacing="0" cellpadding="0">
 				<tr>
