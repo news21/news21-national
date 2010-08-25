@@ -130,7 +130,7 @@ def save_plaintext(request,metastory_id,story_id,multimedia_id=None):
 			tags = Tag.objects.exclude(id__in=inherited_tag_ids)
 			used_tags = multimedia._get_tags()
 
-			breadcrumb = [ {'title':metastory,'url':reverse('metastory_edit', args=[metastory_id])} , {'title':story,'url':reverse('story_edit', args=[metastory_id,story_id])} , {'title':multimedia,'url':''} ]
+			breadcrumb = [ {'title':metastory,'url':reverse('metastory_edit', args=[metastory_id])} , {'title':story,'url':reverse('story_edit', args=[metastory_id,story_id])} , {'title':'Plain Text','url':''} ]
 			return render_to_response("multimedia/plaintext.html", {'breadcrumb':breadcrumb,'form':form,'newsrooms_members':members,'authors':authors,'inherited_tags':inherited_tags,'tags':tags,'used_tags':used_tags,'status':multimedia.status,'form_url':reverse('plaintext_update', args=[metastory_id,story_id,multimedia_id])}, context_instance=RequestContext(request))
 			
 	else:
