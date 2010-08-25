@@ -86,8 +86,10 @@ def save_plaintext(request,metastory_id,story_id,multimedia_id=None):
 		story = get_object_or_404(Story, pk=story_id, metastory=metastory)
 		if multimedia_id:
 			multimedia = get_object_or_404(PlainText, pk=multimedia_id, story=story)
+			form_url = reverse('plaintext_update', args=[metastory_id,story_id,multimedia_id])
 		else:
 			multimedia = PlainText(created_by = request.user, story=story, created_at = datetime.now())
+			form_url = reverse('plaintext_create', args=[metastory_id,story_id])
 
 		multimedia.updated_by = request.user
 		multimedia.updated_at = datetime.now()
@@ -131,7 +133,7 @@ def save_plaintext(request,metastory_id,story_id,multimedia_id=None):
 			used_tags = multimedia._get_tags()
 
 			breadcrumb = [ {'title':metastory,'url':reverse('metastory_edit', args=[metastory_id])} , {'title':story,'url':reverse('story_edit', args=[metastory_id,story_id])} , {'title':'Plain Text','url':''} ]
-			return render_to_response("multimedia/plaintext.html", {'breadcrumb':breadcrumb,'form':form,'newsrooms_members':members,'authors':authors,'inherited_tags':inherited_tags,'tags':tags,'used_tags':used_tags,'status':multimedia.status,'form_url':reverse('plaintext_update', args=[metastory_id,story_id,multimedia_id])}, context_instance=RequestContext(request))
+			return render_to_response("multimedia/plaintext.html", {'breadcrumb':breadcrumb,'form':form,'newsrooms_members':members,'authors':authors,'inherited_tags':inherited_tags,'tags':tags,'used_tags':used_tags,'status':multimedia.status,'form_url':form_url}, context_instance=RequestContext(request))
 			
 	else:
 		return HttpResponseRedirect( settings.LOGIN_REDIRECT_URL )
