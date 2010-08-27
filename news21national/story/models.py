@@ -120,7 +120,7 @@ class Story(models.Model):
 			if gtag is not None:
 				gtags.append({'asset':asset.get_child_name,'geotag':gtag})
 		return gtags
-	
+
 	def get_newsrooms(self):
 		ns = MetaStory.objects.get(pk=self.metastory.id).newsrooms.values_list('short_name',flat=True).order_by('short_name')
 		s = []
@@ -128,6 +128,15 @@ class Story(models.Model):
 			s.append(n)
 		return ''.join(s)
 	newsrooms = property(get_newsrooms)
+
+	def get_story_authors(self):
+		na = Profile.objects.filter(user__in=self.authors.values_list('id',flat=True)).distinct().order_by('last_name')
+		s = []
+		for n in na:
+			f = n.first_name+' '+n.last_name
+			s.append(f)
+		return ', '.join(s)
+	story_authors = property(get_story_authors)
 
 class StoryPublishDate(models.Model):
 	story = models.ForeignKey(Story)
