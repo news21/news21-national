@@ -24,7 +24,33 @@
 					{% endif %}
 				{% endfor %}
 				{{story.metastory}}
-				<h5><a href="{% url partner_story_budget story.id %}">{{ story }}</a></h5>
+				<h5 style="margin-bottom:5px;"><a href="{% url partner_story_budget story.id %}">{{ story }}</a></h5>
+				<div>
+				{% for asset in multimedia %}
+					{% if story.id == asset.story.id %}
+						{% if asset.get_child_name == "photo" %}
+						<span class="icon-photo"></span>
+						{% endif %}
+						{% if asset.get_child_name == "plaintext" %}
+						<span class="icon-plaintext"></span>
+						{% endif %}
+						{% if asset.get_child_name == "audio" %}
+						<span class="icon-audio"></span>
+						{% endif %}
+						{% if asset.get_child_name == "video" %}
+						<span class="icon-video"></span>
+						{% endif %}
+						{% if asset.get_child_name == "swf" %}
+						<span class="icon-audio"></span>
+						{% endif %}
+						{% if asset.get_child_name == "embed" %}
+						<span class="icon-embed"></span>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+				</div>
+				<br/><br/>
+				<div class="clear"></div>
 			</div>
 		{% endfor %}
 	</div>
