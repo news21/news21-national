@@ -9,7 +9,7 @@ class VideoForm(forms.ModelForm):
 
 	layout = Layout(
 		Fieldset('',
-			'title','video','hq_file','date_taken','duration','summary','slug',
+			'title','video','hq_file','date_taken','duration','summary','slug','cuepoints',
 			css_class='inlineLabels',),
 			
 	)

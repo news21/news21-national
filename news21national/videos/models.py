@@ -17,4 +17,5 @@ class Video(Media):
 	hq_file = models.CharField(max_length=255,blank=True,null=True)
 	date_taken = models.DateTimeField(null=True)
 	duration = models.PositiveIntegerField(blank=True,null=True)
+	cuepoints = models.TextField(blank=True,null=True)
 	objects = VideoManager()
