@@ -23,7 +23,7 @@ from news21national.videos.models import Video
 def get_video(request,metastory_id,story_id,multimedia_id=None,template_name="multimedia/video.html",is_editor=False):
 	metastory = get_object_or_404(MetaStory, pk=metastory_id)
 	story = get_object_or_404(Story, pk=story_id, metastory=metastory)
-	mediaclass = get_object_or_404(Media, pk=multimedia_id)
+	editorcommentform = EditorsCommentForm()
 	
 	inherited_tags = []
 	inherited_tag_ids = []
@@ -63,7 +63,7 @@ def get_video(request,metastory_id,story_id,multimedia_id=None,template_name="mu
 		form_url = reverse('video_create', args=[metastory_id,story_id])
 		
 	breadcrumb = [ {'title':metastory,'url':reverse('metastory_edit', args=[metastory_id])} , {'title':story,'url':reverse('story_edit', args=[metastory_id,story_id])} , {'title':multimedia_title,'url':multimedia_url} ]
-	return render_to_response(template_name, {'breadcrumb':breadcrumb,'multimedia':multimedia,'google_maps_api_key':settings.GOOGLE_MAPS_API_KEY,'form':form,'authors':authors,'inherited_tags':inherited_tags,'tags':tags,'used_tags':used_tags,'geotag':geotag,'newsrooms_members':members,'form_url':form_url,'is_editor':is_editor,'mediaclass':mediaclass}, context_instance=RequestContext(request))
+	return render_to_response(template_name, {'breadcrumb':breadcrumb,'editorcommentform':editorcommentform,'multimedia':multimedia,'google_maps_api_key':settings.GOOGLE_MAPS_API_KEY,'form':form,'authors':authors,'inherited_tags':inherited_tags,'tags':tags,'used_tags':used_tags,'geotag':geotag,'status':multimedia.status,'newsrooms_members':members,'form_url':form_url,'is_editor':is_editor,'mediaclass':mediaclass}, context_instance=RequestContext(request))
 
 
 @login_required
