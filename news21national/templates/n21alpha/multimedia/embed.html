@@ -81,7 +81,7 @@
 <div class="grid_16 contentheader">
 	{% comment_counts_for_objects [mediaclass] as comment_count_dict %}
 	<h4 id="editorscomments">Editor's Comments {{comment_count_dict}}</h4>
-	<div><span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}exclamation{% endif %}"></span> STATUS: {{mediaclass.status}} </div>
+	<div><span class="icon-{% if mediaclass.status == "Approved" %}accept{% else %}{% if mediaclass.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{mediaclass.status}} : EDITING STAGE: {{mediaclass.stage}} </div>
 	{% comment_tree_for_object mediaclass as comments %}
 	{% for comment in comments %}
 		<div style="padding:15px;" class="sidebar-right-listing image-selector alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
@@ -93,16 +93,15 @@
 		<div>Your editors have not made any comments yet.</div>
 	{% endif %}
 	{% if is_editor %}
-		<form action="{% url editorsdesk_update_status_multimedia mediaclass.id %}" method="post">
-			<textarea name="comment_body" id="comment_body" rows="8" cols="100"></textarea>
-			<br/>
-			<select name="story_status" id="story_status" style="float:left;width:150px;margin-right:20px;">
-				<option value="Pending Approval">Pending Approval</option>
-				<option value="Rejected" {% if story.status == "Rejected" %} selected {% endif %} >Rejected</option>
-				<option value="Approved" {% if story.status == "Approved" %} selected {% endif %} >Approved</option>
-			</select>
-			<input type="submit" value="Comment &rarr;">
+		<div>
+		<form action="{% url editorsdesk_update_status_multimedia mediaclass.id %}" class="uniForm" method="post">
+			
+			{% with editorcommentform.helper as helper %}
+			    {% uni_form editorcommentform helper %}
+			{% endwith %}
+			
 		</form>
+		</div>
 	{% endif %}
 </div>
 
