@@ -8,8 +8,8 @@ from news21national.api.models import Key
 class Partner(models.Model):
 	name = models.CharField(max_length=150,verbose_name="Media Outlet Name")
 	site_url = models.URLField(verify_exists=True,verbose_name="Site URL")
-	phone = models.CharField(max_length=25,verbose_name="Contact Phone")
-	email = models.EmailField(max_length=150,verbose_name="Contact Email")
+	phone = models.CharField(max_length=25,verbose_name="Contact Phone",null=True,blank=True)
+	email = models.EmailField(max_length=150,verbose_name="Contact Email",null=True,blank=True)
 	members = models.ManyToManyField(auth.User, related_name="partner_members",null=True,blank=True)
 	created_by = models.ForeignKey(auth.User, related_name="partner_created_by")
 	created_at = models.DateTimeField(editable=False)
@@ -39,9 +39,10 @@ class Partner(models.Model):
 class StoryPlacements(models.Model):
 	partner = models.ForeignKey(Partner)
 	story = models.ForeignKey(Story)
-	description = models.CharField(max_length=200)
+	description = models.CharField(max_length=200,verbose_name="Partner Headline/Description")
 	story_ran = models.DateTimeField()
 	placement_url = models.URLField(verify_exists=False,verbose_name="Placement URL",null=True,blank=True)
+	screengrab_url = models.URLField(verify_exists=False,verbose_name="Screengrab URL",null=True,blank=True)
 	url_active = models.BooleanField(default=True)
 	created_by = models.ForeignKey(auth.User, related_name="storyplacement_created_by")
 	created_at = models.DateTimeField(editable=False)
