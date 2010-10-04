@@ -39,7 +39,8 @@ class Partner(models.Model):
 class StoryPlacements(models.Model):
 	partner = models.ForeignKey(Partner)
 	story = models.ForeignKey(Story)
-	description = models.CharField(max_length=200,verbose_name="Partner Headline/Description")
+	placement_headline = models.CharField(max_length=200,verbose_name="Partner Headline",null=True,blank=True)
+	description = models.CharField(max_length=200,verbose_name="Description")
 	story_ran = models.DateTimeField()
 	placement_url = models.URLField(verify_exists=False,verbose_name="Placement URL",null=True,blank=True)
 	screengrab_url = models.URLField(verify_exists=False,verbose_name="Screengrab URL",null=True,blank=True)

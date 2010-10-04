@@ -2,3 +2,14 @@
 
 
 {% load smart_if %}
+
+{% block breadcrumb %}
+	<div class="grid_16">
+		<div class="breadcrumb">
+			Bundles
+	{% for crumb in breadcrumb %}
+		 &raquo; <a href="{{ crumb.url }}" {% if forloop.last %}id="current"{% endif %} >{{ crumb.title }}</a>
+	{% endfor %}		
+		</div>
+	</div>
+{% endblock %}

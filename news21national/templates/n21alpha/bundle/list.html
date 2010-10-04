@@ -20,7 +20,7 @@
 				</div>
 				<div style="width:705px;float:left;">
 					<div style="margin-bottom:0px;font-size:10px;">{{story.metastory}}</div>
-					<div style="margin-bottom:5px;font-size:17px;color:#6F6F6F;font-weight:bold;">{{ story }}</div>
+					<div style="margin-bottom:5px;font-size:17px;color:#6F6F6F;font-weight:bold;"><a href="{% url bundles_story_budget bundle.slug story.id %}">{{ story }}</a></div>
 					<div style="margin-bottom:5px;font-size:11px;">{{ story.summary }}</div>
 					<div>
 					{% for asset in multimedia %}
