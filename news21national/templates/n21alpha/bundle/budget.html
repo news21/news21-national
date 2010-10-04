@@ -1,0 +1,53 @@
+{% extends "bundle/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+
+
+{% block content %}
+	<div class="grid_16">
+		<div class="contentcontainer">
+		
+		<h3>Story Budget</h3>
+		<div style="padding:10px;">
+			<span class="bold">Headline:</span> {{story}}<br/>
+			<span class="bold">Original URL:</span> {{story.original_url}}<br/>
+			<span class="bold">Primay Image:</span> {{story.primary_image}}<br/>
+			<span class="bold">Summary:</span> {{story.summary}}<br/>
+			<span class="bold">Reporting Process:</span> {{story.process}}<br/>
+			<span class="bold">Authors:</span> {{ story.story_authors }}
+		</div>
+		
+		<br/><br/>
+		
+		<h4>Story Assets</h4>
+		{% for asset in media_assets %}
+		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}" style="padding:5px 0px 5px 15px;">
+			{% if asset.get_child_name == "photo" %}
+			<span class="icon-photo"></span><a href="{% url photo_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+			{% if asset.get_child_name == "plaintext" %}
+			<span class="icon-plaintext"></span><a href="{% url plaintext_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+			{% if asset.get_child_name == "audio" %}
+			<span class="icon-audio"></span><a href="{% url audio_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+			{% if asset.get_child_name == "video" %}
+			<span class="icon-video"></span><a href="{% url video_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+			{% if asset.get_child_name == "swf" %}
+			<span class="icon-audio"></span><a href="{% url swf_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+			{% if asset.get_child_name == "embed" %}
+			<span class="icon-embed"></span><a href="{% url embed_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			{% endif %}
+		</div>
+		{% endfor %}
+		
+		<br/><br/>
+		
+		</div>
+	</div>
+
+{% endblock %}
