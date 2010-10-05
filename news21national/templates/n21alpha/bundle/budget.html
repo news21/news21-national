@@ -3,44 +3,59 @@
 
 {% load i18n %}
 {% load smart_if %}
-
+{% load audioplayer %}
+{% load ams_byline %}
+{% load markup %}
+{% load ams_photo %}
 
 {% block content %}
 	<div class="grid_16">
 		<div class="contentcontainer">
+		<div align="center">
+			News21 is part of the Carnegie-Knight Initiative on the Future of Journalism Education. All content is released under Creative Commons.
+		</div>
+		
+		<br/>
 		
 		<h3>Story Budget</h3>
 		<div style="padding:10px;">
 			<span class="bold">Headline:</span> {{story}}<br/>
 			<span class="bold">Original URL:</span> {{story.original_url}}<br/>
-			<span class="bold">Primay Image:</span> {{story.primary_image}}<br/>
+			<span class="bold">Primay Image:</span> {% render_photo story.primary_image %}<br/>
 			<span class="bold">Summary:</span> {{story.summary}}<br/>
 			<span class="bold">Reporting Process:</span> {{story.process}}<br/>
 			<span class="bold">Authors:</span> {{ story.story_authors }}
 		</div>
 		
-		<br/><br/>
+		<br/>
 		
 		<h4>Story Assets</h4>
 		{% for asset in media_assets %}
 		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}" style="padding:5px 0px 5px 15px;">
 			{% if asset.get_child_name == "photo" %}
-			<span class="icon-photo"></span><a href="{% url photo_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			<span class="icon-photo"></span>{{ asset }}
+			<div><a title="{{ photo.title }}" href="{{ asset.get_child_object.get_original_url }}" target="_blank"><img src="{{ asset.get_child_object.get_thumbnail_url }}" />-</a></div>
+			<div>
+				{% for a in asset.get_child_object.media_authors %}
+				{% render_byline a %}
+				{% endfor %}
+			</div>
 			{% endif %}
 			{% if asset.get_child_name == "plaintext" %}
-			<span class="icon-plaintext"></span><a href="{% url plaintext_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			<span class="icon-plaintext"></span>{{ asset }}
+			<div>{{ asset.get_child_object.content|markdown }}</div>
 			{% endif %}
 			{% if asset.get_child_name == "audio" %}
-			<span class="icon-audio"></span><a href="{% url audio_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			<span class="icon-audio"></span>{{ asset }}
+			<div>{% audioplayer file=asset.get_child_object,height=30,width=250,slider=0xF49900,track=0xF49900,border=0x000000,loader=0xefefef %}</div>
 			{% endif %}
 			{% if asset.get_child_name == "video" %}
-			<span class="icon-video"></span><a href="{% url video_edit metastory_id story_id asset.id %}">{{ asset }}</a>
-			{% endif %}
-			{% if asset.get_child_name == "swf" %}
-			<span class="icon-audio"></span><a href="{% url swf_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			<span class="icon-video"></span>{{ asset }}
+			<div></div>
 			{% endif %}
 			{% if asset.get_child_name == "embed" %}
-			<span class="icon-embed"></span><a href="{% url embed_edit metastory_id story_id asset.id %}">{{ asset }}</a>
+			<span class="icon-embed"></span>{{ asset }}
+			<div>{{ asset.get_child_object.content|markdown }}</div>
 			{% endif %}
 		</div>
 		{% endfor %}

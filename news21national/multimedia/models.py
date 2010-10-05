@@ -10,6 +10,7 @@ from geotagging.models import Geotag
 from news21national.utils.model_inheritance import ParentModel,ChildManager
 from news21national.multimedia.constants import LICENSE_CHOICES, LICENSE_DEFAULT, STATUS_CHOICES, STATUS_DEFAULT, STAGE_DEFAULT, STAGE_CHOICES
 from news21national.story.models import Story
+from news21national.core.models import Profile
 
 class MediaManager(models.Manager):
 	pass
@@ -62,6 +63,10 @@ class Media(ParentModel):
 		if geotag_obj is not None:
 			geotag_obj.delete()
 
+	def get_authors(self):
+		return Profile.objects.filter(user__in=self.authors.values_list('id',flat=True)).distinct().order_by('last_name')
+	media_authors = property(get_authors)
+	
 	def get_parent_model(self):
 		"""
 		Helper method for inheritance
