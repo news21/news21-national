@@ -7,6 +7,7 @@
 {% load ams_byline %}
 {% load markup %}
 {% load ams_photo %}
+{% load ams_bio %}
 
 {% block content %}
 	<div class="grid_16">
@@ -19,9 +20,9 @@
 		
 		<h3>Story Budget</h3>
 		<div style="padding:10px;">
+			<span class="bold">Primay Image:</span> {% render_thumb_with_link story.primary_image %}<br/>
 			<span class="bold">Headline:</span> {{story}}<br/>
 			<span class="bold">Original URL:</span> {{story.original_url}}<br/>
-			<span class="bold">Primay Image:</span> {% render_photo story.primary_image %}<br/>
 			<span class="bold">Summary:</span> {{story.summary}}<br/>
 			<span class="bold">Reporting Process:</span> {{story.process}}<br/>
 			<span class="bold">Authors:</span> {{ story.story_authors }}
@@ -33,30 +34,36 @@
 		{% for asset in media_assets %}
 		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}" style="padding:5px 0px 5px 15px;">
 			{% if asset.get_child_name == "photo" %}
-			<span class="icon-photo"></span>{{ asset }}
-			<div><a title="{{ photo.title }}" href="{{ asset.get_child_object.get_original_url }}" target="_blank"><img src="{{ asset.get_child_object.get_thumbnail_url }}" />-</a></div>
+			<div><span class="icon-photo"></span>{{ asset }}</div>
+			<div><a title="{{ photo.title }}" href="{{ asset.get_child_object.get_original_url }}" target="_blank"><img src="{{ asset.get_child_object.get_thumbnail_url }}" /></a></div>
+			<div>Summary: {{ asset.get_child_object.summary }}</div>
+			{% endif %}
+			{% if asset.get_child_name == "plaintext" %}
+			<div><span class="icon-plaintext"></span>{{ asset }}</div>
+			<div>Summary: {{ asset.get_child_object.summary }}</div>
+			<div>{{ asset.get_child_object.content|markdown }}</div>
+			{% endif %}
+			{% if asset.get_child_name == "audio" %}
+			<div><span class="icon-audio"></span>{{ asset }}</div>
+			<div>Summary: {{ asset.get_child_object.summary }}</div>
+			<div>{% audioplayer file=asset.get_child_object,height=30,width=250,slider=0xF49900,track=0xF49900,border=0x000000,loader=0xefefef %}</div>
+			{% endif %}
+			{% if asset.get_child_name == "video" %}
+			<div><span class="icon-video"></span>{{ asset }}</div>
+			<div>Summary: {{ asset.get_child_object.summary }}</div>
+			<div></div>
+			{% endif %}
+			{% if asset.get_child_name == "embed" %}
+			<div><span class="icon-embed"></span>{{ asset }}</div>
+			<div>Summary: {{ asset.get_child_object.summary }}</div>
+			<div>{{ asset.get_child_object.content|markdown }}</div>
+			{% endif %}
+			
 			<div>
 				{% for a in asset.get_child_object.media_authors %}
 				{% render_byline a %}
 				{% endfor %}
 			</div>
-			{% endif %}
-			{% if asset.get_child_name == "plaintext" %}
-			<span class="icon-plaintext"></span>{{ asset }}
-			<div>{{ asset.get_child_object.content|markdown }}</div>
-			{% endif %}
-			{% if asset.get_child_name == "audio" %}
-			<span class="icon-audio"></span>{{ asset }}
-			<div>{% audioplayer file=asset.get_child_object,height=30,width=250,slider=0xF49900,track=0xF49900,border=0x000000,loader=0xefefef %}</div>
-			{% endif %}
-			{% if asset.get_child_name == "video" %}
-			<span class="icon-video"></span>{{ asset }}
-			<div></div>
-			{% endif %}
-			{% if asset.get_child_name == "embed" %}
-			<span class="icon-embed"></span>{{ asset }}
-			<div>{{ asset.get_child_object.content|markdown }}</div>
-			{% endif %}
 		</div>
 		{% endfor %}
 		
