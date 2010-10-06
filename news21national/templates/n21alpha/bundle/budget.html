@@ -77,9 +77,8 @@
 				<div><span class="icon-video"></span>{{ asset }}</div>
 				<div><strong>Summary:</strong> {{ asset.get_child_object.summary }}</div>
 				{% if asset.get_child_object.hq_file.length > 0 %}
-				
 				<div>
-					<strong>Filename:</strong> : news21v{{ asset.get_child_object.id }}
+					<strong>Filename:</strong> : news21v{{ asset.id }}
 					<br/>Due to size, video is available via ftp. Please contact <a href="http://news21.com/free-content/">News21</a> for access.</div>
 				{% endif %}
 				<div>
