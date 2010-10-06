@@ -40,7 +40,7 @@
 				<div><strong>Summary:</strong> {{ asset.get_child_object.summary }}</div>
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
-					{{ a.get_fullname }} ({{ a.school }})
+					{% if not forloop.first %},{% endif %} {{ a.get_fullname }} ({{ a.school }})
 					{% endfor %}
 				</div>
 			{% endif %}
@@ -68,7 +68,7 @@
 				<div>{% audioplayer file=asset.get_child_object,height=30,width=250,slider=0xF49900,track=0xF49900,border=0x000000,loader=0xefefef %}</div>
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
-					{{ a.get_fullname }} ({{ a.school }})
+					{% if not forloop.first %},{% endif %} {{ a.get_fullname }} ({{ a.school }})
 					{% endfor %}
 				</div>
 			{% endif %}
@@ -81,7 +81,7 @@
 				{% endif %}
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
-					{{ a.get_fullname }} ({{ a.school }})
+					{% if not forloop.first %},{% endif %} {{ a.get_fullname }} ({{ a.school }})
 					{% endfor %}
 				</div>
 			{% endif %}
@@ -92,7 +92,7 @@
 				<div>{{ asset.get_child_object.content|markdown }}</div>
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
-					{{ a.get_fullname }} ({{ a.school }})
+					{% if not forloop.first %},{% endif %} {{ a.get_fullname }} ({{ a.school }})
 					{% endfor %}
 				</div>
 			{% endif %}
