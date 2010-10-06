@@ -77,7 +77,10 @@
 				<div><span class="icon-video"></span>{{ asset }}</div>
 				<div><strong>Summary:</strong> {{ asset.get_child_object.summary }}</div>
 				{% if asset.get_child_object.hq_file.length > 0 %}
-				<div>Due to size, video is available via ftp.</div>
+				
+				<div>
+					<strong>Filename:</strong> : news21v{{ asset.get_child_object.id }}
+					<br/>Due to size, video is available via ftp. Please contact <a href="http://news21.com/free-content/">News21</a> for access.</div>
 				{% endif %}
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
