@@ -51,6 +51,9 @@
 			{% if asset.get_child_name == "video" %}
 			<div><span class="icon-video"></span>{{ asset }}</div>
 			<div>Summary: {{ asset.get_child_object.summary }}</div>
+			{% if asset.get_child_object.hq_file.length > 0 %}
+			<div>Due to size, video is available via ftp.</div>
+			{% endif %}
 			<div></div>
 			{% endif %}
 			{% if asset.get_child_name == "embed" %}
