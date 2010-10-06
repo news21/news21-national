@@ -21,11 +21,11 @@
 		<div style="padding:10px;">
 			<span class="bold">Primay Image:</span> {% render_thumb_with_link story.primary_image %}<br/>
 			<span class="bold">Headline:</span> {{story}}<br/>
-			<span class="bold">Original URL:</span> {{story.original_url}}<br/>
+			<span class="bold">Original URL:</span> <a href="{{story.original_url}}" target="_blank">{{story.original_url}}</a><br/>
 			<span class="bold">Summary:</span> {{story.summary}}<br/>
 			<span class="bold">Reporting Process:</span> {{story.process}}<br/>
 			<span class="bold">Authors:</span> {% for a in story.get_authors %}
-			{{ a.get_fullname }}
+			{% if not forloop.first %},{% endif %} {{ a.get_fullname }} ({{ a.school }})
 			{% endfor %}
 		</div>
 		
