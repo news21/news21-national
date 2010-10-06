@@ -25,7 +25,9 @@
 			<span class="bold">Original URL:</span> {{story.original_url}}<br/>
 			<span class="bold">Summary:</span> {{story.summary}}<br/>
 			<span class="bold">Reporting Process:</span> {{story.process}}<br/>
-			<span class="bold">Authors:</span> {{ story.story_authors }}
+			<span class="bold">Authors:</span> {% for a in story.get_authors %}
+			{{ a.get_fullname }}
+			{% endfor %}
 		</div>
 		
 		<br/>
@@ -34,39 +36,64 @@
 		{% for asset in media_assets %}
 		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}" style="padding:5px 0px 5px 15px;">
 			{% if asset.get_child_name == "photo" %}
-			<div><span class="icon-photo"></span>{{ asset }}</div>
-			<div><a title="{{ photo.title }}" href="{{ asset.get_child_object.get_original_url }}" target="_blank"><img src="{{ asset.get_child_object.get_thumbnail_url }}" /></a></div>
-			<div>Summary: {{ asset.get_child_object.summary }}</div>
-			{% endif %}
-			{% if asset.get_child_name == "plaintext" %}
-			<div><span class="icon-plaintext"></span>{{ asset }}</div>
-			<div>Summary: {{ asset.get_child_object.summary }}</div>
-			<div>{{ asset.get_child_object.content|markdown }}</div>
-			{% endif %}
-			{% if asset.get_child_name == "audio" %}
-			<div><span class="icon-audio"></span>{{ asset }}</div>
-			<div>Summary: {{ asset.get_child_object.summary }}</div>
-			<div>{% audioplayer file=asset.get_child_object,height=30,width=250,slider=0xF49900,track=0xF49900,border=0x000000,loader=0xefefef %}</div>
-			{% endif %}
-			{% if asset.get_child_name == "video" %}
-			<div><span class="icon-video"></span>{{ asset }}</div>
-			<div>Summary: {{ asset.get_child_object.summary }}</div>
-			{% if asset.get_child_object.hq_file.length > 0 %}
-			<div>Due to size, video is available via ftp.</div>
-			{% endif %}
-			<div></div>
-			{% endif %}
-			{% if asset.get_child_name == "embed" %}
-			<div><span class="icon-embed"></span>{{ asset }}</div>
-			<div>Summary: {{ asset.get_child_object.summary }}</div>
-			<div>{{ asset.get_child_object.content|markdown }}</div>
+				<div><span class="icon-photo"></span>{{ asset }}</div>
+				<div><a title="{{ photo.title }}" href="{{ asset.get_child_object.get_original_url }}" target="_blank"><img src="{{ asset.get_child_object.get_thumbnail_url }}" /></a></div>
+				<div>Summary: {{ asset.get_child_object.summary }}</div>
+				<div>
+					{% for a in asset.get_child_object.media_authors %}
+					{% render_byline a %}
+					{% endfor %}
+				</div>
 			{% endif %}
 			
-			<div>
-				{% for a in asset.get_child_object.media_authors %}
-				{% render_byline a %}
-				{% endfor %}
-			</div>
+			{% if asset.get_child_name == "plaintext" %}
+				<div><span class="icon-plaintext"></span>{{ asset }}</div>
+				<div>Summary: {{ asset.get_child_object.summary }}</div>
+				<div style="margin-top:20px;">
+					{{ asset.get_child_object.content|markdown }}
+				
+					{% for a in asset.get_child_object.media_authors %}
+					{% render_fullname a %} wrote this story while a Carnegie-Knight News21 fellow from {% render_school a %}
+					{% endfor %}
+				
+					News21 is part of the Carnegie-Knight Initiative on the Future of Journalism Education. Use of content requires attribution under Creative Commons.
+				</div>
+			{% endif %}
+			
+			{% if asset.get_child_name == "audio" %}
+				<div><span class="icon-audio"></span>{{ asset }}</div>
+				<div>Summary: {{ asset.get_child_object.summary }}</div>
+				<div>{% audioplayer file=asset.get_child_object,height=30,width=250,slider=0xF49900,track=0xF49900,border=0x000000,loader=0xefefef %}</div>
+				<div>
+					{% for a in asset.get_child_object.media_authors %}
+					{% render_byline a %}
+					{% endfor %}
+				</div>
+			{% endif %}
+			
+			{% if asset.get_child_name == "video" %}
+				<div><span class="icon-video"></span>{{ asset }}</div>
+				<div>Summary: {{ asset.get_child_object.summary }}</div>
+				{% if asset.get_child_object.hq_file.length > 0 %}
+				<div>Due to size, video is available via ftp.</div>
+				{% endif %}
+				<div>
+					{% for a in asset.get_child_object.media_authors %}
+					{% render_byline a %}
+					{% endfor %}
+				</div>
+			{% endif %}
+			
+			{% if asset.get_child_name == "embed" %}
+				<div><span class="icon-embed"></span>{{ asset }}</div>
+				<div>Summary: {{ asset.get_child_object.summary }}</div>
+				<div>{{ asset.get_child_object.content|markdown }}</div>
+				<div>
+					{% for a in asset.get_child_object.media_authors %}
+					{% render_byline a %}
+					{% endfor %}
+				</div>
+			{% endif %}
 		</div>
 		{% endfor %}
 		

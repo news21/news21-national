@@ -49,7 +49,10 @@ class Profile(models.Model):
 
 	def __str__(self):
 		return self.user.username
-
+	
+	def get_fullname(self):
+		return self.first_name+' '+self.last_name
+	
 class Skill(models.Model):
 	title = models.CharField(max_length=200)
 
