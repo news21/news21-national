@@ -7,7 +7,6 @@
 {% load ams_byline %}
 {% load markup %}
 {% load ams_photo %}
-{% load ams_bio %}
 
 {% block content %}
 	<div class="grid_16">
@@ -38,59 +37,62 @@
 			{% if asset.get_child_name == "photo" %}
 				<div><span class="icon-photo"></span>{{ asset }}</div>
 				<div><a title="{{ photo.title }}" href="{{ asset.get_child_object.get_original_url }}" target="_blank"><img src="{{ asset.get_child_object.get_thumbnail_url }}" /></a></div>
-				<div>Summary: {{ asset.get_child_object.summary }}</div>
+				<div><strong>Summary:</strong> {{ asset.get_child_object.summary }}</div>
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
-					{% render_byline a %}
+					{{ a.get_fullname }} ({{ a.school }})
 					{% endfor %}
 				</div>
 			{% endif %}
 			
 			{% if asset.get_child_name == "plaintext" %}
 				<div><span class="icon-plaintext"></span>{{ asset }}</div>
-				<div>Summary: {{ asset.get_child_object.summary }}</div>
+				<div style="margin-top:20px;"><strong>Summary:</strong> {{ asset.get_child_object.summary }}</div>
 				<div style="margin-top:20px;">
+					<strong>Text:</strong><br/>
+					<br/>
 					{{ asset.get_child_object.content|markdown }}
-				
+					
 					{% for a in asset.get_child_object.media_authors %}
-					{% render_fullname a %} wrote this story while a Carnegie-Knight News21 fellow from {% render_school a %}
+					{{ a.get_fullname }} wrote this story while a Carnegie-Knight News21 fellow from {{ a.school }}<br/>
 					{% endfor %}
-				
+					
+					<br/>
 					News21 is part of the Carnegie-Knight Initiative on the Future of Journalism Education. Use of content requires attribution under Creative Commons.
 				</div>
 			{% endif %}
 			
 			{% if asset.get_child_name == "audio" %}
 				<div><span class="icon-audio"></span>{{ asset }}</div>
-				<div>Summary: {{ asset.get_child_object.summary }}</div>
+				<div><strong>Summary:</strong> {{ asset.get_child_object.summary }}</div>
 				<div>{% audioplayer file=asset.get_child_object,height=30,width=250,slider=0xF49900,track=0xF49900,border=0x000000,loader=0xefefef %}</div>
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
-					{% render_byline a %}
+					{{ a.get_fullname }} ({{ a.school }})
 					{% endfor %}
 				</div>
 			{% endif %}
 			
 			{% if asset.get_child_name == "video" %}
 				<div><span class="icon-video"></span>{{ asset }}</div>
-				<div>Summary: {{ asset.get_child_object.summary }}</div>
+				<div><strong>Summary:</strong> {{ asset.get_child_object.summary }}</div>
 				{% if asset.get_child_object.hq_file.length > 0 %}
 				<div>Due to size, video is available via ftp.</div>
 				{% endif %}
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
-					{% render_byline a %}
+					{{ a.get_fullname }} ({{ a.school }})
 					{% endfor %}
 				</div>
 			{% endif %}
 			
 			{% if asset.get_child_name == "embed" %}
 				<div><span class="icon-embed"></span>{{ asset }}</div>
-				<div>Summary: {{ asset.get_child_object.summary }}</div>
+				<div><strong>Summary:</strong> {{ asset.get_child_object.summary }}</div>
 				<div>{{ asset.get_child_object.content|markdown }}</div>
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
-					{% render_byline a %}
+					{{ a.get_fullname }} ({{ a.school }})
 					{% endfor %}
 				</div>
 			{% endif %}
