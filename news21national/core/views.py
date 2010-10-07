@@ -27,7 +27,11 @@ def home(request):
 		try: 
 			profile = Profile.objects.get(user=request.user)
 		except Profile.DoesNotExist:
-			return HttpResponseRedirect(reverse('user_profile'))
+			p_count = Partner.objects.filter(members=request.user).distinct().count()
+			if p_count > 0:
+				return HttpResponseRedirect(reverse('partner_dashboard'))
+			else:
+				return HttpResponseRedirect(reverse('user_profile'))
 	
 	form1 = OpenidSigninForm()
 	form2 = AuthenticationForm()
@@ -35,16 +39,16 @@ def home(request):
 
 @login_required
 def dashboard(request):
-	# first if the user is an admin if so send them to editor's desk
-	if request.user.is_staff:
-		return HttpResponseRedirect(reverse('editorsdesk_dashboard'))
-	
 	# check to see if user is associated with newsroom or partner ... if neither ... send to association page
 	n_count = Newsroom.objects.filter(members=request.user).distinct().count()
 	p_count = Partner.objects.filter(members=request.user).distinct().count()
 	e_count = EditorsDesk.objects.filter(editors=request.user).distinct().count()
 	if n_count == 0 and p_count == 0 and e_count == 0:
-		return HttpResponseRedirect(reverse('user_association'))
+		# if the user is an admin if so send them to partner's dashboard
+		if request.user.is_staff:
+			return HttpResponseRedirect(reverse('partner_dashboard'))
+		else:
+			return HttpResponseRedirect(reverse('user_association'))
 
 	# if user is part of a partner ... send to seperate dashboard
 	if p_count > 0:
@@ -53,7 +57,7 @@ def dashboard(request):
 	# if user is an editor ... send to seperate dashboard
 	if e_count > 0:
 		return HttpResponseRedirect(reverse('editorsdesk_dashboard'))
-	
+
 	# user is already determined to be a journalist ... now check to see if they have their profile completed
 	try: 
 		profile = Profile.objects.get(user=request.user)

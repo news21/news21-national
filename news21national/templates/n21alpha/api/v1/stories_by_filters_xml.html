@@ -1,0 +1,11 @@
+{% load smart_if %}
+<?xml version="1.0" encoding="utf-8"?>
+<stories version="1.0">
+    {% for story in stories %}
+    <story>
+        <slug>{{ story.slug }}</slug>
+				<headline>{{ story.headline }}</headline>
+				<summary>{{ story.summary }}</summary>
+    </story>
+    {% endfor %}
+</stories>

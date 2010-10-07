@@ -9,8 +9,6 @@ from datetime import datetime
 class StoryBundle(models.Model):
 	title = models.CharField(max_length=200,null=True,blank=True)
 	slug = models.SlugField(unique=True,help_text="<a class='helptip'>What's this? Shorten it!</a>")
-	newsrooms = models.ManyToManyField(Newsroom, related_name="bundles_newsrooms",null=True,blank=True)
-	tags = TagField()
 	stories = models.ManyToManyField(Story)
 	created_by = models.ForeignKey(auth.User, related_name="bundles_created_by")
 	created_at = models.DateTimeField(editable=False)

@@ -183,6 +183,7 @@ SITE_ID = 1
 SITE_STYLE = 'n21alpha'
 
 API_VERSION = 'v1'
+# INTERNAL_API_KEY = '' # in local_settings.py
 
 AVATAR_STORAGE_DIR = 'avatars/'
 AUTO_GENERATE_AVATAR_SIZES = (80,250)
@@ -212,6 +213,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 	'mobileadmin.context_processors.user_agent',
 	'announcements.context_processors.site_wide_announcements',
 	'news21national.context_processors.site_style',
+	'news21national.context_processors.api_version',
+	'news21national.context_processors.internal_api_key',
 	#'django.contrib.csrf.middleware.CsrfMiddleware',
 )
 

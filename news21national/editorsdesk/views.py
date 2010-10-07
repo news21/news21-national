@@ -270,7 +270,7 @@ def report_firstxmonths(request):
 	start_year = int(settings.GA_START_YEAR)
 	years = []
 	y = int(settings.GA_START_YEAR)
-	while (y < datetime.date.today().year) :
+	while (y <= datetime.date.today().year) :
 		sdm = int(settings.GA_START_MONTH)
 		sdy = y
 		edy = y+1 if (datetime.date.today().month <= settings.GA_START_MONTH ) else y

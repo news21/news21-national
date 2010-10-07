@@ -48,6 +48,35 @@ def stories_by_category(request,api_key,category_id,dif='json'):
 	
 	return render_to_response('api/'+settings.API_VERSION+'/stories_by_category_'+dif+'.html', { 'stories': sarray, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
+
+def stories_by_filters(request,api_key,dif='json'):
+	if request.method == 'POST':
+		tags_filter = request.POST.get("tags",'').split(',')
+		
+		stories = TaggedItem.objects.get_by_model(Story, Tag.objects.filter(name__in=tags_filter) )
+		
+		sids = []
+		for i in stories.values_list('primary_image',flat=True):
+			sids.append(i)
+		photos = Media.children.filter(pk__in=sids,_child_name="photo",status="Approved")
+		
+		sarray = []
+		for s in stories:
+			print s.newsrooms
+			purl = ''
+			for p in photos:
+				if p.id is s.primary_image:
+					purl = 'http://'+ request.get_host()+''+p.get_thumbnail_url()
+			sarray.append({ "slug":s.slug, "year":s.created_at.year, "newsrooms":s.newsrooms, "headline":s.headline, "summary":s.summary, "original_url":s.original_url, "primary_image": purl, "id":s.id })
+
+		# TODO : add api audit
+		p = get_object_or_404(Key, api_key=api_key)
+	else:
+		sarray = []
+
+	return render_to_response('api/'+settings.API_VERSION+'/stories_by_filters_'+dif+'.html', { 'stories': sarray, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+
+
 def story(request,api_key,story_id,dif='json',custom_filter=''):
 	story = get_object_or_404(Story, pk=story_id)
 
