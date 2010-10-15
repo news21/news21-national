@@ -54,21 +54,43 @@ def stories_by_filters(request,api_key,dif='json'):
 		tags_filter = request.POST.get("tags",'').split(',')
 		
 		stories = TaggedItem.objects.get_by_model(Story, Tag.objects.filter(name__in=tags_filter) )
+		metastories = TaggedItem.objects.get_by_model(MetaStory, Tag.objects.filter(name__in=tags_filter) )
+		
+		
+		ms = []
+		for msvl in metastories.values_list('id',flat=True):
+			ms.append(msvl)
+		inheritstories = Story.objects.filter(metastory__id__in=ms)
 		
 		sids = []
 		for i in stories.values_list('primary_image',flat=True):
 			sids.append(i)
+		for i2 in inheritstories.values_list('primary_image',flat=True):
+			sids.append(i2)
 		photos = Media.children.filter(pk__in=sids,_child_name="photo",status="Approved")
 		
 		sarray = []
 		for s in stories:
-			print s.newsrooms
 			purl = ''
 			for p in photos:
 				if p.id is s.primary_image:
 					purl = 'http://'+ request.get_host()+''+p.get_thumbnail_url()
 			sarray.append({ "slug":s.slug, "year":s.created_at.year, "newsrooms":s.newsrooms, "headline":s.headline, "summary":s.summary, "original_url":s.original_url, "primary_image": purl, "id":s.id })
-
+		
+		for s2 in inheritstories:
+			#first check to make sure inherited story is not already in array
+			bfound = False
+			for sa in sarray:
+				print sa
+				if sa['id'] is s2.id:
+					bfound = True
+			if not bfound:
+				purl = ''
+				for p in photos:
+					if p.id is s2.primary_image:
+						purl = 'http://'+ request.get_host()+''+p.get_thumbnail_url()
+				sarray.append({ "slug":s2.slug, "year":s2.created_at.year, "newsrooms":s2.newsrooms, "headline":s2.headline, "summary":s2.summary, "original_url":s2.original_url, "primary_image": purl, "id":s2.id })
+		
 		# TODO : add api audit
 		p = get_object_or_404(Key, api_key=api_key)
 	else:

@@ -31,11 +31,12 @@
 			jQuery( ".story_filters:checked" ).each(function(){
 		  	tagsused.push( jQuery(this).attr('value').toLowerCase() );
 			});
-
+			
 			jQuery.post('/api/{{ API_VERSION }}/{{ INTERNAL_API_KEY }}/filtered_stories/', {'tags':tagsused.join()}, function(data) {
-				var options = ''
+				var options = '';
+				var regx = /\'/g;
 				jQuery.each(data.stories, function(i,item){
-					options = options+'<option value="'+item.id+'">( '+item.year+': '+item.newsrooms+' ) '+item.headline+'</option>'
+					options = options+'<option value="'+item.id+'">( '+item.year+': '+item.newsrooms+' ) '+item.headline.replace(regx, "\'");+'</option>'
 				});
 				jQuery('select#id_stories').html(options);
 			},'json');

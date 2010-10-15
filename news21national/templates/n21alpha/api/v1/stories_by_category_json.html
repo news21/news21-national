@@ -1,6 +1,6 @@
 {% load smart_if %}
 {% if callback %}{{callback}}({% endif %}{"stories":[
     {% for story in stories %}
-    { "slug":"{{ story.slug }}", "headline":"{{ story.headline }}", "summary":"{{ story.summary }}",  "original_url":"{{ story.original_url }}", "primary_image":"{{story.primary_image}}", "newsroom":"{{story.newsroom}}" }{% if not forloop.last %},{% endif %}
+    { "slug":"{{ story.slug }}", "headline":"{{ story.headline|escapejs }}", "summary":"{{ story.summary|escapejs }}",  "original_url":"{{ story.original_url }}", "primary_image":"{{story.primary_image}}", "newsroom":"{{story.newsroom}}" }{% if not forloop.last %},{% endif %}
     {% endfor %}
 ]}{% if callback %}){% endif %}
