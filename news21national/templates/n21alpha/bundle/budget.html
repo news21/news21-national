@@ -54,7 +54,7 @@
 					{{ asset.get_child_object.content|markdown }}
 					
 					{% for a in asset.get_child_object.media_authors %}
-					{{ a.get_fullname }} wrote this story while a Carnegie-Knight News21 fellow from {{ a.school }}<br/>
+					<a href="{% url user_bio a.user.id %}">{{ a.get_fullname }}</a> wrote this story while a Carnegie-Knight News21 fellow from {{ a.school }}<br/>
 					{% endfor %}
 					
 					<br/>

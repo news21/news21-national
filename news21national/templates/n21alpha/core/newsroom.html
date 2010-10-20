@@ -4,21 +4,24 @@
 {% load smart_if %}
 {% load avatar_tags %}
 
+
 {% block breadcrumb %}
-	<div class="grid_16 breadcrumb">
-	<a href="{% url user_dashboard %}">Dashboard</a>
-	{% for crumb in breadcrumb %}
-		 &raquo; <a href="{{ crumb.url }}" {% if forloop.last %}id="current"{% endif %} >{{ crumb.title }}</a>
-	{% endfor %}
-	</div>
+	{% if user.is_authenticated%}
+			<div class="grid_16 breadcrumb">
+			<a href="{% url user_dashboard %}">Dashboard</a>
+			{% for crumb in breadcrumb %}
+				 &raquo; <a href="{{ crumb.url }}" {% if forloop.last %}id="current"{% endif %} >{{ crumb.title }}</a>
+			{% endfor %}
+			</div>
+	{% endif %}
 {% endblock %}
 
 {% block content %}
 
 <div class="grid_16">
 	<h3>Newsroom Bios: {{ newsroom }}</h3>
-	{% for profile in newsroom_roster %}
-		<div class="news21_biography">{% avatar profile.user 80 %} <span class="bio_name">{{ profile.first_name }} {{ profile.last_name }}</span> {{ profile.bio }} {% if profile.twitter_public and profile.twitterid != None %}<a href="http://twitter.com/{{ profile.twitterid }}" target="_blank">Twitter</a>.{% endif %} {% if profile.linkedin_public and profile.linkedinid != None %}<a href="http://linkedin.com/in/{{ profile.linkedinid }}" target="_blank">LinkedIn</a>.{% endif %} {% if profile.facebook_public and profile.facebookid != None %}<a href="http://facebook.com/{{ profile.facebookid }}" target="_blank">Facebook</a>.{% endif %}</div>
+	{% for profile in bios %}
+		<div class="news21_biography">{% avatar profile.user 80 %} <a href="{% url user_bio profile.user.id %}"><span class="bio_name">{{ profile.first_name }} {{ profile.last_name }}</span></a> {{ profile.bio }} {% if profile.twitter_public and profile.twitterid != None %}<a href="http://twitter.com/{{ profile.twitterid }}" target="_blank">Twitter</a>.{% endif %} {% if profile.linkedin_public and profile.linkedinid != None %}<a href="http://linkedin.com/in/{{ profile.linkedinid }}" target="_blank">LinkedIn</a>.{% endif %} {% if profile.facebook_public and profile.facebookid != None %}<a href="http://facebook.com/{{ profile.facebookid }}" target="_blank">Facebook</a>.{% endif %}</div>
 		<div class="clear"></div>
 		<hr/>
 	{% endfor %}

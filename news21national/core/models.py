@@ -3,7 +3,7 @@ import django.contrib.auth.models as auth
 from django.forms import ModelForm
 from datetime import datetime
 from news21national.core.constants import ETHNICITIES,DEGREE_TYPES,DEGREE_AREAS,SCHOOLS
-
+from avatar.util import get_primary_avatar
 
 class Profile(models.Model):
 	user = models.ForeignKey(auth.User)
@@ -52,6 +52,11 @@ class Profile(models.Model):
 	
 	def get_fullname(self):
 		return self.first_name+' '+self.last_name
+	
+	def get_avatar_url(self):
+		avatar = get_primary_avatar(self.user, size=80)
+		return avatar.avatar_url(80)
+	avatar_url = property(get_avatar_url)
 	
 class Skill(models.Model):
 	title = models.CharField(max_length=200)

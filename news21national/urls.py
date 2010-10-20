@@ -22,6 +22,7 @@ urlpatterns = patterns(
 	url(r'^accounts/pending/', 'news21national.core.views.user_accountpending',  name='user_accountpending'),
 	
 	url(r'^roster/(?P<newsroom_id>\d+)/', 'news21national.core.views.get_newsroom_roster',  name='user_newsroom_roster'),
+	url(r'bio/(?P<reporter_id>\d+)/$','news21national.core.views.get_reporter_bio',{'template':'core/bio.html'},name='user_bio',),
 	
 	url(r'^dashboard/', 'news21national.core.views.dashboard',	name='user_dashboard'),
 	

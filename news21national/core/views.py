@@ -126,18 +126,17 @@ def user_accountpending(request):
 
 
 
-@login_required
 def get_newsroom_roster(request,newsroom_id,template="core/newsroom.html"):
 	try: 
 		n = Newsroom.objects.get(pk=newsroom_id)
 	except Newsroom.DoesNotExist:
 		return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
-
+	
 	roster = Profile.objects.filter(user__in=n.members.values_list('id',flat=True)).distinct().order_by('last_name')
 	breadcrumb = [ {'title':n,'url':reverse('user_newsroom_roster', args=[newsroom_id])} ]
 	return render_to_response(template, {'bios':roster,'newsroom':n,'breadcrumb':breadcrumb}, context_instance=RequestContext(request))
 
-@login_required
+
 def get_reporter_bio(request,reporter_id,template="core/newsroom.html"):
 	roster = Profile.objects.filter(user=reporter_id)
 	breadcrumb = [ {'title':'Bio','url':''} ]

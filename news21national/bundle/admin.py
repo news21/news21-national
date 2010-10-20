@@ -13,7 +13,7 @@ class StoryBundleForm(forms.ModelForm):
 		s = self.fields['stories'].widget
 		choices = []
 		for choice in stories:
-			choices.append((choice.id, '( '+str(choice.created_at.year)+': '+choice.newsrooms+' ) '+choice.headline))
+			choices.append((choice.id, '( '+str(choice.created_at.year)+': '+choice.newsrooms+' ) '+choice.headline+' ( '+choice.metastory.headline+' ) '))
 		s.choices = choices
 
 class StoryBundleAdmin(admin.ModelAdmin):
