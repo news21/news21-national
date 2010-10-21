@@ -12,20 +12,26 @@
 	<div class="grid_16">
 		<div class="contentcontainer">
 		<div align="center">
-			News21 is part of the Carnegie-Knight Initiative on the Future of Journalism Education. All content is released under Creative Commons.
+			News21 is part of the Carnegie-Knight Initiative on the Future of Journalism Education. All content is released under <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons</a>.
+			<br/>
+			You may copy and paste this content or, to access the full content using an API key, please contact news@news21.com for an account.
 		</div>
 		
 		<br/>
 		
 		<h3>Story Budget</h3>
 		<div style="padding:10px;">
+			{% if story.primary_image|default_if_none:0 != 0 %}
 			<span class="bold">Primay Image:</span> {% render_thumb_with_link story.primary_image %}<br/>
+			{% endif %}
 			<span class="bold">Headline:</span> {{story}}<br/>
 			<span class="bold">Original URL:</span> <a href="{{story.original_url}}" target="_blank">{{story.original_url}}</a><br/>
 			<span class="bold">Summary:</span> {{story.summary}}<br/>
+			{% if story.process|default_if_none:"" != "" %}
 			<span class="bold">Reporting Process:</span> {{story.process}}<br/>
+			{% endif %}
 			<span class="bold">Authors:</span> {% for a in story.get_authors %}
-			{% if not forloop.first %},{% endif %} {{ a.get_fullname }} ({{ a.school }})
+			{% if not forloop.first %},{% endif %} <a href="{% url user_bio a.user.id %}">{{ a.get_fullname }}</a> ({{ a.school }})
 			{% endfor %}
 		</div>
 		
@@ -40,7 +46,7 @@
 				<div><strong>Summary:</strong> {{ asset.get_child_object.summary }}</div>
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
-					{% if not forloop.first %},{% endif %} {{ a.get_fullname }} ({{ a.school }})
+					{% if not forloop.first %},{% endif %} <a href="{% url user_bio a.user.id %}">{{ a.get_fullname }}</a> ({{ a.school }})
 					{% endfor %}
 				</div>
 			{% endif %}
@@ -68,7 +74,7 @@
 				<div>{% audioplayer file=asset.get_child_object,height=30,width=250,slider=0xF49900,track=0xF49900,border=0x000000,loader=0xefefef %}</div>
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
-					{% if not forloop.first %},{% endif %} {{ a.get_fullname }} ({{ a.school }})
+					{% if not forloop.first %},{% endif %} <a href="{% url user_bio a.user.id %}">{{ a.get_fullname }}</a> ({{ a.school }})
 					{% endfor %}
 				</div>
 			{% endif %}
@@ -83,7 +89,7 @@
 				{% endif %}
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
-					{% if not forloop.first %},{% endif %} {{ a.get_fullname }} ({{ a.school }})
+					{% if not forloop.first %},{% endif %} <a href="{% url user_bio a.user.id %}">{{ a.get_fullname }}</a> ({{ a.school }})
 					{% endfor %}
 				</div>
 			{% endif %}
@@ -94,7 +100,7 @@
 				<div>{{ asset.get_child_object.content|markdown }}</div>
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
-					{% if not forloop.first %},{% endif %} {{ a.get_fullname }} ({{ a.school }})
+					{% if not forloop.first %},{% endif %} <a href="{% url user_bio a.user.id %}">{{ a.get_fullname }}</a> ({{ a.school }})
 					{% endfor %}
 				</div>
 			{% endif %}
