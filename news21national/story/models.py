@@ -107,7 +107,8 @@ class Story(models.Model):
 		return news21national.partner.models.StoryPlacements.objects.filter(story=self)
 
 	def get_repos(self):
-		return CodeRepo.get_for_object(self)
+		return CodeRepo.objects.get_for_object(self)
+	repos = property(get_repos)
 
 	def get_authors(self):
 		return Profile.objects.filter(user__in=self.authors.values_list('id',flat=True)).distinct().order_by('last_name')
