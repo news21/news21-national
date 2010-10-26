@@ -130,6 +130,14 @@ class Story(models.Model):
 		return ''.join(s)
 	newsrooms = property(get_newsrooms)
 
+	def get_newsroom_shortcodes(self):
+		ns = MetaStory.objects.get(pk=self.metastory.id).newsrooms.values_list('shorter_code',flat=True).order_by('shorter_code')
+		s = []
+		for n in ns:
+			s.append(n)
+		return s
+	newsroom_shortcodes = property(get_newsroom_shortcodes)
+
 	def get_story_authors(self):
 		na = Profile.objects.filter(user__in=self.authors.values_list('id',flat=True)).distinct().order_by('last_name')
 		s = []

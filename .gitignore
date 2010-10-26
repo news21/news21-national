@@ -15,3 +15,4 @@ news21national/media/ik_cache/*
 news21national/media/avatars/*
 logs/*
 news21national/media/admin_media
+rewrite.conf

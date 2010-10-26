@@ -21,7 +21,7 @@ from news21national.photos.models import Photo
 from news21national.coderepo.models import CodeRepo
 from tagging.models import Tag, TaggedItem
 from news21national.socialchecklist.models import Payload, Outlet
-
+from news21national.utils.nginx_rewrites import NginxRewrites
 
 @login_required
 def get_metastory(request,metastory_id=None,template_name="story/metastory.html",is_editor=False):
@@ -204,6 +204,15 @@ def save_story(request,metastory_id,story_id=None):
 		if form.is_valid():
 			form.save()
 			
+			# will need expanded on to filter by year and also seperate rewrite file by year
+			rstories = Story.objects.filter(status="Approved")
+			rewrites = []
+			for r in rstories:
+				for n in r.newsroom_shortcodes:
+					if r.original_url != '':
+						rewrites.append({"from":"/"+str(n)+"/"+str(r.id),"to":str(r.original_url)})
+			#rewrites = [,{"from":"/nat/456","to":"http://national.news21.com"}]
+			NginxRewrites().generate_conf(rewrites)
 			
 			ctype = ContentType.objects.get_for_model(story)
 			try:

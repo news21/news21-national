@@ -8,6 +8,7 @@ from datetime import datetime
 class Newsroom(models.Model):    
     name = models.CharField(max_length=150)
     short_name = models.CharField(max_length=150)
+    shorter_code = models.CharField(max_length=10,null=True,blank=True)
     site_url = models.URLField(verify_exists=True,verbose_name="Site URL")
     bio = models.TextField()
     is_active = models.BooleanField(default=True)
