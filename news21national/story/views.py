@@ -205,12 +205,12 @@ def save_story(request,metastory_id,story_id=None):
 			form.save()
 			
 			# will need expanded on to filter by year and also seperate rewrite file by year
-			rstories = Story.objects.filter(status="Approved")
+			rstories = Story.objects.filter(status="Approved").order_by('metastory')
 			rewrites = []
 			for r in rstories:
 				for n in r.newsroom_shortcodes:
 					if r.original_url != '':
-						rewrites.append({"from":"/"+str(n)+"/"+str(r.id),"to":str(r.original_url)})
+						rewrites.append({"from":"/"+str(n)+""+str(r.id),"to":str(r.original_url)})
 			#rewrites = [,{"from":"/nat/456","to":"http://national.news21.com"}]
 			NginxRewrites().generate_conf(rewrites)
 			
@@ -353,3 +353,14 @@ def get_metastory_status(request,metastory_id,template_name="story/story_status.
 	
 	breadcrumb = [ {'title':metastory,'url':reverse('metastory_edit', args=[metastory_id])} , {'title':'Bulk Status','url':''} ]
 	return render_to_response(template_name, {'breadcrumb':breadcrumb,'metastory':metastory,'stories':stories,'assets':assets}, context_instance=RequestContext(request))
+
+
+
+def get_story_shorturls(request,template_name="story/shorturls.html"):
+	rstories = Story.objects.filter(status="Approved").order_by('metastory')
+	rewrites = []
+	for r in rstories:
+		for n in r.newsroom_shortcodes:
+			if r.original_url != '':
+				rewrites.append({"from":"/"+str(n)+""+str(r.id),"to":str(r.original_url),"metastory":str(r.metastory),"story":str(r)})
+	return render_to_response(template_name, {'urls':rewrites}, context_instance=RequestContext(request))

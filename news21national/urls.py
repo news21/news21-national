@@ -23,6 +23,7 @@ urlpatterns = patterns(
 	
 	url(r'^roster/(?P<newsroom_id>\d+)/', 'news21national.core.views.get_newsroom_roster',  name='user_newsroom_roster'),
 	url(r'bio/(?P<reporter_id>\d+)/$','news21national.core.views.get_reporter_bio',{'template':'core/bio.html'},name='user_bio',),
+	url(r'urls/$','news21national.story.views.get_story_shorturls',name='short_urls',),
 	
 	url(r'^dashboard/', 'news21national.core.views.dashboard',	name='user_dashboard'),
 	

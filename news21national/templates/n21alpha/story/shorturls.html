@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load smart_if %}
+{% load uni_form_tags %}
+{% load discussion_tags %}
+
+{% block content %}
+<div class="grid_16">
+	<div class="contentcontainer">
+	<h3>Story Short URLs</h3>
+	
+	{% for url in urls %}
+		<div class="clear"></div>
+		<div style="border-top:1px dotted gray;padding-top:10px;">
+			<div style="margin-bottom:0px;font-size:10px;">{{url.metastory}}</div>
+			<div style="margin-bottom:5px;font-size:17px;font-weight:bold;">{{url.story}}</div>
+			<div><a href="http://10.news21.com{{url.from}}">http://10.news21.com{{url.from}}</a> >>> <a href="{{url.to}}">{{url.to}}</a></a>
+		</div>
+	{% endfor %}
+	
+	</div>
+</div>
+{% endblock %}
