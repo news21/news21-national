@@ -6,7 +6,7 @@ from os import getcwd
 class NginxRewrites:
 
 	def generate_conf(self,rewrites):
-		filename = os.path.join(getcwd(), "rewrite.conf")
+		filename = os.path.join(os.path.dirname(__file__), "../rewrite.conf")
 		print filename
 		f=open(filename,'w')
 		for rule in rewrites:
