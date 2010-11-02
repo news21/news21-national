@@ -362,5 +362,5 @@ def get_story_shorturls(request,template_name="story/shorturls.html"):
 	for r in rstories:
 		for n in r.newsroom_shortcodes:
 			if r.original_url != '':
-				rewrites.append({"from":"/"+str(n)+""+str(r.id),"to":str(r.original_url),"metastory":str(r.metastory).encode("iso-8859-15","xmlcharrefreplace"),"story":str(r).encode("iso-8859-15","xmlcharrefreplace")})
+				rewrites.append({"from":"/"+str(n)+""+str(r.id),"to":str(r.original_url),"metastory":str(r.metastory),"story":str(r)})
 	return render_to_response(template_name, {'urls':rewrites}, context_instance=RequestContext(request))

@@ -151,3 +151,10 @@ def story_placements(request,api_key,story_id,dif='json'):
 	p = get_object_or_404(Key, api_key=api_key)
 
 	return render_to_response('api/'+settings.API_VERSION+'/story_placements_'+dif+'.html', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+
+def placements(request,api_key,dif='json'):
+	placements = StoryPlacements.objects.all().order_by('partner')
+	# TODO : add api audit
+	p = get_object_or_404(Key, api_key=api_key)
+
+	return render_to_response('api/'+settings.API_VERSION+'/placements_'+dif+'.html', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
