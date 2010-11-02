@@ -10,6 +10,7 @@ from news21national.story.models import MetaStory, Story
 from news21national.story.forms import MetaStoryForm, StoryForm
 from news21national.multimedia.models import Media
 from news21national.photos.models import Photo
+from news21national.core.models import Profile
 from news21national.api.models import Key
 from news21national.partner.models import StoryPlacements
 from tagging.models import Tag,TaggedItem
