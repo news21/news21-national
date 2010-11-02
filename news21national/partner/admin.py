@@ -10,7 +10,8 @@ class PartnerAdmin(admin.ModelAdmin):
 	pass
 
 
-class StoryPlacementsForm(forms.ModelForm):	
+class StoryPlacementsForm(forms.ModelForm):
+	
 	def __init__(self, *args, **kwargs):
 		super(StoryPlacementsForm, self).__init__(*args, **kwargs)
 		wtf = Story.objects.all();
@@ -23,5 +24,6 @@ class StoryPlacementsForm(forms.ModelForm):
 
 class StoryPlacementsAdmin(admin.ModelAdmin):
 	form = StoryPlacementsForm
+	list_display = ('story','partner')
 
 admin.site.register(StoryPlacements,StoryPlacementsAdmin)
