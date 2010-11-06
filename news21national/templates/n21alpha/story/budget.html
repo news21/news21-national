@@ -28,6 +28,8 @@
 			{% endif %}
 			<span class="bold">Headline:</span> {{story}}<br/>
 			<span class="bold">Original URL:</span> <a href="{{story.original_url}}" target="_blank">{{story.original_url}}</a><br/>
+			{% if story.story_shorturls.count != 0 %}
+			<span class="bold">Short Original URL:</span> 
 			{% for shorturl in story.story_shorturls %}
 			<a href="http://{{ story.created_at|date:'y' }}.{{SITE_DOMAIN}}{{shorturl.from}}" target="_blank">http://{{ story.created_at|date:'y' }}.{{SITE_DOMAIN}}{{shorturl.from}}</a>
 			{% endfor %}
