@@ -7,3 +7,6 @@ def api_version(request):
 def internal_api_key(request):
 	from django.conf import settings
 	return {'INTERNAL_API_KEY': settings.INTERNAL_API_KEY}
+def site_domain(request):
+	from django.conf import settings
+	return {'SITE_DOMAIN': settings.SITE_DOMAIN}

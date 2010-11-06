@@ -1,0 +1,56 @@
+{% extends "story/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+
+{% block breadcrumb %}{% endblock %}
+
+{% block content %}
+	<div class="grid_16">
+	<h3>Stories Filtered : {{ filter }}</h3>
+		{% for story in stories %}
+			<div style="border-top:1px dotted gray;padding-top:10px;">
+				<div style="width:100px;height:75px;margin:10px;float:left;position:relative;border:1px solid white;">
+					{% for image in images %}
+						{% if story.primary_image == image.id %}
+							<img src="{{ image.get_thumbnail_url }}" width="100" height="75" alt="story thumbnail" title="story thumbnail">
+						{% endif %}
+					{% endfor %}
+				</div>
+				<div style="width:705px;float:left;">
+					<div style="margin-bottom:0px;font-size:10px;">{{story.metastory}}</div>
+					<div style="margin-bottom:5px;font-size:17px;color:#6F6F6F;font-weight:bold;"><a href="{% url public_story_budget story.id %}">{{ story }}</a></div>
+					<div style="margin-bottom:5px;font-size:11px;">{{ story.summary }}</div>
+					<div>
+					{% for asset in multimedia %}
+						{% if story.id == asset.story.id %}
+							{% if asset.get_child_name == "photo" %}
+							<span class="icon-photo"></span>
+							{% endif %}
+							{% if asset.get_child_name == "plaintext" %}
+							<span class="icon-plaintext"></span>
+							{% endif %}
+							{% if asset.get_child_name == "audio" %}
+							<span class="icon-audio"></span>
+							{% endif %}
+							{% if asset.get_child_name == "video" %}
+							<span class="icon-video"></span>
+							{% endif %}
+							{% if asset.get_child_name == "swf" %}
+							<span class="icon-audio"></span>
+							{% endif %}
+							{% if asset.get_child_name == "embed" %}
+							<span class="icon-embed"></span>
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+					</div>
+				</div>
+			</div>
+			<div class="clear"></div>
+			<br/>
+		{% endfor %}
+	</div>
+
+{% endblock %}

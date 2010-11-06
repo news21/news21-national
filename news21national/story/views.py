@@ -356,6 +356,29 @@ def get_metastory_status(request,metastory_id,template_name="story/story_status.
 
 
 
+
+
+@login_required
+def metastory_budget(request,metastory_id,template="story/metabudget.html"):
+	metastory = MetaStory.objects.get(pk=metastory_id)
+	stories = Story.objects.filter(metastory__id=metastory_id)
+	media_assets = Media.children.filter(story__in=stories.values_list('id',flat=True),status="Approved")
+	breadcrumb = [ {'title':metastory,'url':reverse('partner_metastory_budget', args=[metastory.id])} ]
+	return render_to_response( template, {'stories':stories,'media_assets':media_assets,'metastory_id':metastory.id,'breadcrumb':breadcrumb}, context_instance=RequestContext(request))
+
+@login_required
+def filter_stories_by_year(request,year,template="story/stories.html"):
+	flabel = str(year)
+	stories = Story.objects.filter(created_at__year=year).order_by('metastory').order_by('headline')
+	images = Media.children.filter(id__in=stories.values_list('primary_image',flat=True),_child_name="photo",status="Approved")
+	multimedia = Media.children.filter(story__in=stories.values_list('id',flat=True),status="Approved")
+	breadcrumb = [ {'title':'Filter by Year','url':''} ]
+	return render_to_response( template, {'breadcrumb':breadcrumb,'filter':flabel,'filtertype':'year','stories':stories,'images':images,'multimedia':multimedia}, context_instance=RequestContext(request))
+
+
+
+
+
 def get_story_shorturls(request,template_name="story/shorturls.html"):
 	rstories = Story.objects.filter(status="Approved").order_by('metastory')
 	rewrites = []
@@ -364,3 +387,37 @@ def get_story_shorturls(request,template_name="story/shorturls.html"):
 			if r.original_url != '':
 				rewrites.append({"from":"/"+str(n)+""+str(r.id),"to":str(r.original_url),"metastory":str(r.metastory),"story":str(r)})
 	return render_to_response(template_name, {'urls':rewrites}, context_instance=RequestContext(request))
+
+def story_budget(request,story_id, template="story/budget.html"):
+	story = Story.objects.get(pk=story_id)
+	media_assets = Media.children.filter(story=story,status='Approved')
+	breadcrumb = [ {'title':story.metastory,'url':reverse('partner_metastory_budget', args=[story.metastory.id])} , {'title':story.headline,'url':reverse('partner_story_budget', args=[story_id])} ]
+	return render_to_response( template, {'story':story,'media_assets':media_assets,'story_id':story_id,'metastory_id':story.metastory.id,'breadcrumb':breadcrumb}, context_instance=RequestContext(request))
+
+def filter_stories_by_newsroom(request,newsroom_id,template="story/stories.html"):
+	flabel = Newsroom.objects.get(pk=newsroom_id)
+	stories = Story.objects.filter(metastory__newsrooms=newsroom_id).order_by('metastory').order_by('headline')
+	images = Media.children.filter(id__in=stories.values_list('primary_image',flat=True),_child_name="photo",status="Approved")
+	multimedia = Media.children.filter(story__in=stories.values_list('id',flat=True),status="Approved")
+	breadcrumb = [ {'title':'Filter by Newsroom','url':''} ]
+	return render_to_response( template, {'breadcrumb':breadcrumb,'filter':flabel,'filtertype':'newsroom','stories':stories,'images':images,'multimedia':multimedia}, context_instance=RequestContext(request))
+
+def filter_stories_by_reporter(request,reporter_id,template="story/stories.html"):
+	flabel = auth.User.objects.get(pk=reporter_id)
+	stories = Story.objects.filter(authors=reporter_id).order_by('metastory').order_by('headline')
+	images = Media.children.filter(id__in=stories.values_list('primary_image',flat=True),_child_name="photo",status="Approved")
+	multimedia = Media.children.filter(story__in=stories.values_list('id',flat=True),status="Approved")
+	breadcrumb = [ {'title':'Filter by Author','url':''} ]
+	return render_to_response( template, {'breadcrumb':breadcrumb,'filter':flabel,'filtertype':'author','stories':stories,'images':images,'multimedia':multimedia}, context_instance=RequestContext(request))
+
+def filter_stories_by_tag(request,tag_name,template="story/stories.html"):
+	flabel = str(tag_name)
+	tagged = TaggedItem.objects.get_by_model(Story,tag_name)
+	storyids = []
+	for s in tagged:
+		storyids.append(s.id)
+	stories = Story.objects.filter(id__in=storyids).order_by('metastory').order_by('headline')
+	images = Media.children.filter(id__in=storyids,_child_name="photo",status="Approved")
+	multimedia = Media.children.filter(story__in=storyids,status="Approved")
+	breadcrumb = [ {'title':'Filter by Category','url':''} ]
+	return render_to_response( template, {'breadcrumb':breadcrumb,'filter':flabel,'filtertype':'category','stories':stories,'images':images,'multimedia':multimedia}, context_instance=RequestContext(request))

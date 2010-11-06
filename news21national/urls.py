@@ -25,7 +25,13 @@ urlpatterns = patterns(
 	url(r'bio/(?P<reporter_id>\d+)/$','news21national.core.views.get_reporter_bio',{'template':'core/bio.html'},name='user_bio',),
 	url(r'urls/$','news21national.story.views.get_story_shorturls',name='short_urls',),
 	
-	url(r'^dashboard/', 'news21national.core.views.dashboard',	name='user_dashboard'),
+	url(r'content/newsroom/(?P<newsroom_id>\d+)/$','news21national.story.views.filter_stories_by_newsroom',name='public_filter_stories_by_newsroom',),
+	url(r'content/reporter/(?P<reporter_id>\d+)/$','news21national.story.views.filter_stories_by_reporter',name='public_filter_stories_by_reporter',),
+	url(r'content/tag/(?P<tag_name>.+)/$','news21national.story.views.filter_stories_by_tag',name='public_filter_stories_by_tag',),
+	url(r'content/year/(?P<year>\d+)/$','news21national.story.views.filter_stories_by_year',name='public_filter_stories_by_year',),
+	url(r'content/budget/(?P<story_id>\d+)/$','news21national.story.views.story_budget',name='public_story_budget',),
+	
+	url(r'^dashboard/', 'news21national.core.views.dashboard', name='user_dashboard'),
 	
 	(r'^editorsdesk/',include('news21national.editorsdesk.urls')),
 	(r'^partner/',include('news21national.partner.urls')),

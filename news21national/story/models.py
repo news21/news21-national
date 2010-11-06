@@ -146,6 +146,16 @@ class Story(models.Model):
 			s.append(f)
 		return ', '.join(s)
 	story_authors = property(get_story_authors)
+	
+	def get_story_shorturls(self):
+		rstories = Story.objects.filter(pk=self.id)
+		rewrites = []
+		for r in rstories:
+			for n in r.newsroom_shortcodes:
+				if r.original_url != '':
+					rewrites.append({"from":"/"+str(n)+""+str(r.id),"to":str(r.original_url)})
+		return rewrites
+	story_shorturls = property(get_story_shorturls)
 
 class StoryPublishDate(models.Model):
 	story = models.ForeignKey(Story)

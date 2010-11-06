@@ -215,6 +215,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 	'news21national.context_processors.site_style',
 	'news21national.context_processors.api_version',
 	'news21national.context_processors.internal_api_key',
+	'news21national.context_processors.site_domain',
 	#'django.contrib.csrf.middleware.CsrfMiddleware',
 )
 
