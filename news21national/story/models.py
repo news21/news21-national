@@ -11,6 +11,34 @@ import news21national
 from django.contrib.contenttypes.models import ContentType
 from news21national.coderepo.models import CodeRepo
 from news21national.core.models import Profile
+from django.conf import settings
+
+class Project(models.Model):
+	name = models.CharField(max_length=150,verbose_name="Name Of Project")
+	description = models.TextField(verbose_name="Description")
+	started_at = models.DateTimeField(verbose_name="Started On")
+	thumbnail = models.ImageField(_('image'), upload_to='uploads/photos/%Y/%m/%d', max_length=255)
+	created_by = models.ForeignKey(auth.User, related_name="project_created_by")
+	created_at = models.DateTimeField(editable=False)
+	updated_by = models.ForeignKey(auth.User, related_name="project_updated_by")
+	updated_at = models.DateTimeField(editable=False)
+	
+	def __unicode__(self):
+		return unicode(self.name)
+
+	def __str__(self):
+		return self.name
+
+	def admin_image(self):
+	  return '<img src="%s"/>' % self.thumbnail.url
+	admin_image.allow_tags = True
+
+	def save(self):
+		if self.created_at == None:
+			self.created_at = datetime.now()
+		self.updated_at = datetime.now()
+		super(Project, self).save()
+
 
 class MetaStory(models.Model):
 	newsrooms = models.ManyToManyField(Newsroom, related_name="metastory_newsrooms")
@@ -30,6 +58,7 @@ class MetaStory(models.Model):
 	created_at = models.DateTimeField(editable=False)
 	updated_by = models.ForeignKey(auth.User, related_name="metastory_updated_by")
 	updated_at = models.DateTimeField(editable=False)
+	project = models.ForeignKey(Project, null=True)
 	tags = TagField()
 
 	def __unicode__(self):
