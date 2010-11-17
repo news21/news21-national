@@ -58,7 +58,7 @@ class MetaStory(models.Model):
 	created_at = models.DateTimeField(editable=False)
 	updated_by = models.ForeignKey(auth.User, related_name="metastory_updated_by")
 	updated_at = models.DateTimeField(editable=False)
-	project = models.ForeignKey(Project, null=True)
+	project = models.ForeignKey(Project, null=True,blank=True)
 	tags = TagField()
 
 	def __unicode__(self):
