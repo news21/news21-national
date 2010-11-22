@@ -10,5 +10,11 @@ class AwardAdmin(admin.ModelAdmin):
 			'newsrooms': Newsroom.objects.all(),
 		}
 		return super(AwardAdmin, self).change_view(request, object_id,extra_context=my_context)
+	
+	def add_view(self, request, extra_context=None):
+		my_context = {
+			'newsrooms': Newsroom.objects.all(),
+		}
+		return super(AwardAdmin, self).add_view(request,extra_context=my_context)
 
 admin.site.register(Award,AwardAdmin)
