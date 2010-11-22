@@ -82,7 +82,7 @@ def stories_by_filters(request,api_key,dif='json'):
 			#first check to make sure inherited story is not already in array
 			bfound = False
 			for sa in sarray:
-				print sa
+				#print sa
 				if sa['id'] is s2.id:
 					bfound = True
 			if not bfound:
@@ -132,6 +132,27 @@ def newsrooms_bios(request,api_key,newsroom_id,dif='json'):
 
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
+
+	return render_to_response('api/'+settings.API_VERSION+'/newsroom_bios_'+dif+'.html', { 'bios': bios, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+
+
+def bios_by_filters(request,api_key,dif='json'):
+	if request.method == 'POST':
+		newsrooms_filter = request.POST.get("newsrooms",'').split(',')
+		newsrooms = Newsroom.objects.filter(id__in=newsrooms_filter)
+		print newsrooms
+		profiles = []
+		for n in newsrooms:
+			for p in n.members.values_list('id',flat=True):
+				profiles.append(p)
+		
+		print profiles
+		bios = Profile.objects.filter(user__in=profiles).distinct().order_by('last_name')
+
+		# TODO : add api audit
+		p = get_object_or_404(Key, api_key=api_key)
+	else:
+		bios = []
 
 	return render_to_response('api/'+settings.API_VERSION+'/newsroom_bios_'+dif+'.html', { 'bios': bios, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 

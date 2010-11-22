@@ -10,6 +10,7 @@ class Award(models.Model):
 	name = models.CharField(max_length=150,verbose_name="Name Of Award")
 	presented_by = models.CharField(max_length=150,verbose_name="Presented By")
 	presented_at = models.DateTimeField(verbose_name="Presented On")
+	presented_url = models.URLField(verify_exists=False,verbose_name="Presented By URL",null=True,blank=True)
 	
 	content_type = models.ForeignKey(ContentType, related_name="content_type_set_for_%(class)s")
 	object_id = models.PositiveIntegerField(_('object ID'), max_length=50)

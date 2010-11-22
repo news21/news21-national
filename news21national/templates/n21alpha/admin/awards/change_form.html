@@ -1,0 +1,40 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block coltype %}colMS{% endblock %}
+
+
+{% block sidebar %}
+<div id="content-related">
+		<div id="navcontainer">
+				<h3>Filter Members By:</h3>
+				<h4>Newsroom</h4>
+				<ul id="navlist">
+					{% for n in newsrooms %}
+						<li><input type="checkbox" name="newrooms" value="{{ n.id }}" class="members_filters"> {{ n }}</li>
+					{% endfor %}
+				</ul>
+		</div>
+</div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
+<script type="text/javascript" charset="utf-8">
+	jQuery(document).ready(function() {
+		var newsroomsused = [];
+		jQuery('.members_filters').click(function() {
+			newsroomsused = []
+			jQuery( ".members_filters:checked" ).each(function(){
+		  	newsroomsused.push( jQuery(this).attr('value').toLowerCase() );
+			});
+			
+			jQuery.post('/api/{{ API_VERSION }}/{{ INTERNAL_API_KEY }}/filtered_bios/', {'newsrooms':newsroomsused.join()}, function(data) {
+				var options = '';
+				var regx = /\'/g;
+				jQuery.each(data.bios, function(i,item){
+					options = options+'<option value="'+item.id+'">'+item.name+'</option>'
+				});
+				jQuery('select#id_members').html(options);
+			},'json');
+		});
+	});
+</script>
+{% endblock %}
