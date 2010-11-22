@@ -140,13 +140,13 @@ def bios_by_filters(request,api_key,dif='json'):
 	if request.method == 'POST':
 		newsrooms_filter = request.POST.get("newsrooms",'').split(',')
 		newsrooms = Newsroom.objects.filter(id__in=newsrooms_filter)
-		print newsrooms
+		#print newsrooms
 		profiles = []
 		for n in newsrooms:
 			for p in n.members.values_list('id',flat=True):
 				profiles.append(p)
 		
-		print profiles
+		#print profiles
 		bios = Profile.objects.filter(user__in=profiles).distinct().order_by('last_name')
 
 		# TODO : add api audit
