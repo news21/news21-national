@@ -14,8 +14,8 @@ class ImageAdmin(admin.ModelAdmin):
 	list_per_page = 10
 
 class PhotoAdmin(admin.ModelAdmin):
-	list_display = ('title', 'pub_date', 'get_view_count', 'get_thumbnail_view')
-	list_filter = ['pub_date', ]
+	list_display = ('title', 'pub_date', 'get_view_count', 'get_thumbnail_view','status')
+	list_filter = ['pub_date','status', ]
 	list_per_page = 10
 	prepopulated_fields = {'slug': ('title',)}
 
