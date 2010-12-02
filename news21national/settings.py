@@ -97,6 +97,7 @@ INSTALLED_APPS = (
 	'news21national.videos',
 	'news21national.embed',
 	'news21national.awards',
+	'news21national.links',
 	#
     'feincms',
 	'feincms.module.page',

@@ -26,30 +26,14 @@ class StoryBundleAdmin(admin.ModelAdmin):
 		}
 		return super(StoryBundleAdmin, self).change_view(request, object_id,extra_context=my_context)
 
-	def save_model(self, request, obj, form, change): 
-			instance = form.save(commit=False)
-			if not hasattr(instance, 'created_by'):
-				instance.created_by = request.user
-			instance.modified_by = request.user
-			instance.save()
-			form.save_m2m()
-			return instance
-
-	def save_formset(self, request, form, formset, change): 
-		def set_user(instance):
-			if not hasattr(instance, 'created_by'):
-				instance.created_by = request.user
-			instance.modified_by = request.user
-			instance.save()
-
-		if formset.model == User:
-			instances = formset.save(commit=False)
-			map(set_user, instances)
-			formset.save_m2m()
-			return instances
-		else:
-			return formset.save()
-
+	def formfield_for_foreignkey(self, db_field, request, **kwargs):
+		if db_field.name == 'created_by':
+			kwargs['initial'] = request.user.id
+			return db_field.formfield(**kwargs)
+		if db_field.name == 'updated_by':
+			kwargs['initial'] = request.user.id
+			return db_field.formfield(**kwargs)
+		return super(StoryBundleAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 admin.site.register(StoryBundle,StoryBundleAdmin)

@@ -11,7 +11,7 @@
 				<h4>Newsroom</h4>
 				<ul id="navlist">
 					{% for n in newsrooms %}
-						<li><input type="checkbox" name="tags" value="{{ n }}" class="story_filters"> {{ n }}</li>
+						<li><input type="checkbox" name="tags" value="{{ n.short_name }}" class="story_filters"> {{ n }}</li>
 					{% endfor %}
 				</ul>
 				<h4>Tags</h4>

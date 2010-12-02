@@ -18,7 +18,7 @@ class StoryPlacementsForm(forms.ModelForm):
 		s = self.fields['story'].widget
 		choices = []
 		for choice in wtf:
-			choices.append((choice.id, '( '+str(choice.created_at.year)+': '+choice.newsrooms+' ) '+choice.headline))
+			choices.append((choice.id, '( '+str(choice.created_at.year)+': '+choice.newsrooms+' ) '+choice.headline+ ' By: '+choice.story_authors ))
 		s.choices = choices
 
 

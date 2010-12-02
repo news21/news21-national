@@ -211,7 +211,7 @@ def save_story(request,metastory_id,story_id=None):
 				for n in r.newsroom_shortcodes:
 					if r.original_url != '':
 						rewrites.append({"from":"/"+str(n)+""+str(r.id),"to":str(r.original_url)})
-			#rewrites = [,{"from":"/nat/456","to":"http://national.news21.com"}]
+			#rewrites = [,{"from":"/nat456","to":"http://national.news21.com"}]
 			NginxRewrites().generate_conf(rewrites)
 			
 			ctype = ContentType.objects.get_for_model(story)
