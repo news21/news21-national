@@ -6,6 +6,14 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext_lazy as _
 
+class AwardManager(models.Manager):
+	def get_for_object(self, obj):
+		ctype = ContentType.objects.get_for_model(obj)
+		return self.filter(content_type__pk=ctype.pk,object_id=obj.pk)
+
+	def get_for_user(self, user):
+		return self.filter(members=user.id)
+
 class Award(models.Model):
 	name = models.CharField(max_length=150,verbose_name="Name Of Award")
 	presented_by = models.CharField(max_length=150,verbose_name="Presented By")
@@ -21,6 +29,8 @@ class Award(models.Model):
 	created_at = models.DateTimeField(editable=False)
 	updated_by = models.ForeignKey(auth.User, related_name="award_updated_by")
 	updated_at = models.DateTimeField(editable=False)
+	
+	objects = AwardManager()
 	
 	def __unicode__(self):
 		return unicode(self.name)

@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 
+from news21national.awards.models import Award
 from news21national.newsroom.models import Newsroom
 from news21national.story.models import MetaStory, Story
 from news21national.story.forms import MetaStoryForm, StoryForm
@@ -100,13 +101,15 @@ def stories_by_filters(request,api_key,dif='json'):
 	return render_to_response('api/'+settings.API_VERSION+'/stories_by_filters_'+dif+'.html', { 'stories': sarray, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
 
-def story(request,api_key,story_id,dif='json',custom_filter=''):
+def story(request,api_key,story_id,dif='json',custom_filter='',extra_context=None):
 	story = get_object_or_404(Story, pk=story_id)
-
+	
+	if custom_filter == '_ec':
+		extra_context = {'awards':Award.objects.get_for_object(story)}
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
-	return render_to_response('api/'+settings.API_VERSION+'/story'+custom_filter+'_'+dif+'.html', { 'story': story, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+settings.API_VERSION+'/story'+custom_filter+'_'+dif+'.html', { 'story': story, 'extra_context': extra_context, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
 
 def media(request,api_key,media_id,dif='json'):
@@ -159,7 +162,7 @@ def bios_by_filters(request,api_key,dif='json'):
 
 def bio(request,api_key,user_id,dif='json'):
 	bio = Profile.objects.get(user_id=user_id)
-
+	
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 

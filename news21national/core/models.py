@@ -4,6 +4,7 @@ from django.forms import ModelForm
 from datetime import datetime
 from news21national.core.constants import ETHNICITIES,DEGREE_TYPES,DEGREE_AREAS,SCHOOLS
 from avatar.util import get_primary_avatar
+from news21national.awards.models import Award
 
 class Profile(models.Model):
 	user = models.ForeignKey(auth.User)
@@ -58,6 +59,10 @@ class Profile(models.Model):
 		return avatar.avatar_url(80)
 	avatar_url = property(get_avatar_url)
 	
+	def get_awards(self):
+		return Award.objects.get_for_user(self.user)
+	awards = property(get_awards)
+
 class Skill(models.Model):
 	title = models.CharField(max_length=200)
 

@@ -9,7 +9,12 @@
 <div class="grid_16">
 	<h3>Biography:</h3>
 	{% for profile in bios %}
-		<div class="news21_biography">{% avatar profile.user 80 %} <span class="bio_name">{{ profile.first_name }} {{ profile.last_name }}</span> {{ profile.bio }} {% if profile.twitter_public and profile.twitterid != None %}<a href="http://twitter.com/{{ profile.twitterid }}" target="_blank">Twitter</a>.{% endif %} {% if profile.linkedin_public and profile.linkedinid != None %}<a href="http://linkedin.com/in/{{ profile.linkedinid }}" target="_blank">LinkedIn</a>.{% endif %} {% if profile.facebook_public and profile.facebookid != None %}<a href="http://facebook.com/{{ profile.facebookid }}" target="_blank">Facebook</a>.{% endif %}</div>
+		<div class="news21_biography">{% avatar profile.user 80 %} <span class="bio_name">{{ profile.first_name }} {{ profile.last_name }}</span> {{ profile.bio }} {% if profile.twitter_public and profile.twitterid != None %}<a href="http://twitter.com/{{ profile.twitterid }}" target="_blank">Twitter</a>.{% endif %} {% if profile.linkedin_public and profile.linkedinid != None %}<a href="http://linkedin.com/in/{{ profile.linkedinid }}" target="_blank">LinkedIn</a>.{% endif %} {% if profile.facebook_public and profile.facebookid != None %}<a href="http://facebook.com/{{ profile.facebookid }}" target="_blank">Facebook</a>.{% endif %}
+			{% if profile.awards.count != 0 %}
+			<br/>
+			Awards: {% for award in profile.awards %}{{award.name}} {{award.presented_by}} {{award.presented_at}} {{award.presented_url}}{% endfor %}
+			{% endif %}
+			</div>
 		<div class="clear"></div>
 	{% endfor %}
 </div>
