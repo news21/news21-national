@@ -9,9 +9,6 @@ from django.conf import settings
 
 class KeyManager(models.Manager):
 	def get_for_object(self, obj):
-		"""
-		Returns the api keys associated with the given object or None.
-		"""
 		ctype = ContentType.objects.get_for_model(obj)
 		try:
 			return self.filter(content_type=ctype, object_id=obj.pk, is_active=True)
@@ -20,9 +17,6 @@ class KeyManager(models.Manager):
 		return []
 
 	def add_key(self, obj, user):
-		"""
-		Associate an API key to an object.
-		"""
 		ctype = ContentType.objects.get_for_model(obj)
 		hashkey = md5.new(str(random.randint(0, sys.maxint - 1)) + settings.SECRET_KEY).hexdigest() + str(ctype.id) + str(obj.id)
 		

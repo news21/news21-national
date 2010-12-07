@@ -21,6 +21,6 @@ def get_bundle(request,slug):
 def story_budget(request,slug,story_id):
 	bundle = get_object_or_404(StoryBundle, slug=slug)
 	story = Story.objects.get(pk=story_id)
-	media_assets = Media.children.filter(story=story,status='Approved')
+	media_assets = Media.children.filter(story=story,status='Approved').order_by('_child_name',)
 	breadcrumb = [ {'title':bundle,'url':reverse('bundles_bundle', args=[bundle.slug])} ]
 	return render_to_response( "bundle/budget.html", { 'breadcrumb':breadcrumb, 'story':story, 'media_assets':media_assets, 'story_id':story_id, 'metastory_id':story.metastory.id}, context_instance=RequestContext(request))

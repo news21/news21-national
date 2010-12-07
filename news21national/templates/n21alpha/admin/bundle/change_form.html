@@ -11,13 +11,22 @@
 				<h4>Newsroom</h4>
 				<ul id="navlist">
 					{% for n in newsrooms %}
-						<li><input type="checkbox" name="tags" value="{{ n.short_name }}" class="story_filters"> {{ n }}</li>
+						<li><input type="checkbox" name="newsroom" value="{{ n.id }}" class="story_filters"> {{ n }}</li>
 					{% endfor %}
+				</ul>
+				<h4>Assets</h4>
+				<ul id="navlist">
+					<li><input type="checkbox" name="assettype" value="plaintext" class="story_filters"> Text</li>
+					<li><input type="checkbox" name="assettype" value="photo" class="story_filters"> Photos</li>
+					<li><input type="checkbox" name="assettype" value="video" class="story_filters"> Videos</li>
+					<li><input type="checkbox" name="assettype" value="audio" class="story_filters"> Audio</li>
+					<li><input type="checkbox" name="assettype" value="embed" class="story_filters"> Embeds</li>
+					<li><input type="checkbox" name="assettype" value="link" class="story_filters"> Links</li>
 				</ul>
 				<h4>Tags</h4>
 				<ul id="navlist">
 						{% for t in tags %}
-							<li><input type="checkbox" name="tags" value="{{ t }}" class="story_filters"> {{ t }}</li>
+							<li><input type="checkbox" name="tag" value="{{ t }}" class="story_filters"> {{ t }}</li>
 						{% endfor %}
 				</ul>
 		</div>
@@ -26,13 +35,25 @@
 <script type="text/javascript" charset="utf-8">
 	jQuery(document).ready(function() {
 		var tagsused = [];
+		var newsroomsused = [];
+		var assettypesused = [];
 		jQuery('.story_filters').click(function() {
 			tagsused = []
+			newsroomsused = []
+			assettypesused = []
 			jQuery( ".story_filters:checked" ).each(function(){
-		  	tagsused.push( jQuery(this).attr('value').toLowerCase() );
+				if(jQuery(this).attr('name').toLowerCase() == 'tag')
+					tagsused.push( jQuery(this).attr('value').toLowerCase() );
 			});
-			
-			jQuery.post('/api/{{ API_VERSION }}/{{ INTERNAL_API_KEY }}/filtered_stories/', {'tags':tagsused.join()}, function(data) {
+			jQuery( ".story_filters:checked" ).each(function(){
+				if(jQuery(this).attr('name').toLowerCase() == 'newsroom')
+					newsroomsused.push( jQuery(this).attr('value').toLowerCase() );
+			});
+			jQuery( ".story_filters:checked" ).each(function(){
+				if(jQuery(this).attr('name').toLowerCase() == 'assettype')
+					assettypesused.push( jQuery(this).attr('value').toLowerCase() );
+			});
+			jQuery.post('/api/{{ API_VERSION }}/{{ INTERNAL_API_KEY }}/filtered_stories/', {'tags':tagsused.join(),'newsrooms':newsroomsused.join(),'assettypes':assettypesused.join()}, function(data) {
 				var options = '';
 				var regx = /\'/g;
 				jQuery.each(data.stories, function(i,item){

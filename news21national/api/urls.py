@@ -2,7 +2,6 @@ from django.conf import settings
 from django.conf.urls.defaults import *
 
 urlpatterns = patterns ('',
-
 	url(r'^v1/(?P<api_key>.+)/categories/(?P<dif>.+)/$','news21national.api.views.story_categories',name='api_topics',),
 	url(r'v1/(?P<api_key>.+)/category/(?P<category_id>.+)/stories/(?P<dif>.+)/$','news21national.api.views.stories_by_category',name='api_topicstories',),
 	url(r'v1/(?P<api_key>.+)/story/(?P<story_id>\d+)/(?P<dif>.+)/$','news21national.api.views.story',name='api_story',),
