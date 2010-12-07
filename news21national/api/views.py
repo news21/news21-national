@@ -67,7 +67,7 @@ def stories_by_filters(request,api_key,dif='json'):
 		
 		sids = []
 		sarray = []
-		'''
+		
 		if len(tags_filter) >0:
 			stories = TaggedItem.objects.get_by_model(Story, Tag.objects.filter(name__in=tags_filter) )
 			metastories = TaggedItem.objects.get_by_model(MetaStory, Tag.objects.filter(name__in=tags_filter))
@@ -121,7 +121,7 @@ def stories_by_filters(request,api_key,dif='json'):
 						if p.id is s3.primary_image:
 							purl = 'http://'+ request.get_host()+''+p.get_thumbnail_url()
 					sarray.append({ "slug":s3.slug, "year":s3.created_at.year, "newsrooms":s3.newsrooms, "headline":s3.headline, "summary":s3.summary, "original_url":s3.original_url, "primary_image": purl, "id":s3.id })
-		'''
+		
 		
 		if len(assettypes_filter) >0:
 			assets_stories = Story.objects.filter(pk__in=Media.objects.filter(_child_name__in=assettypes_filter).values_list('story',flat=True))
