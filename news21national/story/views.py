@@ -344,7 +344,7 @@ def remove_publishdate(request,metastory_id,story_id,publish_id):
 	return HttpResponse(simplejson.dumps(response_dict), mimetype='application/json')
 
 @login_required
-def get_metastory_status(request,metastory_id,template_name="story/story_status.html"):
+def get_metastory_status(request,metastory_id,template_name="story/metastory_status.html"):
 	response_dict = {}
 
 	metastory = get_object_or_404(MetaStory, pk=metastory_id)

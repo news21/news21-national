@@ -1,0 +1,44 @@
+{% extends "story/base.html" %}
+
+
+{% load i18n %}
+{% load smart_if %}
+
+{% block breadcrumb %}{% endblock %}
+
+{% block content %}
+	<div class="grid_16">
+	<h3>Package Status</h3>
+
+		<div style="height:30px;"><span class="icon-{% if metastory.status == "Approved" %}accept{% else %}{% if metastory.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> <a href="{% url metastory_edit metastory.id %}">{{metastory.status}}</a> : {{ metastory }}</div>
+	
+	{% for story in stories %}
+		<div style="padding-left:20px;height:30px;"><span class="icon-{% if story.status == "Approved" %}accept{% else %}{% if story.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> <a href="{% url story_edit story.metastory.id story.id %}">{{story.status}}</a> : {{ story }}</div>
+		{% for asset in assets %}
+			{% if asset.story.id == story.id %}
+				<div style="padding-left:40px;height:30px;"><span class="icon-{% if asset.status == "Approved" %}accept{% else %}{% if asset.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> 
+					{% if asset.get_child_name == "photo" %}
+					<span class="icon-photo"></span><a href="{% url photo_edit metastory.id asset.story.id asset.id %}">{{ asset.status }}</a>
+					{% endif %}
+					{% if asset.get_child_name == "plaintext" %}
+					<span class="icon-plaintext"></span><a href="{% url plaintext_edit metastory.id asset.story.id asset.id %}">{{ asset.status }}</a>
+					{% endif %}
+					{% if asset.get_child_name == "audio" %}
+					<span class="icon-audio"></span><a href="{% url audio_edit metastory.id asset.story.id asset.id %}">{{ asset.status }}</a>
+					{% endif %}
+					{% if asset.get_child_name == "video" %}
+					<span class="icon-video"></span><a href="{% url video_edit metastory.id asset.story.id asset.id %}">{{ asset.status }}</a>
+					{% endif %}
+					{% if asset.get_child_name == "swf" %}
+					<span class="icon-audio"></span><a href="{% url swf_edit metastory.id asset.story.id asset.id %}">{{ asset.status }}</a>
+					{% endif %}
+					{% if asset.get_child_name == "embed" %}
+					<span class="icon-embed"></span><a href="{% url embed_edit metastory.id asset.story.id asset.id %}">{{ asset.status }}</a>
+					{% endif %} : {{ asset }}</div>
+			{% endif %}
+		{% endfor %}
+	{% endfor %}
+	
+	</div>
+
+{% endblock %}

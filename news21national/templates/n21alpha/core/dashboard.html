@@ -32,7 +32,7 @@
 	</div>
 	<div class="grid_8">
 		<div class="contentcontainer">
-		<h4 class="module-header">Your Content <a href="{% url metastory_new %}">[+]</a></h4>
+		<h4 class="module-header">Your Story Packages <a href="{% url metastory_new %}">[+]</a></h4>
 		{% for package in metastories %}
 		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
 			{% for photo in story_photos %}
