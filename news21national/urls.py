@@ -41,6 +41,8 @@ urlpatterns = patterns(
 	(r'^builder/',include('news21national.story.urls')),
 	(r'^api/',include('news21national.api.urls')),
 	
+	url(r'^geosearch/', 'news21national.utils.views.geopoint_from_address', name='geosearch_from_address'),
+	
 	(r'^messages/', include('django_messages.urls')),
 	(r"^announcements/", include("announcements.urls")),
 	(r'^avatar/', include('avatar.urls')),

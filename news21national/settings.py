@@ -60,6 +60,7 @@ INSTALLED_APPS = (
 	'django.contrib.sites',
 	'django.contrib.markup',
 	#
+	'simplejson',
 	'tagging',
 	'south',
 	'registration',
@@ -77,6 +78,7 @@ INSTALLED_APPS = (
 	'discussion',
 	'debug_toolbar',
 	'mptt',
+	'geopy',
 	#
 	'news21national.bundle',
 	'news21national.core',

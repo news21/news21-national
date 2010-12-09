@@ -68,6 +68,8 @@
 				<label style="width:50px;">GeoTag:  <br/><span id="geotag_point">{{ geotag.point.x|default:"-98.6" }} , {{ geotag.point.y|default:"38.5" }}</span><input type="hidden" id="id_geo_tag_lat" name="geo_tag_lat" value="{{ geotag.point.y|default:"38.5" }}"><input type="hidden" id="id_geo_tag_lon" name="geo_tag_lon" value="{{ geotag.point.x|default:"-98.6" }}"></label>
 				<div class="inputDiv" style="margin-left:65px;">
 					<div id="map" class="smallmap"></div>
+					<div><label for="get_geopoint">Get GeoPoint</label><input type="text" name="get_geopoint" id="get_geopoint"><input type="button" name="geopoint_btn" value="Find" id="geopoint_btn">
+					</div>
 				</div>
 			</div>
 		</fieldset>
@@ -190,6 +192,19 @@
 			$("#id_geo_tag_lon").val(lonlat.lon)
 			markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(lonlat.lon,lonlat.lat),icon.clone()));
 		});
+		
+		
+		var geoResult = function(data) {
+			markers.clearMarkers();
+			jQuery("#geotag_point").html(data.point[1]+' , '+data.point[0]);
+			jQuery("#id_geo_tag_lat").val(data.point[0]);
+			jQuery("#id_geo_tag_lon").val(data.point[1]);
+			markers.addMarker(new OpenLayers.Marker(new OpenLayers.LonLat(data.point[1],data.point[0]),icon.clone()));
+		};
+		jQuery('#geopoint_btn').click(function() {
+			jQuery.post('/geosearch/', {'useraddress':jQuery('#get_geopoint').val()}, geoResult,'json');
+		});
+		
     }
 	
 	init();
