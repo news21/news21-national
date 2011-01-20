@@ -6,8 +6,8 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 
 from news21national.awards.models import Award
-from news21national.newsroom.models import Newsroom
-from news21national.story.models import MetaStory, Story
+from news21national.newsroom.models import Newsroom, NewsOrganization
+from news21national.story.models import Project, MetaStory, Story
 from news21national.story.forms import MetaStoryForm, StoryForm
 from news21national.multimedia.models import Media
 from news21national.photos.models import Photo
@@ -191,6 +191,7 @@ def bios_by_filters(request,api_key,dif='json'):
 	if request.method == 'POST':
 		newsrooms_filter = request.POST.get("newsrooms",'').split(',')
 		newsrooms = Newsroom.objects.filter(id__in=newsrooms_filter)
+		
 		#print newsrooms
 		profiles = []
 		for n in newsrooms:
@@ -206,6 +207,17 @@ def bios_by_filters(request,api_key,dif='json'):
 		bios = []
 
 	return render_to_response('api/'+settings.API_VERSION+'/newsroom_bios_'+dif+'.html', { 'bios': bios, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+
+def organizations(request,api_key,organization_id,dif='json'):
+	org = get_object_or_404(NewsOrganization, pk=organization_id)
+	newsrooms = Newsroom.objects.filter(organization=org).order_by('created_at')
+	metastories = MetaStory.objects.filter(newsrooms__in=newsrooms.values_list('id',flat=True))
+	projects = Project.objects.filter(id__in=metastories.values_list('project',flat=True)).distinct()
+	
+	# TODO : add api audit
+	p = get_object_or_404(Key, api_key=api_key)
+	
+	return render_to_response('api/'+settings.API_VERSION+'/organizations_'+dif+'.html', { 'organization': org, 'metastories': metastories, 'projects': projects, 'newsrooms':newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
 
 def bio(request,api_key,user_id,dif='json'):

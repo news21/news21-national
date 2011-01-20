@@ -12,4 +12,5 @@ urlpatterns = patterns ('',
 	url(r'v1/(?P<api_key>.+)/media/(?P<media_id>\d+)/(?P<dif>.+)/$','news21national.api.views.media',name='api_media',),
 	url(r'v1/(?P<api_key>.+)/filtered_stories/$','news21national.api.views.stories_by_filters',name='api_stories_by_filters',),
 	url(r'v1/(?P<api_key>.+)/placements/(?P<dif>.+)/$','news21national.api.views.placements',name='api_placements',),
+	url(r'v1/(?P<api_key>.+)/organization/(?P<organization_id>\d+)/(?P<dif>.+)/$','news21national.api.views.organizations',name='api_placements',),
 )

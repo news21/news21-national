@@ -5,4 +5,4 @@ DEBUG=True
 TEMPLATE_DEBUG=DEBUG
 
 
-DATABASE_NAME = 'n21national-development'
+#DATABASE_NAME = ''
