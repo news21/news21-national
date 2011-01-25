@@ -15,7 +15,7 @@ class NewsOrganizationAdmin(admin.ModelAdmin):
 		return super(NewsOrganizationAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
 class NewsroomAdmin(admin.ModelAdmin):
-	list_display = ('name','short_name','shorter_code','is_active')
+	list_display = ('name','short_name','shorter_code','organization','is_active')
 
 	def formfield_for_foreignkey(self, db_field, request, **kwargs):
 		if db_field.name == 'created_by':
