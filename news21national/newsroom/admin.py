@@ -24,7 +24,7 @@ class NewsroomForm(forms.ModelForm):
 		s = self.fields['members'].widget
 		choices = []
 		for choice in profiles:
-			choices.append((choice.id, '('+choice.school+') '+choice.first_name+ ' '+choice.last_name+' ( '+str(choice.user.email)+' )' ))
+			choices.append((choice.user.id, '('+choice.school+') '+choice.first_name+ ' '+choice.last_name+' ( '+str(choice.user.email)+' )' ))
 		s.choices = sorted(choices, key=lambda c: c[1])
 
 class NewsroomAdmin(admin.ModelAdmin):
