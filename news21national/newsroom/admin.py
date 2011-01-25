@@ -3,7 +3,7 @@ from news21national.newsroom.models import Newsroom, NewsOrganization
 
 
 class NewsOrganizationAdmin(admin.ModelAdmin):
-	list_display = ('name','site_url')
+	list_display = ('name','shorter_code','site_url')
 
 	def formfield_for_foreignkey(self, db_field, request, **kwargs):
 		if db_field.name == 'created_by':
