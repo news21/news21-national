@@ -32,6 +32,7 @@ def home(request):
 				return HttpResponseRedirect(reverse('partner_dashboard'))
 			else:
 				return HttpResponseRedirect(reverse('user_profile'))
+		return HttpResponseRedirect(reverse('user_dashboard'))
 	
 	form1 = OpenidSigninForm()
 	form2 = AuthenticationForm()
