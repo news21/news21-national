@@ -19,7 +19,7 @@ class StoryPlacementsForm(forms.ModelForm):
 		choices = []
 		for choice in wtf:
 			choices.append((choice.id, '( '+str(choice.created_at.year)+': '+choice.newsrooms+' ) '+choice.headline+ ' By: '+choice.story_authors ))
-		s.choices = choices
+		s.choices = sorted(choices, key=lambda c: c[1])
 
 
 class StoryPlacementsAdmin(admin.ModelAdmin):
