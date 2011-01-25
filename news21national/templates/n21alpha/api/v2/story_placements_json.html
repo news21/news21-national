@@ -1,0 +1,5 @@
+{% if callback %}{{callback}}({% endif %}{"placements":[
+    {% for placement in placements %}
+    { "date_ran":"{{ placement.story_ran }}", "partner":"{{ placement.partner|escapejs }}", "url":"{{ placement.placement_url }}", "url_active":"{{ placement.url_active }}", "screengrab_url":"{{placement.screengrab_url}}" }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+]}{% if callback %}){% endif %}

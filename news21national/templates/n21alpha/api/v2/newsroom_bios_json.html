@@ -1,0 +1,5 @@
+{% if callback %}{{callback}}({% endif %}{"bios":[
+    {% for bio in bios %}
+    { "id":"{{ bio.user.id }}", "name":"{{ bio.first_name }} {{ bio.last_name }}", "bio":"{{ bio.bio|escapejs }}", "twitter":"{% if bio.twitter_public %}{{ bio.twitterid|escapejs }}{% endif %}", "linkedin":"{% if bio.linkedin_public %}{{ bio.linkedinid }}{% endif %}", "facebook":"{% if bio.facebook_public %}{{ bio.facebookid }}{% endif %}","pic":"{{bio.avatar_url}}" }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+],"awards":[{% for award in bio.awards %}{"name":"{{award.name|escape}}","presented_by":"{{award.presented_by|escape}}","presented_at":"{{award.presented_at}}","story_ran":"{{placement.story_ran}}","placement_headline":"{{placement.placement_headline|escape}}","placement_url":"{{placement.placement_url}}"}{% if not forloop.last %},{% endif %}{% endfor %}]}{% if callback %}){% endif %}

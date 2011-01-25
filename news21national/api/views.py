@@ -20,7 +20,7 @@ from django.core import serializers
 from django.db.models import Q
 
 
-def story_categories(request,api_key,dif='json'):
+def story_categories(request,api_key,dif='json',version=settings.API_VERSION):
 	nl = []
 	for n in Tag.objects.usage_for_model(Newsroom):
 		nl.append(n.name)
@@ -29,10 +29,10 @@ def story_categories(request,api_key,dif='json'):
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 	 
-	return render_to_response('api/'+settings.API_VERSION+'/categories_'+dif+'.html', { 'categories': categories, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/categories_'+dif+'.html', { 'categories': categories, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
 
-def stories_by_category(request,api_key,category_id,dif='json'):
+def stories_by_category(request,api_key,category_id,dif='json',version=settings.API_VERSION):
 	stories = TaggedItem.objects.get_by_model(Story, Tag.objects.get(name=category_id) )
 	
 	sids = []
@@ -49,10 +49,10 @@ def stories_by_category(request,api_key,category_id,dif='json'):
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 	
-	return render_to_response('api/'+settings.API_VERSION+'/stories_by_category_'+dif+'.html', { 'stories': sarray, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/stories_by_category_'+dif+'.html', { 'stories': sarray, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
 
-def stories_by_filters(request,api_key,dif='json'):
+def stories_by_filters(request,api_key,dif='json',version=settings.API_VERSION):
 	if request.method == 'POST':
 		tags_filter = []
 		newsrooms_filter = []
@@ -146,10 +146,10 @@ def stories_by_filters(request,api_key,dif='json'):
 	else:
 		sarray = []
 
-	return render_to_response('api/'+settings.API_VERSION+'/stories_by_filters_'+dif+'.html', { 'stories': sarray, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/stories_by_filters_'+dif+'.html', { 'stories': sarray, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
 
-def story(request,api_key,story_id,dif='json',custom_filter='',extra_context=None):
+def story(request,api_key,story_id,dif='json',custom_filter='',extra_context=None,version=settings.API_VERSION):
 	story = get_object_or_404(Story, pk=story_id)
 	
 	if custom_filter == '_ec':
@@ -157,37 +157,37 @@ def story(request,api_key,story_id,dif='json',custom_filter='',extra_context=Non
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
-	return render_to_response('api/'+settings.API_VERSION+'/story'+custom_filter+'_'+dif+'.html', { 'story': story, 'extra_context': extra_context, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/story'+custom_filter+'_'+dif+'.html', { 'story': story, 'extra_context': extra_context, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
 
-def media(request,api_key,media_id,dif='json'):
+def media(request,api_key,media_id,dif='json',version=settings.API_VERSION):
 	media = get_object_or_404(Media, pk=media_id)
 
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
-	return render_to_response('api/'+settings.API_VERSION+'/media_'+dif+'.html', { 'media': media, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/media_'+dif+'.html', { 'media': media, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
-def newsrooms_categories(request,api_key,dif='json'):
+def newsrooms_categories(request,api_key,dif='json',version=settings.API_VERSION):
 	newsrooms = Tag.objects.usage_for_model(Newsroom)
 
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
-	return render_to_response('api/'+settings.API_VERSION+'/newsrooms_'+dif+'.html', { 'newsrooms': newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/newsrooms_'+dif+'.html', { 'newsrooms': newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
 
-def newsrooms_bios(request,api_key,newsroom_id,dif='json'):
+def newsrooms_bios(request,api_key,newsroom_id,dif='json',version=settings.API_VERSION):
 	n = get_object_or_404(Newsroom,pk=newsroom_id)
 	bios = Profile.objects.filter(user__in=n.members.values_list('id',flat=True)).distinct().order_by('last_name')
 
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
-	return render_to_response('api/'+settings.API_VERSION+'/newsroom_bios_'+dif+'.html', { 'bios': bios, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/newsroom_bios_'+dif+'.html', { 'bios': bios, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
 
-def bios_by_filters(request,api_key,dif='json'):
+def bios_by_filters(request,api_key,dif='json',version=settings.API_VERSION):
 	if request.method == 'POST':
 		newsrooms_filter = request.POST.get("newsrooms",'').split(',')
 		newsrooms = Newsroom.objects.filter(id__in=newsrooms_filter)
@@ -206,40 +206,41 @@ def bios_by_filters(request,api_key,dif='json'):
 	else:
 		bios = []
 
-	return render_to_response('api/'+settings.API_VERSION+'/newsroom_bios_'+dif+'.html', { 'bios': bios, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/newsroom_bios_'+dif+'.html', { 'bios': bios, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
-def organizations(request,api_key,organization_id,dif='json'):
+def organizations(request,api_key,organization_id,dif='json',version=settings.API_VERSION):
 	org = get_object_or_404(NewsOrganization, pk=organization_id)
 	newsrooms = Newsroom.objects.filter(organization=org).order_by('created_at')
 	metastories = MetaStory.objects.filter(newsrooms__in=newsrooms.values_list('id',flat=True))
 	projects = Project.objects.filter(id__in=metastories.values_list('project',flat=True)).distinct()
+	profiles = Profile.objects.all()
 	
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 	
-	return render_to_response('api/'+settings.API_VERSION+'/organizations_'+dif+'.html', { 'organization': org, 'metastories': metastories, 'projects': projects, 'newsrooms':newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/organizations_'+dif+'.html', { 'organization': org, 'metastories': metastories, 'projects': projects, 'profiles':profiles, 'newsrooms':newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
 
-def bio(request,api_key,user_id,dif='json'):
+def bio(request,api_key,user_id,dif='json',version=settings.API_VERSION):
 	bio = Profile.objects.get(user_id=user_id)
 	
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
-	return render_to_response('api/'+settings.API_VERSION+'/bio_'+dif+'.html', { 'bio': bio, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/bio_'+dif+'.html', { 'bio': bio, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
 
-def story_placements(request,api_key,story_id,dif='json'):
+def story_placements(request,api_key,story_id,dif='json',version=settings.API_VERSION):
 	story = get_object_or_404(Story, pk=story_id)
 	placements = StoryPlacements.objects.filter(story=story)[5]
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
-	return render_to_response('api/'+settings.API_VERSION+'/story_placements_'+dif+'.html', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/story_placements_'+dif+'.html', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
-def placements(request,api_key,dif='json'):
+def placements(request,api_key,dif='json',version=settings.API_VERSION):
 	placements = StoryPlacements.objects.all().order_by('partner')
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
-	return render_to_response('api/'+settings.API_VERSION+'/placements_'+dif+'.html', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/placements_'+dif+'.html', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
