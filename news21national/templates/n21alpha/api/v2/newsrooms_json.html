@@ -1,5 +1,5 @@
 {% if callback %}{{callback}}({% endif %}{"newsrooms":[
     {% for nr in newsrooms %}
-    { "id":"{{ nr }}" }{% if not forloop.last %},{% endif %}
+    { "slug":"{{ nr.short_name }}", "name":"{{ nr }}", "shortcode":"{{ nr.shorter_code }}" }{% if not forloop.last %},{% endif %}
     {% endfor %}
 ]}{% if callback %}){% endif %}

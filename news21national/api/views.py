@@ -176,6 +176,13 @@ def newsrooms_categories(request,api_key,dif='json',version=settings.API_VERSION
 
 	return render_to_response('api/'+version+'/newsrooms_'+dif+'.html', { 'newsrooms': newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
+def newsrooms(request,api_key,dif='json',version=settings.API_VERSION):
+	newsrooms = Newsroom.objects.all()
+
+	# TODO : add api audit
+	p = get_object_or_404(Key, api_key=api_key)
+
+	return render_to_response('api/'+version+'/newsrooms_'+dif+'.html', { 'newsrooms': newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
 def newsrooms_bios(request,api_key,newsroom_id,dif='json',version=settings.API_VERSION):
 	n = get_object_or_404(Newsroom,pk=newsroom_id)
