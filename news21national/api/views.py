@@ -240,7 +240,7 @@ def story_placements(request,api_key,story_id,dif='json',version=settings.API_VE
 # new in v2
 
 def placements(request,api_key,version=settings.API_VERSION):
-	placements = StoryPlacements.objects.all().order_by('date_ran')
+	placements = StoryPlacements.objects.all().order_by('story_ran')
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
