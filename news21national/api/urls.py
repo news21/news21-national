@@ -11,7 +11,6 @@ urlpatterns = patterns ('',
 	url(r'v1/(?P<api_key>.+)/filtered_bios/$','news21national.api.views.bios_by_filters',{'version':'v1'},name='api_bios_by_filters',),
 	url(r'v1/(?P<api_key>.+)/media/(?P<media_id>\d+)/(?P<dif>.+)/$','news21national.api.views.media',{'version':'v1'},name='api_media',),
 	url(r'v1/(?P<api_key>.+)/filtered_stories/$','news21national.api.views.stories_by_filters',{'version':'v1'},name='api_stories_by_filters',),
-	url(r'v1/(?P<api_key>.+)/placements/(?P<dif>.+)/$','news21national.api.views.placements',{'version':'v1'},name='api_placements',),
 	url(r'v1/(?P<api_key>.+)/organization/(?P<organization_id>\d+)/(?P<dif>.+)/$','news21national.api.views.organizations',{'version':'v1'},name='api_placements',),
 	
 	url(r'^v2/(?P<api_key>.+)/categories/$','news21national.api.views.story_categories',{'version':'v2'},name='api_v2_topics',),

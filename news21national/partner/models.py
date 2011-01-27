@@ -4,6 +4,7 @@ from django.forms import ModelForm
 from datetime import datetime
 from news21national.story.models import Story
 from news21national.api.models import Key
+from django.utils.translation import ugettext_lazy as _
 
 class Partner(models.Model):
 	name = models.CharField(max_length=150,verbose_name="Media Outlet Name")
@@ -43,7 +44,7 @@ class StoryPlacements(models.Model):
 	description = models.CharField(max_length=200,verbose_name="Description",null=True,blank=True)
 	story_ran = models.DateTimeField()
 	placement_url = models.URLField(verify_exists=False,verbose_name="Placement URL",null=True,blank=True)
-	screengrab_url = models.URLField(verify_exists=False,verbose_name="Screengrab URL",null=True,blank=True)
+	screengrab = models.ImageField(_('image'), upload_to='uploads/photos/%Y/%m/%d', max_length=255,null=True)
 	url_active = models.BooleanField(default=True)
 	created_by = models.ForeignKey(auth.User, related_name="storyplacement_created_by")
 	created_at = models.DateTimeField(editable=False)

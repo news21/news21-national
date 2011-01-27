@@ -237,12 +237,14 @@ def story_placements(request,api_key,story_id,dif='json',version=settings.API_VE
 
 	return render_to_response('api/'+version+'/story_placements_'+dif+'.html', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
-def placements(request,api_key,dif='json',version=settings.API_VERSION):
+# new in v2
+
+def placements(request,api_key,version=settings.API_VERSION):
 	placements = StoryPlacements.objects.all().order_by('partner')
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
-	return render_to_response('api/'+version+'/placements_'+dif+'.html', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/placements.json', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/json')
 
 def newsrooms(request,api_key,dif='json',version=settings.API_VERSION):
 	newsrooms = Newsroom.objects.all()
