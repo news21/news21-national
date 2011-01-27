@@ -18,7 +18,7 @@ class Project(models.Model):
 	description = models.TextField(verbose_name="Description")
 	started_at = models.DateTimeField(verbose_name="Started On")
 	thumbnail = models.ImageField(_('image'), upload_to='uploads/photos/%Y/%m/%d', max_length=255)
-	screenshot = models.ImageField(_('image'), upload_to='uploads/photos/%Y/%m/%d', max_length=255,null=True,blank=True)
+	screenshot = models.ImageField(_('image'), upload_to='uploads/photos/%Y/%m/%d', max_length=255,null=True)
 	created_by = models.ForeignKey(auth.User, related_name="project_created_by")
 	created_at = models.DateTimeField(editable=False)
 	updated_by = models.ForeignKey(auth.User, related_name="project_updated_by")
