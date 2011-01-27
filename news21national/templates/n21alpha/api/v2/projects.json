@@ -1,0 +1,5 @@
+{% if callback %}{{callback}}({% endif %}{"projects":[
+    {% for project in projects %}
+    { "name":"{{ project.name }}", "thumbnail":"{{ project.thumbnail }}", "screenshot":"{{ project.screenshot }}", "description":"{{ project.description }}","year":"{{ project.started_at.year }}" }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+]}{% if callback %}){% endif %}

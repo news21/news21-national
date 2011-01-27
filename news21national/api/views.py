@@ -176,14 +176,6 @@ def newsrooms_categories(request,api_key,dif='json',version=settings.API_VERSION
 
 	return render_to_response('api/'+version+'/newsrooms_'+dif+'.html', { 'newsrooms': newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
-def newsrooms(request,api_key,dif='json',version=settings.API_VERSION):
-	newsrooms = Newsroom.objects.all()
-
-	# TODO : add api audit
-	p = get_object_or_404(Key, api_key=api_key)
-
-	return render_to_response('api/'+version+'/newsrooms_'+dif+'.html', { 'newsrooms': newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
-
 def newsrooms_bios(request,api_key,newsroom_id,dif='json',version=settings.API_VERSION):
 	n = get_object_or_404(Newsroom,pk=newsroom_id)
 	bios = Profile.objects.filter(user__in=n.members.values_list('id',flat=True)).distinct().order_by('last_name')
@@ -251,3 +243,19 @@ def placements(request,api_key,dif='json',version=settings.API_VERSION):
 	p = get_object_or_404(Key, api_key=api_key)
 
 	return render_to_response('api/'+version+'/placements_'+dif+'.html', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+
+def newsrooms(request,api_key,dif='json',version=settings.API_VERSION):
+	newsrooms = Newsroom.objects.all()
+
+	# TODO : add api audit
+	p = get_object_or_404(Key, api_key=api_key)
+
+	return render_to_response('api/'+version+'/newsrooms.json', { 'newsrooms': newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/json')
+
+def projects(request,api_key,version=settings.API_VERSION):
+	projects = Project.objects.all()
+
+	# TODO : add api audit
+	p = get_object_or_404(Key, api_key=api_key)
+
+	return render_to_response('api/'+version+'/projects.json', { 'projects': projects, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/+dif')
