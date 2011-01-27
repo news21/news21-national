@@ -33,7 +33,11 @@ class Project(models.Model):
 	def admin_image(self):
 	  return '<img src="%s"/>' % self.thumbnail.url
 	admin_image.allow_tags = True
-
+	
+	def admin_screenshot(self):
+	  return '<img src="%s"/>' % self.screenshot.url
+	admin_screenshot.allow_tags = True
+	
 	def save(self):
 		if self.created_at == None:
 			self.created_at = datetime.now()
