@@ -240,14 +240,14 @@ def story_placements(request,api_key,story_id,dif='json',version=settings.API_VE
 # new in v2
 
 def placements(request,api_key,version=settings.API_VERSION):
-	placements = StoryPlacements.objects.all().order_by('partner')
+	placements = StoryPlacements.objects.all().order_by('date_ran')
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
 	return render_to_response('api/'+version+'/placements.json', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/json')
 
 def newsrooms(request,api_key,dif='json',version=settings.API_VERSION):
-	newsrooms = Newsroom.objects.all()
+	newsrooms = Newsroom.objects.all().order_by('name')
 
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
@@ -255,7 +255,7 @@ def newsrooms(request,api_key,dif='json',version=settings.API_VERSION):
 	return render_to_response('api/'+version+'/newsrooms.json', { 'newsrooms': newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/json')
 
 def projects(request,api_key,version=settings.API_VERSION):
-	projects = Project.objects.all()
+	projects = Project.objects.all().order_by('name')
 
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
