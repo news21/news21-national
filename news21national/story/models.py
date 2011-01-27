@@ -35,7 +35,9 @@ class Project(models.Model):
 	admin_image.allow_tags = True
 	
 	def admin_screenshot(self):
-	  return '<img src="%s"/>' % self.screenshot.url
+		if self.screenshot == None:
+			return '<img src="%stemplates/%s/images/placeholder.png"/>' % (settings.MEDIA_URL,settings.SITE_STYLE)
+		return '<img src="%s"/>' % self.screenshot.url
 	admin_screenshot.allow_tags = True
 	
 	def save(self):
