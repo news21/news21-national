@@ -53,7 +53,7 @@ admin.site.add_action(export_to_tab, "export_to_tab")
 
 class ProfileAdmin(admin.ModelAdmin):
 	list_display = ['first_name','last_name','is_active',]
-	list_filter = ['is_active',]
+	list_filter = ['is_active','school']
 	ordering = ['last_name',]
 	search_fields = ['first_name','last_name',]
 

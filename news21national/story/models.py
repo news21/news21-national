@@ -88,7 +88,31 @@ class MetaStory(models.Model):
 
 	def get_members(self):
 		return auth.User.objects.filter(newsroom_members__in=self.newsrooms.values_list('id',flat=True)).distinct()
-
+	
+	def get_primary_thumb(self):
+		if self.primary_image != None:
+			image = news21national.multimedia.models.Media.children.get(id=self.primary_image,_child_name="photo",status="Approved")
+			if image.img_url != None:
+				return image.img_url
+		return ''
+	primary_thumb = property(get_primary_thumb)
+	
+	def get_secondary_thumb(self):
+		if self.secondary_image != None:
+			image = news21national.multimedia.models.Media.children.get(id=self.secondary_image,_child_name="photo",status="Approved")
+			if image.img_url != None:
+				return image.img_url
+		return ''
+	secondary_thumb = property(get_secondary_thumb)
+	
+	def get_metastory_newsrooms(self):
+		ns = self.newsrooms.values_list('short_name',flat=True).order_by('short_name')
+		s = []
+		for n in ns:
+			s.append(n)
+		return ''.join(s)
+	metastory_newsrooms = property(get_metastory_newsrooms)
+	
 	def _get_geotags(self):
 		gtags = []
 		stories = Story.objects.filter(metastory__id=self.id)
@@ -192,6 +216,22 @@ class Story(models.Model):
 					rewrites.append({"from":"/"+str(n)+""+str(r.id),"to":str(r.original_url)})
 		return rewrites
 	story_shorturls = property(get_story_shorturls)
+	
+	def get_primary_thumb(self):
+		if self.primary_image != None:
+			image = news21national.multimedia.models.Media.children.get(id=self.primary_image,_child_name="photo",status="Approved")
+			if image.img_url != None:
+				return image.img_url
+		return ''
+	primary_thumb = property(get_primary_thumb)
+	
+	def get_secondary_thumb(self):
+		if self.secondary_image != None:
+			image = news21national.multimedia.models.Media.children.get(id=self.secondary_image,_child_name="photo",status="Approved")
+			if image.img_url != None:
+				return image.img_url
+		return ''
+	secondary_thumb = property(get_secondary_thumb)
 
 class StoryPublishDate(models.Model):
 	story = models.ForeignKey(Story)

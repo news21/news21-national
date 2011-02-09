@@ -13,10 +13,10 @@ class EditorsDesk(models.Model):
 	updated_at = models.DateTimeField(editable=False)
 	
 	def __unicode__(self):
-		return unicode(self.newsroom.short_name)
+		return unicode(self.newsroom.name)
 
 	def __str__(self):
-		return self.newsroom.short_name
+		return self.newsroom.name
 
 	def save(self):
 		if self.created_at == None:

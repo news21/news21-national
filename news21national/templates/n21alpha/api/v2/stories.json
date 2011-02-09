@@ -1,0 +1,6 @@
+{% load smart_if %}
+{% if callback %}{{callback}}({% endif %}{"stories":[
+    {% for story in stories %}
+    { "slug":"{{ story.slug }}", "headline":"{{ story.headline|escapejs }}", "summary":"{{ story.summary|escapejs }}",  "original_url":"{{ story.original_url }}", "primary_image":"{% if story.primary_image %}{{ MEDIA_URL }}{{story.primary_image}}{% endif %}", "newsroom":"{{story.newsroom}}" }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+]}{% if callback %}){% endif %}

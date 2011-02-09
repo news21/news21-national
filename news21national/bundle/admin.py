@@ -18,6 +18,8 @@ class StoryBundleForm(forms.ModelForm):
 
 class StoryBundleAdmin(admin.ModelAdmin):
 	form = StoryBundleForm
+	list_display = ('title','slug')
+	search_fields = ['title',]
 	
 	def change_view(self, request, object_id, extra_context=None):
 		my_context = {

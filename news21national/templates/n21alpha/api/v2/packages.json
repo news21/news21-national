@@ -1,0 +1,5 @@
+{% if callback %}{{callback}}({% endif %}{"packages":[
+    {% for package in packages %}
+    { "slug":"{{ package.slug }}", "headline":"{{ package.headline|escapejs }}", "summary":"{{ package.summary|escapejs }}",  "original_url":"{{ package.original_url }}", "primary_image":"{% if package.primary_thumb %}{{ MEDIA_URL }}{{package.primary_thumb}}{% endif %}" }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+]}{% if callback %}){% endif %}

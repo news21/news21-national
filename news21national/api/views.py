@@ -237,7 +237,11 @@ def story_placements(request,api_key,story_id,dif='json',version=settings.API_VE
 
 	return render_to_response('api/'+version+'/story_placements_'+dif+'.html', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
 
-# new in v2
+
+
+##
+## new in v2
+##
 
 def placements(request,api_key,version=settings.API_VERSION):
 	placements = StoryPlacements.objects.all().order_by('-story_ran')
@@ -260,4 +264,20 @@ def projects(request,api_key,version=settings.API_VERSION):
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
-	return render_to_response('api/'+version+'/projects.json', { 'projects': projects, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/+dif')
+	return render_to_response('api/'+version+'/projects.json', { 'projects': projects, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/json')
+
+def packages(request,api_key,version=settings.API_VERSION):
+	packages = MetaStory.objects.filter(is_active=1,status='Approved').order_by('headline')
+
+	# TODO : add api audit
+	p = get_object_or_404(Key, api_key=api_key)
+
+	return render_to_response('api/'+version+'/packages.json', { 'packages': packages, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/json')
+
+def stories(request,api_key,version=settings.API_VERSION):
+	stories = Story.objects.filter(is_active=1,status='Approved').order_by('headline')
+
+	# TODO : add api audit
+	p = get_object_or_404(Key, api_key=api_key)
+
+	return render_to_response('api/'+version+'/stories.json', { 'stories': stories, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/json')

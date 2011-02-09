@@ -2,7 +2,7 @@ from django.db import models
 import django.contrib.auth.models as auth
 from django.forms import ModelForm
 from datetime import datetime
-from news21national.story.models import Story
+from news21national.story.models import Story, MetaStory
 from news21national.api.models import Key
 from django.utils.translation import ugettext_lazy as _
 
@@ -34,8 +34,27 @@ class Partner(models.Model):
 			self.created_at = datetime.now()
 		self.updated_at = datetime.now()
 		super(Partner, self).save()
-		
 
+
+class MetaStoryPlacements(models.Model):
+	partner = models.ForeignKey(Partner)
+	metastory = models.ForeignKey(MetaStory)
+	placement_headline = models.CharField(max_length=200,verbose_name="Partner Headline",null=True,blank=True)
+	description = models.CharField(max_length=200,verbose_name="Description",null=True,blank=True)
+	story_ran = models.DateTimeField()
+	placement_url = models.URLField(verify_exists=False,verbose_name="Placement URL",null=True,blank=True)
+	screengrab = models.ImageField(_('image'), upload_to='uploads/photos/%Y/%m/%d', max_length=255,null=True,blank=True)
+	url_active = models.BooleanField(default=True)
+	created_by = models.ForeignKey(auth.User, related_name="metastoryplacement_created_by")
+	created_at = models.DateTimeField(editable=False)
+	updated_by = models.ForeignKey(auth.User, related_name="metastoryplacement_updated_by")
+	updated_at = models.DateTimeField(editable=False)
+
+	def save(self):
+		if self.created_at == None:
+			self.created_at = datetime.now()
+		self.updated_at = datetime.now()
+		super(MetaStoryPlacements, self).save()
 
 class StoryPlacements(models.Model):
 	partner = models.ForeignKey(Partner)
