@@ -12,18 +12,24 @@
 
 <div class="grid_8">	
 	<div class="contentcontainer">
+		
 		<h4 class="module-header">News21 Announcements</h4>
 		{% if site_wide_announcements %}
-	        <div id="site_wide_announcements" class="announcements">
-                {% for announcement in site_wide_announcements %}
-                    <div class="announcement-title">{{ announcement }} - <a href="{% url announcement_hide announcement.pk %}?next={{ request.path }}">[Hide]</a></div>
- 					<div class="announcement-body">{{ announcement.content }}</div>
-                {% endfor %}
-	        </div>
-	    {% endif %}
+			<div id="site_wide_announcements" class="announcements">
+				{% for announcement in site_wide_announcements %}
+					<div class="announcement-title">{{ announcement }} - <a href="{% url announcement_hide announcement.pk %}?next={{ request.path }}">[Hide]</a></div>
+					<div class="announcement-body">{{ announcement.content }}</div>
+				{% endfor %}
+			</div>
+		{% endif %}
+		{% if site_wide_announcements.count == 0 %}
+			<div>There are no announcements.</div>
+		{% endif %}
+		
 		
 		<br/><br/>
 		
+		{% comment %}
 		<h4 class="module-header">Messages</h4>
 		<ul class="subnavilist">
 		    <li><a href="{% url messages_inbox %} ">{% trans "Inbox" %} ({% inbox_count %})</a></li>
@@ -31,16 +37,20 @@
 		    <li><a href="{% url messages_compose %} ">{% trans "New Message" %}</a></li>
 		    <li><a href="{% url messages_trash %} ">{% trans "Trash" %}</a></li>
 		</ul>
+		{% endcomment %}
 		
 		<h4 class="module-header">Analytics</h4>
-		<a href="{% url editorsdesk_analytics %}">View Reports</a>
+		<div><a href="{% url editorsdesk_analytics %}">View Reports</a> <strong>ONLY good for projects older & including 2009</strong></div>
 		
 		<br/><br/>
 		
 		<h4 class="module-header">Newsroom Bios</h4>
+		<div>
 		{% for newsroom in newsrooms %}
-		<a href="{% url user_newsroom_roster newsroom.id %}">{{ newsroom }}</a>
+			<div><a href="{% url user_newsroom_roster newsroom.id %}">{{ newsroom }}</a></div>
 		{% endfor %}
+		</div>
+		
 		
 		<br/><br/>
 		
@@ -49,6 +59,7 @@
 
 <div class="grid_8">
 	<div class="contentcontainer">
+		
 		{% comment %}
 		<h4 class="module-header">Pending Assets</h4>
 		{% for asset in pending_assets %}
@@ -76,7 +87,7 @@
 		<h4 class="module-header">Story Packages <a href="{% url metastory_new %}">[+]</a></h4>
 		{% for package in metastories %}
 		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
-			<span class="icon-{% if package.status == "Approved" %}accept{% else %}{% if package.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> <a href="{% url editorsdesk_review_metastory package.id %}">{{package}}</a> <a href="{% url metastory_status package.id %}">[status update]</a>
+			<span class="icon-{% if package.status == "Approved" %}accept{% else %}{% if package.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> <a href="{% url editorsdesk_review_metastory package.id %}">{{package}}</a> : <a href="{% url metastory_status package.id %}"> Status Tree</a>
 		</div>
 		{% endfor %}
 		{% if metastories.count == 0 %}

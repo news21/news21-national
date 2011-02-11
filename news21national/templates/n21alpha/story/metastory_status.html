@@ -4,12 +4,15 @@
 {% load i18n %}
 {% load smart_if %}
 
-{% block breadcrumb %}{% endblock %}
+
 
 {% block content %}
-	<div class="grid_16">
-	<h3>Package Status</h3>
+<div class="clear"></div>
 
+<div class="grid_16 genericForm contentheader">
+	<h3>Package Status</h3>
+	<div class="help-text" style="margin-bottom: 10px;">Below it the tree structure for the story package. Only "Approved"(green checkmark) packages, stories, & assets will be available for partner placements. Click on the status to jump to the package / story / asset.</div>
+	
 		<div style="height:30px;"><span class="icon-{% if metastory.status == "Approved" %}accept{% else %}{% if metastory.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> <a href="{% url metastory_edit metastory.id %}">{{metastory.status}}</a> : {{ metastory }}</div>
 	
 	{% for story in stories %}
@@ -39,6 +42,6 @@
 		{% endfor %}
 	{% endfor %}
 	
-	</div>
+</div>
 
 {% endblock %}

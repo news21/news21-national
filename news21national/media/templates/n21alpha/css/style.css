@@ -30,7 +30,7 @@ a:hover{color:#6F6F6F;text-decoration:underline}
 #header { background:url('../images/n21_header_bg.png') no-repeat; height:39px; }
 
 
-.breadcrumb { font-size:12px; border-top:1px solid #DFDFDF; border-bottom:1px solid #DFDFDF; padding:4px 10px 4px 10px; background-color:#EFEFEF; margin-bottom:10px; }
+.breadcrumb { font-size:12px; border-top:1px solid #DFDFDF; border-bottom:1px solid #DFDFDF; padding:4px 0px 4px 0px; background-color:#EFEFEF; margin-bottom:10px; }
 	.breadcrumb-trail { padding:0px 10px 0px 10px; }
     .breadcrumb a, a:link { color:#F49900; text-decoration:underline; }
     .breadcrumb #current { color:#6F6F6F; text-decoration:none; font-weight:bold; }
@@ -194,4 +194,9 @@ fieldset.inlineLabels legend{
 .news21_biography .bio_name {
 	font-weight: bold;
 	font-size: 14px;
+}
+
+.help-text{
+    background-color:#a1cffc;
+    padding:2px 5px 2px 5px;
 }

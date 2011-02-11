@@ -351,7 +351,7 @@ def get_metastory_status(request,metastory_id,template_name="story/metastory_sta
 	stories = Story.objects.filter(metastory__id=metastory_id).order_by('headline')
 	assets = Media.children.filter(story__in=stories.values_list('id',flat=True))
 	
-	breadcrumb = [ {'title':metastory,'url':reverse('metastory_edit', args=[metastory_id])} , {'title':'Bulk Status','url':''} ]
+	breadcrumb = [ {'title':metastory,'url':reverse('metastory_edit', args=[metastory_id])} , {'title':'Full Status Tree','url':''} ]
 	return render_to_response(template_name, {'breadcrumb':breadcrumb,'metastory':metastory,'stories':stories,'assets':assets}, context_instance=RequestContext(request))
 
 

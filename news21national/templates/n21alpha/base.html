@@ -40,11 +40,15 @@
 					</div>
 					<div class="mininav">
 						{% if user.is_authenticated%}
-							<a href="{% url home %}">Home</a> | 
-							<a href="{% url user_dashboard %}">Dashboard</a> | 
-							<a href="{% url user_profile %}">Profile</a> |
-							<a href="/help">Help</a> |
-							<a href="{% url user_signout %}">Logout</a>
+							{% if user.is_staff %}
+							
+							{% else %}
+								<a href="{% url home %}">Home</a> | 
+								<a href="{% url user_dashboard %}">Dashboard</a> | 
+								<a href="{% url user_profile %}">Profile</a> |
+								<a href="/help">Help</a> |
+								<a href="{% url user_signout %}">Logout</a>
+							{% endif %}
 						{% else %}
 							<a href="{% url home %}">Home</a> | 
 							<a href="/help">Help</a> | 

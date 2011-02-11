@@ -4,7 +4,7 @@ from news21national.core.models import Profile
 from django import forms
 
 class NewsOrganizationAdmin(admin.ModelAdmin):
-	list_display = ('name','shorter_code','site_url')
+	list_display = ('id','name','shorter_code','site_url')
 	search_fields = ['name','bio']
 
 	def formfield_for_foreignkey(self, db_field, request, **kwargs):
@@ -30,9 +30,10 @@ class NewsroomForm(forms.ModelForm):
 
 class NewsroomAdmin(admin.ModelAdmin):
 	form = NewsroomForm
-	list_display = ('name','site_url','shorter_code','organization','is_active')
+	list_display = ('id','name','site_url','shorter_code','organization','is_active')
 	search_fields = ['name','bio']
-	list_filter = ['organization',]
+	list_filter = ['organization','shorter_code']
+	sort_order = ['shorter_code']
 	
 
 	def formfield_for_foreignkey(self, db_field, request, **kwargs):

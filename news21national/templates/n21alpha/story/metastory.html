@@ -8,18 +8,23 @@
 {% block content %}
 <div class="clear"></div>
 
-<div>
-<form action="{{ form_url }}" class="uniForm" method="post">
 <div class="grid_10">
+	<form action="{{ form_url }}" class="uniForm" method="post">
 	
 	<div class="genericForm contentheader">	
 		<h4>Package Information</h4>
+		<div class="help-text" style="margin-bottom: 10px;">All fields marked with * are required.  Only "Approved"(green checkmark) packages, stories, & assets will be available for partner placements. If your package has been rejected ... please see your editor's comments for details why.</div>
 		{% if metastory_id %}
-			<div style="padding:5px;">
-				<span class="icon-{% if metastory.status == "Approved" %}accept{% else %}{% if metastory.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{metastory.status}}
-				<a href="#editorscomments">[View Editor's Comments]</a>
+			<div style="padding:0px 5px 5px 5px;">
+				<strong>Created by:</strong> {{ audit.created_by }} <strong>at</strong> {{ audit.created_at|date:"M d, Y @ g i a" }}
+				<br/>
+				<strong>Last updated by:</strong> {{ audit.updated_by }} <strong>at</strong> {{ audit.updated_at|date:"M d, Y @ g i a" }}
+				<br/>
+				<strong><span class="icon-{% if metastory.status == "Approved" %}accept{% else %}{% if metastory.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> Status:</strong> {{metastory.status}} - <a href="{% url metastory_status metastory_id %}"> View Full Status Tree</a>
 			</div>
 		{% endif %}
+		
+		<br/>
 	
 		{% with form.helper as helper %}
 		    {% uni_form form helper %}
@@ -45,31 +50,17 @@
 		<div class="clear"></div>
 		<br/>
 		<div class="inputSubmit">
-			<input type="submit" value="Continue &rarr;">
+			<input type="submit" value="Save Package Information &rarr;">
 		</div>
 	
-		{% if metastory_id %}
-		<div class="clear"></div>
-		<br/>
-	
-		<h4>Audit</h4>
-		<div><strong>Created by:</strong> {{ audit.created_by }} <strong>at</strong> {{ audit.created_at|date:"M d, Y @ g i a" }}</div>
-		<div><strong>Last Updated by:</strong> {{ audit.updated_by }} <strong>at</strong> {{ audit.updated_at|date:"M d, Y @ g i a" }}</div>
-		{% endif %}
-	
-	
-		<div class="clear"></div>
-		<br/>
-	
-		<h4>Package Geotags (Reverse Inherited)</h4>
-		<div id="map" class="smallmap"></div>
 	</div>
 </div>
 
 
 <div class="grid_6 genericForm">
 	{% if metastory_id %}
-		<h4>Package Stories <a href="{% url story_new metastory_id %}">[+]</a></h4>
+		<h4>Package Stories <a href="{% url story_new metastory_id %}">[+ Add]</a></h4>
+		<div class="help-text">Each package has one or more stories attached to it. To add a new story click the [+ Add] link above. To edit, click the story's title.</div>
 		{% for story in stories %}
 		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}">
 			<span class="icon-{% if story.status == "Approved" %}accept{% else %}{% if story.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span>
@@ -96,9 +87,8 @@
 	<br/>
 	<br/>
 	<h4>Package Primary Image</h4>
-	<div class="formHint" id="hint_id_package_image" style="float:left;"><a class="helptip">Package Image</a></div>
+	<div class="help-text">Select the primary image to represent your package, from the approved image assets of the stories within. <span class="formHint" id="hint_id_package_image"><a class="helptip">More Help</a></span></div>
 	<div class="clear"></div>
-	
 	{% if primary_image %}
 	<div class="sidebar-right-listing image-selector alternating-row-selected">
 		<div class="image-selector-radio"><input type="radio" name="primary_image" id="id_primary_image" checked value="{{ primary_image.id }}"></div>
@@ -135,9 +125,8 @@
 	<br/>
 	<br/>
 	<h4>News21 Site Image (440x250)</h4>
-	<div class="formHint" id="hint_id_news21_image" style="float:left;"><a class="helptip">News21 Image</a></div>
+	<div class="help-text">Select the primary image to represent your package <strong>on the News21.com site</strong>, from the approved image assets of the stories within. <span class="formHint" id="hint_id_news21_image"><a class="helptip">More Help</a></span></div>
 	<div class="clear"></div>
-	
 	{% if secondary_image %}
 	<div class="sidebar-right-listing image-selector alternating-row-selected">
 		<div class="image-selector-radio"><input type="radio" name="secondary_image" id="id_secondary_image" checked value="{{ secondary_image.id }}"></div>
@@ -168,18 +157,31 @@
 		</div>
 		{% endif %}
 	{% endfor %}
+	
+	</form>
 </div>
 
 
-</form>
-</div>
+
 
 	<div class="clear"></div>
-	<br/>
-	<br/>
+	<br/><br/>
+	
+	
+	<div class="grid_16 genericForm contentheader">
+	<h4>Package Geotags (Reverse Inherited)</h4>
+	<div class="help-text">This displays the geo-tagged assets of all the stories within this package. To edit a point please edit the asset.</div>
+	<div align="center"><div id="map" class="bigmap"></div></div>
+	</div>
+	
+	
+	<div class="clear"></div>
+	<br/><br/>
+	
 	
 	<div class="grid_16 genericForm contentheader">
 	<h4>Package Code Repositories</h4>
+	<div class="help-text">Please send source code or repository urls via email.</div>
 	{% for repo in repos %}
 		<div style="padding:10px;">
 			<strong>{{repo.title}}</strong> <br/> 
@@ -192,10 +194,12 @@
 	{% endif %}
 	</div>
 	
+	
 	<div class="clear"></div>
-	<br/>
+	<br/><br/>
+	
 
-	<div class="grid_16 contentheader">
+	<div class="grid_16 contentheader" style="background-color:#efefef;">
 		<br/>
 		<h4 id="editorscomments">Editor's Comments</h4>
 		<div><span class="icon-{% if metastory.status == "Approved" %}accept{% else %}{% if metastory.status == "Rejected" %}exclamation{% else %}pending{% endif %}{% endif %}"></span> STATUS: {{metastory.status}} : EDITING STAGE: {{metastory.stage}} </div>
@@ -220,8 +224,10 @@
 		{% endif %}
 	</div>
 	
-	<br/><br/>
+	
 	<div class="clear"></div>
+	<br/><br/>
+	
 	
 {% endblock %}
 
