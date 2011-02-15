@@ -149,9 +149,8 @@
 			});
 			jQuery.post('/api/{{ API_VERSION }}/{{ INTERNAL_API_KEY }}/filtered_stories/', {'tags':tagsused.join(),'newsrooms':newsroomsused.join(),'assettypes':assettypesused.join()}, function(data) {
 				var options = '';
-				var regx = /\'/g;
 				jQuery.each(data.stories, function(i,item){
-					options = options+'<option value="'+item.id+'">( '+item.year+': '+item.newsrooms+' ) '+item.headline.replace(regx, "\'");+'</option>'
+					options = options+'<option value="'+item.id+'">( '+item.year+': '+item.newsrooms+' ) '+item.headline+'</option>'
 				});
 				jQuery('select#id_stories').html(options);
 			},'json');
