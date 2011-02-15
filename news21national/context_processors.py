@@ -10,3 +10,6 @@ def internal_api_key(request):
 def site_domain(request):
 	from django.conf import settings
 	return {'SITE_DOMAIN': settings.SITE_DOMAIN}
+def default_avatar(request):
+	from django.conf import settings
+	return {'DEFAULT_AVATAR': settings.MEDIA_URL+''+settings.AVATAR_DEFAULT_URL}
