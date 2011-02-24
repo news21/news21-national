@@ -1,3 +1,3 @@
 {% if callback %}{{callback}}({% endif %}{"bio":
-    { "id":"{{ bio.id }}", "name":"{{ bio.first_name|escapejs }} {{ bio.last_name|escapejs }}","bio":"{{bio.bio|linebreaksbr|escapejs}}", "twitter":"{% if bio.twitter_public %}{{ bio.twitterid|escapejs }}{% endif %}", "linkedin":"{% if bio.linkedin_public %}{{ bio.linkedinid }}{% endif %}", "facebook":"{% if bio.facebook_public %}{{ bio.facebookid }}{% endif %}" }
+    { "id":"{{ bio.id }}", "name":"{{ bio.first_name|escapejs }} {{ bio.last_name|escapejs }}","bio":"{{bio.bio|linebreaksbr|escapejs}}", "twitter":"{% if bio.twitter_public %}{{ bio.twitterid|escapejs }}{% endif %}", "linkedin":"{% if bio.linkedin_public %}{{ bio.linkedinid }}{% endif %}", "facebook":"{% if bio.facebook_public %}{{ bio.facebookid }}{% endif %}","blog_uri":"{{bio.blog_uri}}" }
 }{% if callback %}){% endif %}

@@ -1,5 +1,5 @@
 
-from django.conf.urls.defaults import patterns, include, handler500, url
+from django.conf.urls.defaults import patterns, include, handler500, handler404, url
 from django.conf import settings as settings
 
 from django.contrib import admin
@@ -7,6 +7,9 @@ from django.contrib import admin
 from news21national.core.forms import ProfileForm
 
 admin.autodiscover()
+
+handler500 = 'news21national.utils.views.server_error_500'
+handler404 = 'news21national.utils.views.server_error_404'
 
 urlpatterns = patterns(
 	'',

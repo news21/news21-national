@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext, loader, Context
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
@@ -11,7 +11,7 @@ from news21national.newsroom.models import Newsroom
 @login_required
 def create_newsroom_member(request,newsroom_id):
 	try: 
-		n = Newsroom(pk=newsroom_id)
+		n = get_object_or_404(Newsroom,pk=newsroom_id)
 	except Newsroom.DoesNotExist:
 		return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
 	
