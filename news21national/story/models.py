@@ -87,7 +87,15 @@ class MetaStory(models.Model):
 		return Tag.objects.get_for_object(self)
 
 	def get_members(self):
-		return auth.User.objects.filter(newsroom_members__in=self.newsrooms.values_list('id',flat=True)).distinct()
+		profiles = []
+		for user in auth.User.objects.filter(newsroom_members__in=self.newsrooms.values_list('id',flat=True)).distinct():
+			try:
+				p = Profile.objects.get(user=user)
+				fullname = p.first_name+' '+p.last_name
+			except:
+				fullname = user.username
+			profiles.append({'user':user,'fullname':fullname})
+		return profiles
 	
 	def get_primary_thumb(self):
 		if self.primary_image != None:
@@ -112,6 +120,11 @@ class MetaStory(models.Model):
 			s.append(n)
 		return ''.join(s)
 	metastory_newsrooms = property(get_metastory_newsrooms)
+	
+	def get_year_from_metastory_newsrooms(self):
+		ns = self.newsrooms.values_list('shorter_code',flat=True).order_by('shorter_code').distinct()
+		return ns[0]
+	year_of_newsroom = property(get_year_from_metastory_newsrooms)
 	
 	def _get_geotags(self):
 		gtags = []
@@ -197,6 +210,11 @@ class Story(models.Model):
 			s.append(n)
 		return s
 	newsroom_shortcodes = property(get_newsroom_shortcodes)
+
+	def get_newsroom_year_from_shortcodes(self):
+		ns = MetaStory.objects.get(pk=self.metastory.id).newsrooms.values_list('shorter_code',flat=True).order_by('shorter_code').distinct()
+		return ns[0]
+	newsroom_year = property(get_newsroom_year_from_shortcodes)
 
 	def get_story_authors(self):
 		na = Profile.objects.filter(user__in=self.authors.values_list('id',flat=True)).distinct().order_by('last_name')

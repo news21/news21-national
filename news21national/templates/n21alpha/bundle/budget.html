@@ -50,9 +50,13 @@
 		{% for asset in media_assets %}
 		<div class="sidebar-right-listing alternating-row-{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}" style="padding:5px 0px 5px 15px;margin-top:15px;">
 			{% if asset.get_child_name == "photo" %}
-				<div><span class="icon-photo"></span>{{ asset }}</div>
-				<div><a title="{{ photo.title }}" href="{{ asset.get_child_object.get_original_url }}" target="_blank"><img src="{{ asset.get_child_object.get_thumbnail_url }}" /></a></div>
-				<div><strong>Summary:</strong> {{ asset.get_child_object.summary }}</div>
+				<div style="float:left;position:relative;width:100px; margin-right:20px;">
+					<a title="{{ photo.title }}" href="{{ asset.get_child_object.get_original_url }}" target="_blank"><img src="{{ asset.get_child_object.get_thumbnail_url }}" /></a>
+				</div>
+				<div style="float:left;position:relative;width:700px; margin-right:20px;">
+					<div><span class="icon-photo"></span>{{ asset }}</div>
+					<div><strong>Summary:</strong> {{ asset.get_child_object.summary }}</div>
+				</div>
 				<div>
 					{% for a in asset.get_child_object.media_authors %}
 					{% if not forloop.first %},{% endif %} <a href="{% url user_bio a.user.id %}">{{ a.get_fullname }}</a> ({{ a.school }})
@@ -69,7 +73,7 @@
 					{{ asset.get_child_object.content|markdown }}
 					
 					{% for a in asset.get_child_object.media_authors %}
-					<a href="{% url user_bio a.user.id %}">{{ a.get_fullname }}</a> wrote this story while a Carnegie-Knight News21 fellow from {{ a.school }}<br/>
+					<a href="{% url user_bio a.user.id %}">{{ a.get_fullname }}</a> wrote this story while a Carnegie-Knight News21 fellow from {{ a.school }}.<br/>
 					{% endfor %}
 					
 					<br/>

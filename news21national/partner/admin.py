@@ -13,7 +13,11 @@ class PartnerAdmin(admin.ModelAdmin):
 admin.site.register(Partner,PartnerAdmin)
 
 class StoryPlacementsForm(forms.ModelForm):
-	
+	partner = forms.ModelChoiceField(queryset=Partner.objects.order_by('name'))
+
+	class Meta:
+		model = StoryPlacements
+			
 	def __init__(self, *args, **kwargs):
 		super(StoryPlacementsForm, self).__init__(*args, **kwargs)
 		wtf = Story.objects.all();

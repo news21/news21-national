@@ -1,5 +1,5 @@
 {% load smart_if %}{% if callback %}{{callback}}({% endif %}{"placements":[
     {% for placement in placements %}
-    { "date_ran":"{{ placement.story_ran|date:"F d, Y" }}", "partner":"{{ placement.partner|escape }}", "partner_headline":"{{ placement.placement_headline|escape }}", "partner_url":"{{ placement.partner.site_url }}", "url":"{{ placement.placement_url }}", "url_active":"{{ placement.url_active }}", "screengrab_url":"{% if placement.screengrab %}{{ MEDIA_URL }}{{placement.screengrab}}{% endif %}" }{% if not forloop.last %},{% endif %}
+    { "date_ran":"{{ placement.story_ran|date:"N d, Y" }}", "partner":"{{ placement.partner|escape }}", "partner_headline":"{{ placement.placement_headline|escape }}", "partner_url":"{{ placement.partner.site_url }}", "url":"{{ placement.placement_url }}", "url_active":"{{ placement.url_active }}", "screengrab_url":"{% if placement.screengrab %}{{ MEDIA_URL }}{{placement.screengrab}}{% endif %}" }{% if not forloop.last %},{% endif %}
     {% endfor %}
 ]}{% if callback %}){% endif %}

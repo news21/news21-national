@@ -10,7 +10,7 @@ class LinkForm(forms.ModelForm):
 
 	layout = Layout(
 		Fieldset('',
-			'title','url','summary','slug',
+			'title','url','summary','slug', 'thirdparty',
 			css_class='inlineLabels',),
 	)
 

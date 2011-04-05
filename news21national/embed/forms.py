@@ -10,7 +10,7 @@ class EmbedForm(forms.ModelForm):
 
 	layout = Layout(
 		Fieldset('',
-			'title','content','summary','slug',
+			'title','content','summary','slug','thirdparty',
 			css_class='inlineLabels',),
 	)
 

@@ -1,0 +1,237 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% load adminmedia %}{% admin_media_prefix %}css/dashboard.css" />{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}dashboard{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+{% if app_list %}
+	<div class="module">
+	<table>
+	<caption>Projects, Packages, Stories, & Assets</caption>
+	{% for app in app_list %}
+        {% for model in app.models %}
+					{% if model.name == 'Audios' or model.name == 'Embeds' or model.name == 'Links' or model.name == 'Photos' or model.name == 'Swfs' or model.name == 'Videos' or model.name == 'Projects' or model.name == 'Meta storys' or model.name == 'Storys' or model.name == 'Plain texts' or model.name == 'Code repos' %}
+            <tr>
+            {% if model.perms.change %}
+                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a> {% if model.name == 'Storys'%}(Sorted By: <a href="/admin/story/filtered/year/">Year</a>){% endif %}</th>
+            {% else %}
+                <th scope="row">{{ model.name }}</th>
+            {% endif %}
+
+            {% if model.perms.add %}
+                <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+
+            {% if model.perms.change %}
+                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+            </tr>
+					{% endif %}
+        {% endfor %}
+    {% endfor %}
+	</table>
+	</div>
+	<br/>
+	<div class="module">
+	<table>
+	<caption>Partner, Placements, Bundles, & Awards</caption>
+	{% for app in app_list %}
+        {% for model in app.models %}
+					{% if model.name == 'Meta story placementss' or model.name == 'Partners' or model.name == 'Story placementss' or model.name == 'Story bundles' or model.name == 'Awards' %}
+            <tr>
+            {% if model.perms.change %}
+                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+            {% else %}
+                <th scope="row">{{ model.name }}</th>
+            {% endif %}
+
+            {% if model.perms.add %}
+                <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+
+            {% if model.perms.change %}
+                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+            </tr>
+					{% endif %}
+        {% endfor %}
+    {% endfor %}
+	</table>
+	</div>
+	<br/>
+	<div class="module">
+	<table>
+	<caption>News Organizations, Newsrooms, & Editors</caption>
+	{% for app in app_list %}
+        {% for model in app.models %}
+					{% if model.name == 'News organizations' or model.name == 'Newsrooms' or model.name == 'Editors desks' %}
+            <tr>
+            {% if model.perms.change %}
+                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+            {% else %}
+                <th scope="row">{{ model.name }}</th>
+            {% endif %}
+
+            {% if model.perms.add %}
+                <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+
+            {% if model.perms.change %}
+                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+            </tr>
+					{% endif %}
+        {% endfor %}
+    {% endfor %}
+	</table>
+	</div>
+	<br/>
+	<div class="module">
+	<table>
+	<caption>Users, Bios, & Avatars</caption>
+	{% for app in app_list %}
+        {% for model in app.models %}
+					{% if model.name == 'Registration profiles' or model.name == 'Profiles' or model.name == 'Avatars' or model.name == 'Users' %}
+            <tr>
+            {% if model.perms.change %}
+                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+            {% else %}
+                <th scope="row">{{ model.name }}</th>
+            {% endif %}
+
+            {% if model.perms.add %}
+                <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+
+            {% if model.perms.change %}
+                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+            </tr>
+					{% endif %}
+        {% endfor %}
+    {% endfor %}
+	</table>
+	</div>
+	<br/>
+	<div class="module">
+	<table>
+	<caption>CMS & Announcements</caption>
+	{% for app in app_list %}
+        {% for model in app.models %}
+					{% if model.name == 'Pages' or model.name == 'Announcements' %}
+            <tr>
+            {% if model.perms.change %}
+                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+            {% else %}
+                <th scope="row">{{ model.name }}</th>
+            {% endif %}
+
+            {% if model.perms.add %}
+                <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+
+            {% if model.perms.change %}
+                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+            </tr>
+					{% endif %}
+        {% endfor %}
+    {% endfor %}
+	</table>
+	</div>
+	<br/>
+	<div class="module">
+	<table>
+	<caption>Foundation Data</caption>
+	{% for app in app_list %}
+        {% for model in app.models %}
+					{% if model.name == 'Tags' or model.name == 'Outlets' %}
+            <tr>
+            {% if model.perms.change %}
+                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+            {% else %}
+                <th scope="row">{{ model.name }}</th>
+            {% endif %}
+
+            {% if model.perms.add %}
+                <td><a href="{{ model.admin_url }}add/" class="addlink">{% trans 'Add' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+
+            {% if model.perms.change %}
+                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+            {% else %}
+                <td>&nbsp;</td>
+            {% endif %}
+            </tr>
+					{% endif %}
+        {% endfor %}
+    {% endfor %}
+	</table>
+	</div>
+{% else %}
+    <p>{% trans "You don't have permission to edit anything." %}</p>
+{% endif %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+<div id="content-related">
+    <div class="module" id="recent-actions-module">
+        <h2>{% trans 'Recent Actions' %}</h2>
+        <h3>{% trans 'My Actions' %}</h3>
+            {% load log %}
+            {% get_admin_log 10 as admin_log for_user user %}
+            {% if not admin_log %}
+            <p>{% trans 'None available' %}</p>
+            {% else %}
+            <ul class="actionlist">
+            {% for entry in admin_log %}
+            <li class="{% if entry.is_addition %}addlink{% endif %}{% if entry.is_change %}changelink{% endif %}{% if entry.is_deletion %}deletelink{% endif %}">
+                {% if entry.is_deletion %}
+                    {{ entry.object_repr }}
+                {% else %}
+                    <a href="{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                {% endif %}
+                <br/>
+                {% if entry.content_type %}
+                    <span class="mini quiet">{% filter capfirst %}{% trans entry.content_type.name %}{% endfilter %}</span>
+                {% else %}
+                    <span class="mini quiet">{% trans 'Unknown content' %}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+            </ul>
+            {% endif %}
+    </div>
+</div>
+{% endblock %}

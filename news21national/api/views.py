@@ -281,3 +281,19 @@ def stories(request,api_key,version=settings.API_VERSION):
 	p = get_object_or_404(Key, api_key=api_key)
 
 	return render_to_response('api/'+version+'/stories.json', { 'stories': stories, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/json')
+
+def organization(request,api_key,organization_id,dif='json',version=settings.API_VERSION):
+	org = get_object_or_404(NewsOrganization, pk=organization_id)
+	newsrooms = Newsroom.objects.filter(organization=org).order_by('created_at')
+	metastories = MetaStory.objects.filter(newsrooms__in=newsrooms.values_list('id',flat=True))
+	projects = Project.objects.filter(id__in=metastories.values_list('project',flat=True)).distinct()
+	profiles = Profile.objects.all()
+
+	# TODO : add api audit
+	p = get_object_or_404(Key, api_key=api_key)
+
+	return render_to_response('api/'+version+'/organizations_'+dif+'.html', { 'organization': org, 'metastories': metastories, 'projects': projects, 'profiles':profiles, 'newsrooms':newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+
+
+#def project(request,api_key,project_id,dif='json',version=settings.API_VERSION):
+#	metastories = MetaStory.objects.filter(project=project_id).order_by('headline')

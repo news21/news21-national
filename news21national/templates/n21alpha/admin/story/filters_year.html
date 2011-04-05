@@ -1,0 +1,26 @@
+{% extends "admin/base_site.html" %}
+
+
+{% block title %}List of stories filtered{% endblock %}
+
+{% block content %}
+
+
+<div class="clear"></div>
+
+
+<h4>Filtered Stories By Year</h4>
+
+{% for y in years %}
+	<h2>{{ y }}</h2>
+	{% for story in stories %}
+		{% if y == story.year %}
+			<div style="padding:0px 20px 5px 20px;">
+				{{ story.id }} : <a href="../story/{{ story.id }}">{{ story.headline }}</a> : Story Package - <a href="../metastory/{{ story.metastoryid }}">{{ story.metastory }}</a>
+			</div>
+		{% endif %}
+	{% endfor %}
+{% endfor %}
+
+
+{% endblock %}

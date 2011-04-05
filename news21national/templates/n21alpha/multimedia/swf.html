@@ -20,7 +20,7 @@
 		<label for="id_authors">Authors:</label>
 		<select name="authors" id="id_authors" multiple="multiple" size="8">
 			{% for member in newsrooms_members %}
-				<option {% for author in authors %} {% if member == author %} selected {% endif %} {% endfor %} value="{{member.id}}">{{ member }} ( {%for newsroom in member.newsroom_members.all%} {{ newsroom }} {% endfor %} ) </option>
+				<option {% for author in authors %} {% if member.user == author %} selected {% endif %} {% endfor %} value="{{member.user.id}}">{{ member.fullname }} ( {%for newsroom in member.user.newsroom_members.all%} {{ newsroom }} {% endfor %} ) </option>
 			{% endfor %}
 		</select>
 	</p>

@@ -19,7 +19,7 @@ class MetaStoryAdmin(admin.ModelAdmin):
 	inlines = [AwardInline,]
 
 class StoryAdmin(admin.ModelAdmin): 
-	list_display = ('id','headline','metastory','status')
+	list_display = ('id','headline','metastory','status','newsroom_year')
 	list_filter = ['status','metastory']
 	search_fields = ['headline','summary','process']
 	inlines = [AwardInline,]

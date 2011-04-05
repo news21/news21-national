@@ -13,6 +13,7 @@ from news21national.story.constants import STAGE_CHOICES, STAGE_DEFAULT, STATUS_
 from news21national.story.models import MetaStory, Story
 from news21national.multimedia.models import Media
 from news21national.newsroom.models import Newsroom
+from news21national.editorsdesk.models import EditorsDesk
 from discussion.models import CommentNode
 
 from django.core import serializers
@@ -30,7 +31,8 @@ def getProfileById(pid):
 
 @login_required
 def dashboard(request):
-	newsrooms = Newsroom.objects.filter(members=request.user).distinct()
+	desks = EditorsDesk.objects.filter(editors=request.user).distinct()
+	newsrooms = Newsroom.objects.filter(id__in=desks.values_list('newsroom',flat=True)).distinct()
 	metastories = MetaStory.objects.filter(newsrooms__in=newsrooms.values_list('id',flat=True))
 	stories = Story.objects.filter(metastory__in=metastories.values_list('id',flat=True))
 	pending_assets = Media.children.filter(story__in=stories.values_list('id',flat=True),status="Pending Approval")[:15]

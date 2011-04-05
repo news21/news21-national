@@ -72,7 +72,7 @@ INSTALLED_APPS = (
 	'geotagging',
 	'uni_form',
 	'ajax_validation',
-	'django_messages',
+	#'django_messages',
 	'announcements',
 	'avatar',
 	'discussion',
