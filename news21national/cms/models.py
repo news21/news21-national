@@ -25,6 +25,15 @@ Page.register_templates({
         ('sidebar', 'Sidebar', 'inherited'),
         ),
     })
+Page.register_templates({
+    'key': '4-12',
+    'title': 'Grid4-12 Template',
+    'path': 'g4-12-template.html',
+    'regions': (
+        ('main', 'Main region'),
+        ('sidebar', 'Sidebar', 'inherited'),
+        ),
+    })
 Page.create_content_type(RawContent)
 Page.create_content_type(ContactFormContent)
 MediaFileContent.default_create_content_type(Page)

@@ -13,7 +13,7 @@ from operator import itemgetter
 def filtered(request,filter_name):
 	response_dict = {}
 	stories = []
-	for s in Story.objects.all():
+	for s in Story.objects.all().order_by('metastory'):
 		st = dict(id=s.id,headline=s.headline,metastory=s.metastory,metastoryid=s.metastory.id,year=s.metastory.year_of_newsroom)
 		stories.append( st )
 	s = sorted(stories, key=itemgetter('year'))
