@@ -1,7 +1,6 @@
 {% extends "core/base_main.html" %}
 {% load i18n %}
 {% load smart_if %}
-{% load inbox %}
 
 {% block content %}
 
@@ -20,14 +19,6 @@
                 {% endfor %}
 	        </div>
 	    {% endif %}
-		<br/><br/>
-		<h4 class="module-header">Messages</h4>
-		<ul class="subnavilist">
-		    <li><a href="{% url messages_inbox %} ">{% trans "Inbox" %} ({% inbox_count %})</a></li>
-		    <li><a href="{% url messages_outbox %} ">{% trans "Sent Messages" %}</a></li>
-		    <li><a href="{% url messages_compose %} ">{% trans "New Message" %}</a></li>
-		    <li><a href="{% url messages_trash %} ">{% trans "Trash" %}</a></li>
-		</ul>
 		</div>
 	</div>
 	<div class="grid_8">

@@ -39,6 +39,7 @@ urlpatterns = patterns(
 	
 	# INTERNAL APP URLS
 	url(r'^dashboard/', 'news21national.core.views.dashboard', name='user_dashboard'),
+	(r'^builder/',include('news21national.story.urls')),
 	(r'^editorsdesk/',include('news21national.editorsdesk.urls')),
 	(r'^partner/',include('news21national.partner.urls')),
 	(r'^newsroom/',include('news21national.newsroom.urls')),
