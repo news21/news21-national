@@ -1,5 +1,6 @@
 from django import forms
 from news21national.story.models import MetaStory, Story, StoryPublishDate
+from news21national.newsroom.models import Newsroom
 
 from django.forms.extras.widgets import SelectDateWidget
 from django.forms.widgets import Select
@@ -8,6 +9,7 @@ from uni_form.helpers import FormHelper, Submit, Reset
 from uni_form.helpers import Layout, Fieldset, Row, HTML
 
 class MetaStoryForm(forms.ModelForm):
+	newsrooms = forms.ModelMultipleChoiceField(queryset = Newsroom.objects.all().order_by('shorter_code','name'))
 	helper = FormHelper()
 
 	layout = Layout(

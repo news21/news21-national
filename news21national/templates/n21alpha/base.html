@@ -46,12 +46,12 @@
 								<a href="{% url home %}">Home</a> | 
 								<a href="{% url user_dashboard %}">Dashboard</a> | 
 								<a href="{% url user_profile %}">Profile</a> |
-								<a href="/help">Help</a> |
+								<a href="/docs">Help</a> |
 								<a href="{% url user_signout %}">Logout</a>
 							{% endif %}
 						{% else %}
 							<a href="{% url home %}">Home</a> | 
-							<a href="/help">Help</a> | 
+							<a href="/docs">Help</a> | 
 							<a href="{% url user_signin %}">Login</a>
 						{% endif %}
 					</div>

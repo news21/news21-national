@@ -1,5 +1,7 @@
 {% extends "admin/base_site.html" %}
 
+{% block breadcrumbs %}<div class="breadcrumbs"><a href="/admin/">Home</a> &rsaquo; Stories By Year</div>{% endblock %}
+
 
 {% block title %}List of stories filtered{% endblock %}
 
@@ -11,16 +13,36 @@
 
 <h4>Filtered Stories By Year</h4>
 
+<!-- the tabs -->
+<div class="tabs">
+	{% for y in years %}
+	<a href="#">{{ y|add:"2000" }}</a> {% if not forloop.last %}| {% endif %}
+	{% endfor %}
+</div>
+
+<!-- tab "panes" -->
+<div class="panes">
+
 {% for y in years %}
-	<h2>{{ y }}</h2>
+	<div>
+	<h2>{{ y|add:"2000" }}</h2>
 	{% for story in stories %}
 		{% if y|stringformat:"s" == story.year|stringformat:"s" %}
 			<div style="padding:0px 20px 5px 20px;">
-				{{ story.id }} : <a href="../story/{{ story.id }}">{{ story.headline }}</a> : Story Package - <a href="../metastory/{{ story.metastoryid }}">{{ story.metastory }}</a>
+				{{ story.id }} : <a href="/admin/story/{{ story.id }}">{{ story.headline }}</a> : Story Package - <a href="/admin/story/metastory/{{ story.metastoryid }}">{{ story.metastory }}</a>
 			</div>
 		{% endif %}
 	{% endfor %}
+	</div>
 {% endfor %}
 
+</div>
+
+<script src="http://cdn.jquerytools.org/1.2.5/full/jquery.tools.min.js"></script>
+<script> 
+jQuery(function() {
+	jQuery("div.tabs").tabs("div.panes > div");
+});
+</script>
 
 {% endblock %}
