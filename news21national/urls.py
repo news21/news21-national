@@ -48,7 +48,7 @@ urlpatterns = patterns(
 	(r'^avatar/', include('avatar.urls')),
 	
 	# FEINCMS URLS
-	url(r'^preview/(?P<page_id>\d+)/', 'feincms.views.base.preview_handler', name='feincms:preview'),
+	#url(r'^preview/(?P<page_id>\d+)/', 'feincms.views.base.preview_handler', name='feincms:preview'),
 	url(r'^$', 'feincms.views.base.handler', { 'path': '/home' }),
 	url(r'^$|^(.*)/$', 'feincms.views.base.handler'),
 )

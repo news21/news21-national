@@ -204,7 +204,7 @@ class Story(models.Model):
 	newsrooms = property(get_newsrooms)
 
 	def get_newsroom_shortcodes(self):
-		ns = MetaStory.objects.get(pk=self.metastory.id).newsrooms.values_list('shorter_code',flat=True).order_by('shorter_code')
+		ns = MetaStory.objects.get(pk=self.metastory.id).newsrooms.values_list('organization__shorter_code',flat=True)
 		s = []
 		for n in ns:
 			s.append(n)
