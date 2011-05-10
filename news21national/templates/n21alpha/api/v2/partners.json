@@ -1,0 +1,5 @@
+{% if callback %}{{callback}}({% endif %}{"partners":[
+    {% for partner in partners %}
+    { "name":"{{ partner.name }}", "site_url":"{{ partner.site_url }}", "id":"{{ partner.id }}" }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+]}{% if callback %}){% endif %}

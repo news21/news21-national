@@ -13,7 +13,7 @@ from news21national.multimedia.models import Media
 from news21national.photos.models import Photo
 from news21national.core.models import Profile
 from news21national.api.models import Key
-from news21national.partner.models import StoryPlacements
+from news21national.partner.models import StoryPlacements, Partner
 from tagging.models import Tag,TaggedItem
 
 from django.core import serializers
@@ -249,6 +249,14 @@ def placements(request,api_key,version=settings.API_VERSION):
 	p = get_object_or_404(Key, api_key=api_key)
 
 	return render_to_response('api/'+version+'/placements.json', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/json')
+
+def partners_by_year(request,api_key,year_id,version=settings.API_VERSION):
+	placements = StoryPlacements.objects.filter(story_ran__year=year_id)
+	partners = Partner.objects.filter(id__in=placements.values_list('partner',flat=True)).distinct().order_by('name')
+	# TODO : add api audit
+	p = get_object_or_404(Key, api_key=api_key)
+
+	return render_to_response('api/'+version+'/partners.json', { 'partners': partners, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/json')
 
 def newsrooms(request,api_key,dif='json',version=settings.API_VERSION):
 	newsrooms = Newsroom.objects.all().order_by('name')
