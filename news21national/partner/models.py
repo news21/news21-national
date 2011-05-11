@@ -49,6 +49,7 @@ class MetaStoryPlacements(models.Model):
 	created_at = models.DateTimeField(editable=False)
 	updated_by = models.ForeignKey(auth.User, related_name="metastoryplacement_updated_by")
 	updated_at = models.DateTimeField(editable=False)
+	is_mention = models.BooleanField(default=False)
 
 	def save(self):
 		if self.created_at == None:
@@ -69,6 +70,7 @@ class StoryPlacements(models.Model):
 	created_at = models.DateTimeField(editable=False)
 	updated_by = models.ForeignKey(auth.User, related_name="storyplacement_updated_by")
 	updated_at = models.DateTimeField(editable=False)
+	is_mention = models.BooleanField(default=False)
 
 	def save(self):
 		if self.created_at == None:

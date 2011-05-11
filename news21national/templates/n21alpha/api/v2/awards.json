@@ -1,0 +1,5 @@
+{% if callback %}{{callback}}({% endif %}{"awards":[
+    {% for award in awards %}
+    { "name":"{{ award.name }}", "presented_at":"{{ award.presented_at|date:"Y" }}" }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+]}{% if callback %}){% endif %}

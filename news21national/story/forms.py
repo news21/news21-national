@@ -9,7 +9,7 @@ from uni_form.helpers import FormHelper, Submit, Reset
 from uni_form.helpers import Layout, Fieldset, Row, HTML
 
 class MetaStoryForm(forms.ModelForm):
-	newsrooms = forms.ModelMultipleChoiceField(queryset = Newsroom.objects.all().order_by('shorter_code','name'))
+	newsrooms = forms.ModelMultipleChoiceField(queryset = Newsroom.objects.extra(select={'shorter_year': 'CAST(shorter_code AS INTEGER)'}).order_by('-shorter_year','name'))
 	helper = FormHelper()
 
 	layout = Layout(

@@ -243,15 +243,15 @@ def story_placements(request,api_key,story_id,dif='json',version=settings.API_VE
 ## new in v2
 ##
 
-def placements(request,api_key,version=settings.API_VERSION):
-	placements = StoryPlacements.objects.all().order_by('-story_ran')
+def placements(request,api_key,mention=False,version=settings.API_VERSION):
+	placements = StoryPlacements.objects.filter(is_mention=mention).order_by('-story_ran')
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
 	return render_to_response('api/'+version+'/placements.json', { 'placements': placements, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/json')
 
 def partners_by_year(request,api_key,year_id,version=settings.API_VERSION):
-	placements = StoryPlacements.objects.filter(story_ran__year=year_id)
+	placements = StoryPlacements.objects.filter(story_ran__year=year_id,is_mention=False)
 	partners = Partner.objects.filter(id__in=placements.values_list('partner',flat=True)).distinct().order_by('name')
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
@@ -300,7 +300,15 @@ def organization(request,api_key,organization_id,dif='json',version=settings.API
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
-	return render_to_response('api/'+version+'/organizations_'+dif+'.html', { 'organization': org, 'metastories': metastories, 'projects': projects, 'profiles':profiles, 'newsrooms':newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+	return render_to_response('api/'+version+'/organizations.json', { 'organization': org, 'metastories': metastories, 'projects': projects, 'profiles':profiles, 'newsrooms':newsrooms, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/'+dif)
+
+def awards(request,api_key,version=settings.API_VERSION):
+	awards = Award.objects.all()
+
+	# TODO : add api audit
+	p = get_object_or_404(Key, api_key=api_key)
+
+	return render_to_response('api/'+version+'/awards.json', { 'awards': awards, 'callback':request.REQUEST.get('callback','') }, context_instance=RequestContext(request), mimetype='application/json')
 
 
 #def project(request,api_key,project_id,dif='json',version=settings.API_VERSION):

@@ -1,0 +1,16 @@
+{% load smart_if %}
+{% if callback %}{{callback}}({% endif %}
+	{"name":"{{ organization }}",
+	"site_url":"{{ organization.site_url }}",
+	"shorter_code":"{{ organization.shorter_code }}",
+	"bio":"{{ organization.bio|linebreaksbr }}",
+	"newsrooms":[{% for newsroom in newsrooms %}
+		{"name":"{{newsroom.name}}",
+			"bios":[{% for profile in newsroom.members.all %}{% for p in profiles %}{% if p.user.id = profile.id %}{
+				"id":"{{ profile.id }}",
+				"name":"{{ p.first_name }} {{ p.last_name }}",
+				"bio":"{{ p.bio|linebreaksbr|escapejs }}",
+				"twitter":"{% if p.twitter_public %}{{ p.twitterid }}{% endif %}",
+				"linkedin":"{% if p.linkedin_public %}{{ p.linkedinid }}{% endif %}",
+				"facebook":"{% if p.facebook_public %}{{ p.facebookid }}{% endif %}" }
+				{% endif %}{% endfor %}{% if not forloop.last %},{% endif %}{% endfor %}],"projects":[{% for metastory in metastories %}{% for msnewsroom in metastory.newsrooms.all %}{% if msnewsroom = newsroom %}{% for project in projects %}{% if metastory.project = project %}{"name":"{{project.name}}","description":"{{project.description}}","thumbnail":"{{project.thumbnail}}","package":[{% for ms in metastories %}{% if ms.project = project %}{"name":"{{ms.headline}}","sub_headline":"{{ms.sub_headline}}","slug":"{{ms.slug}}","summary":"{{ms.summary}}","process":"{{ms.process}}"},{% endif %}{% endfor %}] }{% endif %}{% endfor %}{% endif %}{% endfor %}{% endfor %}]} {% if not forloop.last %},{% endif %}{% endfor %}] }{% if callback %}){% endif %}
