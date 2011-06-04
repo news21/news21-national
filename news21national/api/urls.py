@@ -23,6 +23,7 @@ urlpatterns = patterns ('',
 	url(r'v2/(?P<api_key>.+)/newsroom/(?P<newsroom_id>\d+)/bios/$','news21national.api.views.newsrooms_bios',{'version':'v2'},name='api_v2_newsroom_bios',),
 	url(r'v2/(?P<api_key>.+)/story/(?P<story_id>\d+)/$','news21national.api.views.story',{'version':'v2'},name='api_v2_story',),
 	url(r'v2/(?P<api_key>.+)/story_ec/(?P<story_id>\d+)/$','news21national.api.views.story',{'version':'v2','custom_filter':'_ec'},name='api_v2_story_ec',),
+	url(r'v2/(?P<api_key>.+)/story_republish/(?P<story_id>\d+)/$','news21national.api.views.story',{'version':'v2','custom_filter':'_republish'},name='api_v2_story_republish',),
 	url(r'v2/(?P<api_key>.+)/media/(?P<media_id>\d+)/$','news21national.api.views.media',{'version':'v2'},name='api_v2_media',),
 	
 	url(r'v2/(?P<api_key>.+)/awards/$','news21national.api.views.awards',{'version':'v2'},name='api_v2_awards',),

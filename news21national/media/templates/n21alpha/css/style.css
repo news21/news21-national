@@ -211,3 +211,10 @@ fieldset.inlineLabels legend{
 .apidocs-panel h4 {
 	color: #333;
 }
+
+.apidocs-code {
+	background-color:#aad4ff;
+	color: #000;
+	margin:5px 0px 0px 0px;
+	padding:5px;
+}

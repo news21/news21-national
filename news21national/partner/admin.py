@@ -29,7 +29,7 @@ class StoryPlacementsForm(forms.ModelForm):
 
 class StoryPlacementsAdmin(admin.ModelAdmin):
 	form = StoryPlacementsForm
-	list_display = ('story','partner','placement_headline')
+	list_display = ('id','story','partner','placement_headline')
 	search_fields = ['story__headline','partner__name','description','placement_headline',]
 
 admin.site.register(StoryPlacements,StoryPlacementsAdmin)
