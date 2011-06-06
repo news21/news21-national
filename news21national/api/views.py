@@ -154,8 +154,8 @@ def story(request,api_key,story_id,dif='json',custom_filter='',extra_context=Non
 	
 	if custom_filter == '_ec':
 		extra_context = {'awards':Award.objects.get_for_object(story)}
-	if custom_filter == '_republish':
-		extra_context = {'plaintext':PlainText.objects.filter(story=story)}
+	#if custom_filter == '_republish':
+	#	extra_context = {'plaintext':PlainText.objects.filter(story=story)}
 	# TODO : add api audit
 	p = get_object_or_404(Key, api_key=api_key)
 
