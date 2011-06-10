@@ -10,8 +10,6 @@
 
 <div>
 <form action="{{ form_url }}" class="uniForm" method="post">
-<div style="float:left;:width:560px;position:relative;">
-	
 	
 	<div class="genericForm contentheader">	
 		<h4>Package Information</h4>
@@ -52,9 +50,7 @@
 		<div class="clear"></div>
 	
 	</div>
-</div>
 
-<div class="genericForm" style="float:left;:width:560px;position:relative;">
 	{% if metastory_id %}
 		<h4>Package Stories <a href="{% url story_new metastory_id %}">[+ Add]</a></h4>
 		<div class="help-text">Each package has one or more stories attached to it. To add a new story click the [+ Add] link above. To edit, click the story's title.</div>
@@ -156,8 +152,6 @@
 	{% endfor %}
 	
 	
-</div>
-
 
 <br/>
 <div class="inputSubmit">
