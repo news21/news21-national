@@ -11,7 +11,6 @@
 <div>
 <form action="{{ form_url }}" class="uniForm" method="post">
 	
-	<div class="genericForm contentheader">	
 		<h4>Package Information</h4>
 		<div class="help-text" style="margin-bottom: 10px;">All fields marked with * are required.  Only "Approved"(green checkmark) packages, stories, & assets will be available for partner placements. If your package has been rejected ... please see your editor's comments for details why.</div>
 		{% if metastory_id %}
@@ -26,9 +25,7 @@
 		
 		<br/>
 	
-		{% with form.helper as helper %}
-		    {% uni_form form helper %}
-		{% endwith %}
+		{{ form|as_uni_form }}
 	
 		<fieldset class="inlineLabels">
 		<div class="ctrlHolder " id="div_id_inherited_tags">
@@ -49,8 +46,6 @@
 	
 		<div class="clear"></div>
 	
-	</div>
-
 	{% if metastory_id %}
 		<h4>Package Stories <a href="{% url story_new metastory_id %}">[+ Add]</a></h4>
 		<div class="help-text">Each package has one or more stories attached to it. To add a new story click the [+ Add] link above. To edit, click the story's title.</div>
