@@ -8,8 +8,9 @@
 {% block content %}
 <div class="clear"></div>
 
+<div>
 <form action="{{ form_url }}" class="uniForm" method="post">
-<div class="grid_10">
+<div style="float:left;:width:560px;position:relative;">
 	
 	
 	<div class="genericForm contentheader">	
@@ -57,8 +58,7 @@
 	</div>
 </div>
 
-
-<div class="grid_6 genericForm">
+<div class="genericForm" style="float:left;:width:560px;position:relative;">
 	{% if metastory_id %}
 		<h4>Package Stories <a href="{% url story_new metastory_id %}">[+ Add]</a></h4>
 		<div class="help-text">Each package has one or more stories attached to it. To add a new story click the [+ Add] link above. To edit, click the story's title.</div>
@@ -162,7 +162,7 @@
 	
 </div>
 </form>
-
+</div>
 
 
 	<div class="clear"></div>
@@ -349,6 +349,6 @@
 	
 	$("a.helptip").parent(".formHint").click(function() {
 		var hid = $(this).attr('id');
-		window.open('/help#metastory_'+hid.replace('hint_id_',''), '_blank');
+		window.open('/docs#metastory_'+hid.replace('hint_id_',''), '_blank');
 	});
 {% endblock %}
